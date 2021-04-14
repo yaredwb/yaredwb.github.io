@@ -1,4 +1,4 @@
-## Visit my main personal website: [yaredwb.com](https://yaredwb.com/)
+## Visit my main personal website at: [yaredwb.com](https://yaredwb.com/)
 
 ## Other selected resources that I have contributed on GitHub and GitHub Pages:
 
