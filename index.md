@@ -15,6 +15,8 @@
 - Finite difference method in 2D: [https://yaredwb.github.io/FDM2D/](https://yaredwb.github.io/FDM2D/) 
 - Finte difference method in 1D: [https://yaredwb.github.io/FDM1D/](https://yaredwb.github.io/FDM1D/)
 
+All GitHub repositories here: https://github.com/yaredwb
+
 ## Hobby Codes and Pages
 
 - Geez Tex Analyzer - `Python`: https://geezanalyzer.herokuapp.com/
