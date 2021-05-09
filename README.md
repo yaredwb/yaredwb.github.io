@@ -1,3 +1,3 @@
 ## Yared W. Bekele
 
-Personal site - [yaredwb.github.io](yaredwb.github.io)
+Personal site - [yaredwb.github.io](https://yaredwb.github.io/)
