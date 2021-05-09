@@ -1,4 +1,4 @@
-## Main interests
+## Main Interests
 
 - **Computational Modeling**: Applying advanced numerical methods in various application areas in computational science and engineering, mainly for coupled problems in geomechanics/poromechanics
 - **Numerical Programming**: Developing codes for professional research and hobby projects mainly based on Python and C++
