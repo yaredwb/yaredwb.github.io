@@ -20,6 +20,6 @@ All GitHub repositories [here](https://github.com/yaredwb)
 ## Hobby Codes and Pages
 
 - Geez Text Analyzer - `Python`: https://geezanalyzer.herokuapp.com/
-- Interactive Map of Ethiopia - `D3js`/`Javascript`: https://yaredwb.github.io/ETH_Fed/
+- Interactive Map of Ethiopia - `D3.js`/`Javascript`: https://yaredwb.github.io/ETH_Fed/
 
 <!--- Visit my main personal website at [yaredwb.com](https://yaredwb.com/). --->
