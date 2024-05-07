@@ -8,6 +8,7 @@
 
 ## GitHub Repositories and GitHub Pages
 
+- 3D terrain generator - `Python` : [3D Terrain Generator](https://3d-terrain-generator.streamlit.app/)
 - Interactive web app for one-dimensional consolidation - `Python`: [Cons1D](https://cons1d.herokuapp.com/)
 - Isogeometric finite element codes for coupled problems in porous media - `C++`: [IFEM](https://github.com/yaredwb/IFEM)
 - Porous media theory: [https://yaredwb.github.io/PMT/](https://yaredwb.github.io/PMT/)
