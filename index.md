@@ -1,4 +1,4 @@
-## Main Interests
+## Main Interests and Competence
 
 - **Machine Learning and AI**: Developing machine learning models and generative AI assistants in geomechanics, particularly towards improving speed and accuracy for practical computational modelling problems
 - **Computational Modeling**: Applying advanced numerical methods in various application areas in computational science and engineering, mainly for coupled problems in geomechanics/poromechanics
