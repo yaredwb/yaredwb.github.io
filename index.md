@@ -1,8 +1,8 @@
 ## Main Interests
 
+- **Machine Learning and AI**: Developing machine learning models and generative AI assistants in geomechanics, particularly towards improving speed and accuracy for practical computational modelling problems
 - **Computational Modeling**: Applying advanced numerical methods in various application areas in computational science and engineering, mainly for coupled problems in geomechanics/poromechanics
 - **Numerical Programming**: Developing codes for professional research and hobby projects mainly based on Python and C++
-- **Machine Learning and AI**: Developing machine learning models and generative AI assistants in geomechanics, particularly towards improving speed and accuracy for practical computational modelling problems
 - **Data Analysis and Visualization**: Applying modern data analysis and visualisation tools and methods to engineering data for a better insight and content creation
 - **Academics**: Teaching and supervision. Giving lectures, particularly on computational modeling courses, and supervising/co-supervising undergraduate and graduate students
 
