@@ -8,6 +8,9 @@
 
 ## GitHub Repositories and GitHub Pages
 
+- [GeoSim.AI](https://geosim.ai/)  - AI assistants for numerical simulations in geomechanics - a generative
+AI tool showing the potential of AI in enhancing productivity and efficiency through
+demonstration of slope stability analyses.
 - 3D terrain generator - `Python` : [3D Terrain Generator](https://3d-terrain-generator.streamlit.app/)
 - Isogeometric finite element codes for coupled problems in porous media - `C++`: [IFEM](https://github.com/yaredwb/IFEM)
 - Porous media theory: [https://yaredwb.github.io/PMT/](https://yaredwb.github.io/PMT/)
@@ -23,4 +26,4 @@ All GitHub repositories [here](https://github.com/yaredwb)
 - Geez Text Analyzer - `Python`: [Geez Analyzer](https://geeztextanalyzer.streamlit.app/)
 - Interactive Map of Ethiopia - `D3.js`/`Javascript`: [ETH-Fed](https://yaredwb.github.io/ETH_Fed/)
 
-<!--- Visit my main personal website at [yaredwb.com](https://yaredwb.com/). --->
+Visit my personal website at [yaredwb.com](https://yaredwb.com/)
