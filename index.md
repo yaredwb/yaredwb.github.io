@@ -26,4 +26,4 @@ All GitHub repositories [here](https://github.com/yaredwb)
 - Geez Text Analyzer - `Python`: [Geez Analyzer](https://geeztextanalyzer.streamlit.app/)
 - Interactive Map of Ethiopia - `D3.js`/`Javascript`: [ETH-Fed](https://yaredwb.github.io/ETH_Fed/)
 
-Visit my personal website at [yaredwb.com](https://yaredwb.com/)
+Visit my personal website at [yaredwb.com](https://yaredwb.com/). Blog posts from the old site are available [here](blog)
