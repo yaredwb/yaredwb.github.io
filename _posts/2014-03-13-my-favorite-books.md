@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Some of My Favorite Books"
+---
+
+Some of my favorite books.
+
+<a href="https://yaredwb.com/wp-content/uploads/2014/03/tuesdays_with_morrie_book_cover.jpg"><img class="alignnone size-medium wp-image-35" src="https://yaredwb.com/wp-content/uploads/2014/03/tuesdays_with_morrie_book_cover.jpg?w=208" alt="Tuesdays_with_Morrie_book_cover" width="208" height="300" /></a><a style="line-height:1.5;" href="https://yaredwb.com/wp-content/uploads/2014/03/screwit.jpg"><img class="alignnone size-medium wp-image-37" src="https://yaredwb.com/wp-content/uploads/2014/03/screwit.jpg?w=198" alt="screwit" width="198" height="300" /></a><a style="line-height:1.5;" href="https://yaredwb.com/wp-content/uploads/2014/03/7habits.jpg"><img class="alignnone size-full wp-image-36" src="https://yaredwb.com/wp-content/uploads/2014/03/7habits.jpg" alt="7habits" width="180" height="280" /></a>
+
+<a href="https://yaredwb.com/wp-content/uploads/2014/03/20110804_bookreview-six-thinking-hats-1.jpg"><img class="alignnone size-medium wp-image-42" src="https://yaredwb.com/wp-content/uploads/2014/03/20110804_bookreview-six-thinking-hats-1.jpg?w=195" alt="20110804_bookreview-six-thinking-hats-1" width="195" height="300" /></a> <a href="https://yaredwb.com/wp-content/uploads/2014/03/digital-fortress-dan-brown.jpg"><img class="alignnone size-medium wp-image-46" src="https://yaredwb.com/wp-content/uploads/2014/03/digital-fortress-dan-brown.jpg?w=195" alt="digital-fortress-dan-brown" width="195" height="300" /></a> <a href="https://yaredwb.com/wp-content/uploads/2014/03/the_prophet_cover.jpg"><img class="alignnone size-medium wp-image-44" src="https://yaredwb.com/wp-content/uploads/2014/03/the_prophet_cover.jpg?w=200" alt="The_Prophet_Cover" width="200" height="300" /></a>
+
+<a href="https://yaredwb.com/wp-content/uploads/2015/09/briefhistorytime.jpg"><img class="alignnone size-medium wp-image-316" src="https://yaredwb.com/wp-content/uploads/2015/09/briefhistorytime.jpg?w=197" alt="BriefHistoryTime" width="197" height="300" /></a><a href="https://yaredwb.com/wp-content/uploads/2015/09/thinkingfastandslow.jpg"><img class="alignnone size-medium wp-image-317" src="https://yaredwb.com/wp-content/uploads/2015/09/thinkingfastandslow.jpg?w=200" alt="ThinkingFastAndSlow" width="200" height="300" /></a><a href="https://yaredwb.com/wp-content/uploads/2015/09/animalfarm.jpg"><img class="alignnone wp-image-318 size-medium" src="https://yaredwb.com/wp-content/uploads/2015/09/animalfarm.jpg?w=183" alt="animalfarm" width="183" height="300" /></a>
