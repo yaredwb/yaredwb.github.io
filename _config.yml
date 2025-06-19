@@ -1,3 +1,39 @@
 theme: jekyll-theme-minimal
-title: Yared W. Bekele
-description: Research Scientist at SINTEF, Rock and Soil Mechanics Group, Infrastructure Department 
+title: Yared W. Bekele, PhD
+description: Computational Geomechanics
+url: "" # Set to your GitHub Pages URL if it's a project page, e.g., "https://username.github.io/repository"
+baseurl: "" # Set to repository name if it's a project page, e.g., "/repository"
+
+# Navigation links
+nav:
+  - title: "About Me"
+    url: /about-me/
+  - title: "Résumé"
+    url: /resume/
+  - title: "Research"
+    url: /research/
+  - title: "Blog"
+    url: /blog/
+  - title: "Contact"
+    url: /contact/
+
+# Build settings
+markdown: kramdown
+permalink: /:categories/:year/:month/:day/:title:output_ext
+
+# Exclude from processing.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - parser.py
+  - yaredwbekelephd.WordPress.2025-06-04.xml
+  - README.md # Or keep if you want it processed
+  # You might want to exclude the _pages directory if pages are handled by permalinks
+  # or if you prefer not to have them listed directly if not linked.
+  # However, for clarity and if they are meant to be browsable, keep them.
+  # - _pages/
