@@ -11,12 +11,44 @@ A little bit personal info about me: I was born and raised in Addis Ababa, Ethio
 
 ### Main Interests and Competence
 
-- **Machine Learning and AI**: Developing machine learning models and generative AI assistants in geomechanics, particularly towards improving speed and accuracy for practical computational modelling problems
+<div class="interests-grid">
+  <div class="interest-card">
+    <div class="interest-icon">
+      <img src="/media/2014/03/robot.png" alt="Machine Learning and AI" />
+    </div>
+    <h4>Machine Learning and AI</h4>
+    <p>Developing machine learning models and generative AI assistants in geomechanics, particularly towards improving speed and accuracy for practical computational modelling problems</p>
+  </div>
 
-- **Computational Modeling**: Applying advanced numerical methods in various application areas in computational science and engineering, mainly for coupled problems in geomechanics/poromechanics
+  <div class="interest-card">
+    <div class="interest-icon">
+      <img src="/media/2014/03/science.png" alt="Computational Modeling" />
+    </div>
+    <h4>Computational Modeling</h4>
+    <p>Applying advanced numerical methods in various application areas in computational science and engineering, mainly for coupled problems in geomechanics/poromechanics</p>
+  </div>
 
-- **Numerical Programming**: Developing codes for professional research and hobby projects mainly based on Python and C++
+  <div class="interest-card">
+    <div class="interest-icon">
+      <img src="/media/2014/03/programming.png" alt="Numerical Programming" />
+    </div>
+    <h4>Numerical Programming</h4>
+    <p>Developing codes for professional research and hobby projects mainly based on Python and C++</p>
+  </div>
 
-- **Data Analysis and Visualization**: Applying modern data analysis and visualisation tools and methods to engineering data for better insight and content creation
+  <div class="interest-card">
+    <div class="interest-icon">
+      <img src="/media/2014/03/technology.png" alt="Data Analysis and Visualization" />
+    </div>
+    <h4>Data Analysis and Visualization</h4>
+    <p>Applying modern data analysis and visualisation tools and methods to engineering data for better insight and content creation</p>
+  </div>
 
-- **Teaching and Supervision**: Giving lectures, particularly on computational modeling courses, and supervising/co-supervising undergraduate and graduate students
+  <div class="interest-card">
+    <div class="interest-icon">
+      <img src="/media/2014/03/book.png" alt="Teaching and Supervision" />
+    </div>
+    <h4>Teaching and Supervision</h4>
+    <p>Giving lectures, particularly on computational modeling courses, and supervising/co-supervising undergraduate and graduate students</p>
+  </div>
+</div>
