@@ -8,21 +8,25 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
-    <div class="container">
-        <header>
+    <header>
+        <div class="container">
             <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
             <p>{{ site.description }}</p>
-        </header>
-        
-        <nav>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
             <a href="{{ '/' | relative_url }}">Home</a>
             <a href="{{ '/resume.html' | relative_url }}">Resume</a>
             <a href="{{ '/research.html' | relative_url }}">Research</a>
             <a href="{{ '/teaching.html' | relative_url }}">Teaching</a>
             <a href="{{ '/blog.html' | relative_url }}">Blog</a>
             <a href="{{ '/about.html' | relative_url }}">About</a>
-        </nav>
-        
+        </div>
+    </nav>
+    
+    <div class="container">
         <main>
             {% if page.title and page.layout != 'home' %}
             <article class="post">
@@ -36,10 +40,12 @@
             {{ content }}
             {% endif %}
         </main>
-        
-        <footer>
-            <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Built with Jekyll and hosted on GitHub Pages.</p>
-        </footer>
     </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Built with Jekyll and hosted on GitHub Pages.</p>
+        </div>
+    </footer>
 </body>
 </html>
