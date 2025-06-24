@@ -1,3 +1,24 @@
 theme: jekyll-theme-minimal
-title: Yared W. Bekele
-description: Research Scientist at SINTEF, Rock and Soil Mechanics Group, Infrastructure Department 
+title: Yared W. Bekele, PhD
+description: Computational Geomechanics
+baseurl: ""
+url: "https://yaredwb.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Pagination
+paginate: 5
+paginate_path: "/page:num/"
+
+# Exclude files from processing
+exclude:
+  - migrate_wordpress.py
+  - yaredwbekelephd.WordPress.2025-06-04.xml
+  - README.md
+  - Gemfile
+  - Gemfile.lock

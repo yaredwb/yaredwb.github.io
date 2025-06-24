@@ -1,29 +1,25 @@
-## Main Interests and Competence
+---
+layout: default
+title: Home
+---
 
-- **Machine Learning and AI**: Developing machine learning models and generative AI assistants in geomechanics, particularly towards improving speed and accuracy for practical computational modelling problems
-- **Computational Modeling**: Applying advanced numerical methods in various application areas in computational science and engineering, mainly for coupled problems in geomechanics/poromechanics
-- **Numerical Programming**: Developing codes for professional research and hobby projects mainly based on Python and C++
-- **Data Analysis and Visualization**: Applying modern data analysis and visualisation tools and methods to engineering data for a better insight and content creation
-- **Academics**: Teaching and supervision. Giving lectures, particularly on computational modeling courses, and supervising/co-supervising undergraduate and graduate students
+## Welcome
 
-## GitHub Repositories and GitHub Pages
+Welcome to my website. Look around to learn more about me and my professional and personal interests. You will find my resume, a portfolio of my professional and hobby research activities, teaching and supervision assignments I have undertaken and blog posts where I write about topics that are of interest to me.
 
-- [GeoSim.AI](https://geosim.ai/)  - AI assistants for numerical simulations in geomechanics - a generative
-AI tool showing the potential of AI in enhancing productivity and efficiency through
-demonstration of slope stability analyses.
-- 3D terrain generator - `Python` : [3D Terrain Generator](https://3d-terrain-generator.streamlit.app/)
-- Isogeometric finite element codes for coupled problems in porous media - `C++`: [IFEM](https://github.com/yaredwb/IFEM)
-- Porous media theory: [https://yaredwb.github.io/PMT/](https://yaredwb.github.io/PMT/)
-- Physics-informed neural networks for one-dimensional consolidation: [https://yaredwb.github.io/PINN-Consolidation1D-Paper/](https://yaredwb.github.io/PINN-Consolidation1D-Paper/)
-- Finite difference method in 2D: [https://yaredwb.github.io/FDM2D/](https://yaredwb.github.io/FDM2D/) 
-- Finte difference method in 1D: [https://yaredwb.github.io/FDM1D/](https://yaredwb.github.io/FDM1D/)
-- Interactive web app for one-dimensional consolidation - `Python`: [Cons1D](https://consolidation-1d.streamlit.app/)
+A little bit personal info about me: I was born and raised in Addis Ababa, Ethiopia. After studying my BSc in Civil Engineering back home, I moved to Norway to pursue my graduate studies. I have been living, studying and working in Norway since then.
 
-All GitHub repositories [here](https://github.com/yaredwb)
+## Recent Posts
 
-## Hobby Codes and Pages
+{% for post in site.posts limit:5 %}
+<article class="post-preview">
+  <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+  <p class="post-meta">{{ post.date | date: "%B %d, %Y" }}</p>
+  <div class="post-excerpt">
+    {{ post.content | strip_html | truncatewords: 50 }}
+  </div>
+  <a href="{{ post.url | relative_url }}" class="read-more">Read more →</a>
+</article>
+{% endfor %}
 
-- Geez Text Analyzer - `Python`: [Geez Analyzer](https://geeztextanalyzer.streamlit.app/)
-- Interactive Map of Ethiopia - `D3.js`/`Javascript`: [ETH-Fed](https://yaredwb.github.io/ETH_Fed/)
-
-Visit my personal website at [yaredwb.com](https://yaredwb.com/)
+<p><a href="/blog.html">View all posts →</a></p>

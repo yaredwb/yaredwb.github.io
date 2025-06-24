@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+    <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+            <p>{{ site.description }}</p>
+        </header>
+        
+        <nav>
+            <a href="{{ '/' | relative_url }}">Home</a>
+            <a href="{{ '/resume.html' | relative_url }}">Resume</a>
+            <a href="{{ '/research.html' | relative_url }}">Research</a>
+            <a href="{{ '/teaching.html' | relative_url }}">Teaching</a>
+            <a href="{{ '/blog.html' | relative_url }}">Blog</a>
+            <a href="{{ '/about.html' | relative_url }}">About</a>
+        </nav>
+        
+        <main>
+            {% if page.title and page.layout != 'home' %}
+            <article class="post">
+                <h1>{{ page.title }}</h1>
+                {% if page.date %}
+                <p class="post-meta">{{ page.date | date: "%B %d, %Y" }}{% if page.author %} by {{ page.author }}{% endif %}{% if page.categories %} | Categories: {{ page.categories | join: ", " }}{% endif %}</p>
+                {% endif %}
+                {{ content }}
+            </article>
+            {% else %}
+            {{ content }}
+            {% endif %}
+        </main>
+        
+        <footer>
+            <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Built with Jekyll and hosted on GitHub Pages.</p>
+        </footer>
+    </div>
+</body>
+</html>
