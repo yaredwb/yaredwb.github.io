@@ -4,29 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+
+    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    <meta property="og:title" content="{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}">
+    <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta name="twitter:card" content="summary">
+
     <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
-            <p>{{ site.description }}</p>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="branding">
+                <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+                <p class="site-tagline">{{ site.description }}</p>
+            </div>
+            <nav class="site-nav" aria-label="Primary">
+                <ul>
+                    <li>
+                        <a href="{{ '/' | relative_url }}"
+                           class="{% if page.url == '/' or page.url == '/index.html' %}active{% endif %}"
+                           {% if page.url == '/' or page.url == '/index.html' %}aria-current="page"{% endif %}>About</a>
+                    </li>
+                    <li>
+                        <a href="{{ '/resume.html' | relative_url }}"
+                           class="{% if page.url == '/resume.html' %}active{% endif %}"
+                           {% if page.url == '/resume.html' %}aria-current="page"{% endif %}>Resume</a>
+                    </li>
+                    <li>
+                        <a href="{{ '/research.html' | relative_url }}"
+                           class="{% if page.url == '/research.html' %}active{% endif %}"
+                           {% if page.url == '/research.html' %}aria-current="page"{% endif %}>Research</a>
+                    </li>
+                    <li>
+                        <a href="{{ '/teaching.html' | relative_url }}"
+                           class="{% if page.url == '/teaching.html' %}active{% endif %}"
+                           {% if page.url == '/teaching.html' %}aria-current="page"{% endif %}>Teaching</a>
+                    </li>
+                    <li>
+                        <a href="{{ '/blog.html' | relative_url }}"
+                           class="{% if page.url == '/blog.html' or page.collection == 'posts' %}active{% endif %}"
+                           {% if page.url == '/blog.html' or page.collection == 'posts' %}aria-current="page"{% endif %}>Blog</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </header>
     
-    <nav>
-        <div class="container">
-            <a href="{{ '/' | relative_url }}">About Me</a>
-            <a href="{{ '/resume.html' | relative_url }}">Resume</a>
-            <a href="{{ '/research.html' | relative_url }}">Research</a>
-            <a href="{{ '/teaching.html' | relative_url }}">Teaching</a>
-            <a href="{{ '/blog.html' | relative_url }}">Blog</a>
-        </div>
-    </nav>
-    
     <div class="container">
-        <main>
+        <main id="content" tabindex="-1">
             {% if page.title and page.layout != 'home' %}
             <article class="post">
                 <h1>{{ page.title }}</h1>
@@ -41,9 +72,9 @@
         </main>
     </div>
     
-    <footer>
+    <footer class="site-footer">
         <div class="container">
-            <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Built with Jekyll and hosted on GitHub Pages.</p>
+            <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Built with Jekyll & GitHub Pages.</p>
         </div>
     </footer>
 </body>

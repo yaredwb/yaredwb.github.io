@@ -124,7 +124,7 @@ title: Resume
           <img src="/media/2014/03/technology.png" alt="Reinertsen" />
         </div>
         <div class="institution-info">
-          <h3>Reinertsen AS (Now ÅF)</h3>
+          <h3>Reinertsen AS</h3>
           <p class="location">Engineering Division | Trondheim | Norway</p>
         </div>
       </div>
@@ -243,3 +243,4 @@ title: Resume
     </div>
   </div>
 </div>
+
