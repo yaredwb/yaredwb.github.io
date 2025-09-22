@@ -1,19 +1,27 @@
 ---
 layout: default
-title: Blog
+title: Writing
+permalink: /blog/
 ---
 
-## Blog Posts
-
-{% for post in site.posts %}
-<article class="post-preview">
-  <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-  <p class="post-meta">{{ post.date | date: "%B %d, %Y" }}{% if post.categories %} | Categories: {{ post.categories | join: ", " }}{% endif %}</p>
-  <div class="post-excerpt">
-    {{ post.content | strip_html | truncatewords: 30 }}
-  </div>
-  <a href="{{ post.url | relative_url }}" class="read-more">Read more &rarr;</a>
-</article>
-<hr>
-{% endfor %}
-
+<section class="section">
+  <p class="section-lead">Long form notes on computational geomechanics, applied AI experiments, and teaching reflections. New posts will appear at the top of the list.</p>
+  {% assign posts = site.posts | sort: 'date' | reverse %}
+  {% if posts.size > 0 %}
+  <ul class="post-list">
+    {% for post in posts %}
+    <li>
+      <article class="post-card">
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        {% if post.excerpt %}
+        <p>{{ post.excerpt | strip_html | truncatewords: 36 }}</p>
+        {% endif %}
+      </article>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No posts are published yet. Stay tuned.</p>
+  {% endif %}
+</section>

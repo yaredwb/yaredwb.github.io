@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Visual Math"
 date: 2014-04-11 22:39:14
 author: yaredwb

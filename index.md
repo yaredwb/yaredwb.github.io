@@ -1,65 +1,95 @@
 ---
 layout: default
-title: About Me
+title: About
+permalink: /
+page_class: home
+show_title: false
 ---
 
-## Yared W. Bekele
-
-Welcome to my website. Look around to learn more about me and my professional and personal interests. You will find my resume, a portfolio of my professional and hobby research activities, teaching and supervision assignments I have undertaken and blog posts where I write about topics that are of interest to me.
-
-A little bit personal info about me: I was born and raised in Addis Ababa, Ethiopia. After studying my BSc in Civil Engineering back home, I moved to Norway to pursue my graduate studies. I have been living, studying and working in Norway since then.
-
-<div class="cv-button">
-  <a href="{{ '/resume.html' | relative_url }}" class="btn-cv">View my CV</a>
-</div>
-
-<div class="subtitle-section">
-  <h3>Computational Geomechanics</h3>
-  <h3>Computational Poromechanics</h3>
-  <h3>Research</h3>
-  <h3>Teaching and Supervision</h3>
-</div>
-
-## Interests
-
-<div class="interests-grid">
-  <div class="interest-card">
-    <div class="interest-icon">
-      <img src="/media/2014/03/science.png" alt="Numerical Modeling" />
-    </div>
-    <h4>Numerical Modeling</h4>
-    <p>Applying advanced numerical methods in various application areas in computational science and engineering, mainly in porous media mechanics</p>
-  </div>
-
-  <div class="interest-card">
-    <div class="interest-icon">
-      <img src="/media/2014/03/programming.png" alt="Programming" />
-    </div>
-    <h4>Programming</h4>
-    <p>Developing codes for professional research and hobby projects mainly based on Python and C++</p>
-  </div>
-
-  <div class="interest-card">
-    <div class="interest-icon">
-      <img src="/media/2014/03/book.png" alt="Academics" />
-    </div>
-    <h4>Academics</h4>
-    <p>Teaching and supervision. Giving lectures, particularly on computational modeling courses, and supervising/co-supervising undergraduate and graduate students</p>
-  </div>
-
-  <div class="interest-card">
-    <div class="interest-icon">
-      <img src="/media/2014/03/robot.png" alt="Machine Learning and AI" />
-    </div>
-    <h4>Machine Learning and AI</h4>
-    <p>Development of machine learning models and generative AI assistants for various practical problems in geomechanics, e.g. landslide risk assessment</p>
-  </div>
-
-  <div class="interest-card">
-    <div class="interest-icon">
-      <img src="/media/2014/03/technology.png" alt="Data Analysis and Visualization" />
-    </div>
-    <h4>Data Analysis and Visualization</h4>
-    <p>Applying modern data analysis and visualisation tools and methods to engineering data for a better insight and content creation</p>
+<div class="hero">
+  <p class="hero-eyebrow">Computational geomechanics and applied AI</p>
+  <h1 class="hero-title">Hi, I am Yared W. Bekele.</h1>
+  <p class="hero-summary">I am a research scientist based in Trondheim, working at the intersection of geomechanics, numerical modelling, and data driven tools. I build and apply simulation software, teach computational methods, and collaborate with industry on complex soil and rock engineering problems.</p>
+  <div class="hero-actions">
+    <a class="button" href="{{ '/resume/' | relative_url }}">View resume</a>
+    <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore research</a>
   </div>
 </div>
+
+<section class="section">
+  <h2 class="section-title">What I focus on</h2>
+  <p class="section-lead">My work blends rigorous mechanics with software craftsmanship so that difficult geotechnical questions can be explored with confidence.</p>
+  <div class="card-grid">
+    <article class="card">
+      <h3>Numerical modelling</h3>
+      <p>Developing finite element and finite difference models for coupled hydro mechanical processes, with a focus on porous media challenges.</p>
+    </article>
+    <article class="card">
+      <h3>Software and automation</h3>
+      <p>Designing research codes, streamlining engineering workflows, and bringing modern programming practices into geotechnical projects.</p>
+    </article>
+    <article class="card">
+      <h3>Applied AI</h3>
+      <p>Prototyping assistants and machine learning models that augment simulations and decision making, from landslide risk tools to data curation.</p>
+    </article>
+    <article class="card">
+      <h3>Teaching and mentorship</h3>
+      <p>Guiding students and teams in computational mechanics courses, applied programming, and thesis projects grounded in real world problems.</p>
+    </article>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Recent writing</h2>
+  <p class="section-lead">Notes from research, teaching, and experiments with new technology.
+  </p>
+  {% assign recent_posts = site.posts | sort: 'date' | reverse %}
+  {% if recent_posts.size > 0 %}
+  <ul class="post-list">
+    {% for post in recent_posts limit: 3 %}
+    <li>
+      <article class="post-card">
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        {% if post.excerpt %}
+        <p>{{ post.excerpt | strip_html | truncatewords: 32 }}</p>
+        {% endif %}
+      </article>
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="section-cta"><a class="text-link" href="{{ '/blog/' | relative_url }}">Browse all posts</a></p>
+  {% else %}
+  <p>No posts yet. New writing will appear here soon.</p>
+  {% endif %}
+</section>
+
+<section class="section">
+  <h2 class="section-title">Highlights</h2>
+  <div class="card-grid">
+    <article class="card">
+      <h3>Selected publications</h3>
+      <ul>
+        <li>Mixed isogeometric analysis for poroelastic media (2022)</li>
+        <li>Physics informed deep learning for consolidation (2020)</li>
+        <li>Isogeometric analysis of coupled porous media processes (PhD)</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Projects and tools</h3>
+      <ul>
+        <li>Streamlit applications for consolidation studies and terrain analysis</li>
+        <li>GeoSim.AI assistants for landslide hazard workflows</li>
+        <li>Open source C++ implementations of porous media solvers</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Teaching and outreach</h3>
+      <ul>
+        <li>Advanced computational methods in geotechnical engineering</li>
+        <li>Graduate seminars on constitutive modelling and simulation</li>
+        <li>Supervision of MSc and PhD projects in soil mechanics</li>
+      </ul>
+    </article>
+  </div>
+</section>

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Fractals, Nature and Design"
 date: 2014-03-22 10:45:32
 author: yaredwb

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Interesting Word Trends Over Time by Google"
 date: 2014-03-20 14:24:42
 author: yaredwb

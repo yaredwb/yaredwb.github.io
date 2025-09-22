@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Today's Top Techs We Will Laugh at Tomorrow"
 date: 2014-05-10 23:23:33
 author: yaredwb

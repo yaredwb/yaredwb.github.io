@@ -1,20 +1,38 @@
 title: Yared W. Bekele, PhD
-description: Computational Geomechanics
+description: Computational geomechanics, numerical modelling, and applied AI
 baseurl: ""
 url: "https://yaredwb.github.io"
 
-# Build settings
 markdown: kramdown
 highlighter: rouge
+permalink: pretty
 plugins:
   - jekyll-feed
   - jekyll-sitemap
 
-# Pagination
+nav:
+  - title: About
+    url: /
+  - title: Resume
+    url: /resume/
+  - title: Research
+    url: /research/
+  - title: Teaching
+    url: /teaching/
+  - title: Writing
+    url: /blog/
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+      permalink: /blog/:title/
+
 paginate: 5
 paginate_path: "/page:num/"
 
-# Exclude files from processing
 exclude:
   - migrate_wordpress.py
   - yaredwbekelephd.WordPress.2025-06-04.xml

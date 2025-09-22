@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Counterintuitive Math"
 date: 2015-10-31 21:39:39
 author: yaredwb

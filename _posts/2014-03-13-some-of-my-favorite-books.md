@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Some of My Favorite Books"
 date: 2014-03-13 14:52:11
 author: yaredwb

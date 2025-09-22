@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "The Pleasure of Reading Richard Feynman's Life"
 date: 2015-04-17 21:11:34
 author: yaredwb

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Mysteries Hidden in π"
 date: 2014-12-30 11:48:54
 author: yaredwb

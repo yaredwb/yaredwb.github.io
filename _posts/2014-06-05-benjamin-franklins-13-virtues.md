@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Benjamin Franklin's 13 Virtues"
 date: 2014-06-05 10:16:18
 author: yaredwb

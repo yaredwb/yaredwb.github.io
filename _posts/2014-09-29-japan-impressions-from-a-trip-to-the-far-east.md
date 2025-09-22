@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Japan: Impressions from a Trip to the Far East"
 date: 2014-09-29 17:58:08
 author: yaredwb

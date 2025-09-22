@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "The Law of Conservation of Problems"
 date: 2015-06-24 20:29:21
 author: yaredwb

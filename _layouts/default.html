@@ -1,81 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
 
-    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-    <link rel="canonical" href="{{ page.url | absolute_url }}">
-    <meta property="og:title" content="{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}">
-    <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ page.url | absolute_url }}">
-    <meta name="twitter:card" content="summary">
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <meta property="og:title" content="{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}">
+  <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta name="twitter:card" content="summary_large_image">
 
-    <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}">
+  <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
 </head>
-<body>
-    <a class="skip-link" href="#content">Skip to content</a>
-    <header class="site-header">
-        <div class="container header-inner">
-            <div class="branding">
-                <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-                <p class="site-tagline">{{ site.description }}</p>
-            </div>
-            <nav class="site-nav" aria-label="Primary">
-                <ul>
-                    <li>
-                        <a href="{{ '/' | relative_url }}"
-                           class="{% if page.url == '/' or page.url == '/index.html' %}active{% endif %}"
-                           {% if page.url == '/' or page.url == '/index.html' %}aria-current="page"{% endif %}>About</a>
-                    </li>
-                    <li>
-                        <a href="{{ '/resume.html' | relative_url }}"
-                           class="{% if page.url == '/resume.html' %}active{% endif %}"
-                           {% if page.url == '/resume.html' %}aria-current="page"{% endif %}>Resume</a>
-                    </li>
-                    <li>
-                        <a href="{{ '/research.html' | relative_url }}"
-                           class="{% if page.url == '/research.html' %}active{% endif %}"
-                           {% if page.url == '/research.html' %}aria-current="page"{% endif %}>Research</a>
-                    </li>
-                    <li>
-                        <a href="{{ '/teaching.html' | relative_url }}"
-                           class="{% if page.url == '/teaching.html' %}active{% endif %}"
-                           {% if page.url == '/teaching.html' %}aria-current="page"{% endif %}>Teaching</a>
-                    </li>
-                    <li>
-                        <a href="{{ '/blog.html' | relative_url }}"
-                           class="{% if page.url == '/blog.html' or page.collection == 'posts' %}active{% endif %}"
-                           {% if page.url == '/blog.html' or page.collection == 'posts' %}aria-current="page"{% endif %}>Blog</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    
+<body class="{% if page.page_class %}{{ page.page_class }}{% endif %}">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header" role="banner">
     <div class="container">
-        <main id="content" tabindex="-1">
-            {% if page.title and page.layout != 'home' %}
-            <article class="post">
-                <h1>{{ page.title }}</h1>
-                {% if page.date %}
-                <p class="post-meta">{{ page.date | date: "%B %d, %Y" }}{% if page.author %} by {{ page.author }}{% endif %}{% if page.categories %} | Categories: {{ page.categories | join: ", " }}{% endif %}</p>
-                {% endif %}
-                {{ content }}
-            </article>
-            {% else %}
-            {{ content }}
+      <div class="site-brand">
+        <a class="brand-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+        {% if site.description %}
+        <p class="brand-tagline">{{ site.description }}</p>
+        {% endif %}
+      </div>
+      {% if site.nav %}
+      <nav class="site-nav" aria-label="Primary">
+        <ul>
+          {% for item in site.nav %}
+            {% assign nav_url = item.url | relative_url %}
+            {% assign is_active = false %}
+            {% if page.url == nav_url %}
+              {% assign is_active = true %}
+            {% elsif page.collection == 'posts' and item.url == '/blog/' %}
+              {% assign is_active = true %}
             {% endif %}
-        </main>
+            <li>
+              <a href="{{ nav_url }}"{% if is_active %} class="is-active" aria-current="page"{% endif %}>{{ item.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+      {% endif %}
     </div>
-    
-    <footer class="site-footer">
-        <div class="container">
-            <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Built with Jekyll & GitHub Pages.</p>
-        </div>
-    </footer>
+  </header>
+
+  <main id="content" class="site-content">
+    <div class="container">
+      {% if page.title and page.layout != 'post' and page.show_title != false %}
+      <header class="page-header">
+        <h1>{{ page.title }}</h1>
+        {% if page.date %}
+          <p class="page-meta">{{ page.date | date: '%B %d, %Y' }}{% if page.author %} · {{ page.author }}{% endif %}</p>
+        {% endif %}
+      </header>
+      {% endif %}
+
+      {{ content }}
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.</p>
+      <p><a href="{{ '/blog/' | relative_url }}">Recent writing</a> · <a href="{{ '/research/' | relative_url }}">Research</a> · <a href="{{ '/teaching/' | relative_url }}">Teaching</a></p>
+    </div>
+  </footer>
 </body>
 </html>

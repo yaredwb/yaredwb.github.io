@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Einstein's Riddle"
 date: 2014-07-07 14:54:28
 author: yaredwb
