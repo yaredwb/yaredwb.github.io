@@ -1,4 +1,4 @@
----
+﻿---
 layout: post
 title: "Benjamin Franklin's 13 Virtues"
 date: 2014-06-05 10:16:18
@@ -6,7 +6,7 @@ author: yaredwb
 categories: ["Books"]
 ---
 
-After recently reading [The Autobiography of Benjamin Franklin](http://www.amazon.com/Autobiography-Benjamin-Franklin-Thrift-Editions/dp/0486290735), I wanted to share something that made him one of the most notable people that walked on our earth. He came up with his famous 13 virtues in what he called "a bold and arduous project of arriving at moral perfection." The virtues and their precepts he proposed and followed seem quite ordinary at first glance. His secret to achieving all the virtues he desired was "not to distract his attention by attempting the whole at once, but to fix one of them at a time" and proceed to the next. Here are the 13 virtues and their meanings in his own words:
+After recently reading [The Autobiography of Benjamin Franklin](http://www.amazon.com/Autobiography-Benjamin-Franklin-Thrift-Editions/dp/0486290735), I wanted to share something that made him one of the most notable people that walked on our earth. He came up with his famous 13 virtues in what he called "a bold and arduous project of arriving at moral perfection." The virtues and their precepts he proposed and followedÂ seem quite ordinary at first glance. His secret to achieving all the virtues he desired was "not to distract his attention by attempting the whole at once, but to fix one of them at a time" and proceed to the next. Here are the 13 virtues and their meanings in his own words:
 
 	- **Temperance**: "Eat not to dullness; drink not to elevation."
 
@@ -35,3 +35,4 @@ After recently reading [The Autobiography of Benjamin Franklin](http://www.amazo
 	- **Humility**: "Imitate Jesus and Socrates."
 
 And as is with all, take what you will!
+

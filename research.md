@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 title: Research
 permalink: /research/
@@ -31,3 +31,4 @@ permalink: /research/
 - **Geez Analyzer:** Python utilities for text analysis in Ethiopian languages with focus on mechanics inspired tooling.
 
 For more details visit my [GitHub profile](https://github.com/yaredwb).
+

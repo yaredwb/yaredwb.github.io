@@ -1,4 +1,4 @@
-## Personal site
+﻿## Personal site
 
 Static site for [yaredwb.github.io](https://yaredwb.github.io/), powered by Jekyll.
 
@@ -32,3 +32,4 @@ Static site for [yaredwb.github.io](https://yaredwb.github.io/), powered by Jeky
 - Use Markdown for regular content; short HTML snippets are supported when needed.
 - Images should live in the media/ folder and be referenced with absolute paths such as /media/example.jpg.
 - Pages use pretty URLs (/resume/, /research/, etc.), so prefer linking with those paths.
+

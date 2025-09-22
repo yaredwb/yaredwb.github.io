@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+  <title>{% if page.title %}{{ page.title }} Â· {% endif %}{{ site.title }}</title>
 
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
-  <meta property="og:title" content="{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}">
+  <meta property="og:title" content="{% if page.title %}{{ page.title }} Â· {% endif %}{{ site.title }}">
   <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
@@ -53,7 +53,7 @@
       <header class="page-header">
         <h1>{{ page.title }}</h1>
         {% if page.date %}
-          <p class="page-meta">{{ page.date | date: '%B %d, %Y' }}{% if page.author %} · {{ page.author }}{% endif %}</p>
+          <p class="page-meta">{{ page.date | date: '%B %d, %Y' }}{% if page.author %} Â· {{ page.author }}{% endif %}</p>
         {% endif %}
       </header>
       {% endif %}
@@ -65,8 +65,9 @@
   <footer class="site-footer" role="contentinfo">
     <div class="container">
       <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.</p>
-      <p><a href="{{ '/blog/' | relative_url }}">Recent writing</a> · <a href="{{ '/research/' | relative_url }}">Research</a> · <a href="{{ '/teaching/' | relative_url }}">Teaching</a></p>
+      <p><a href="{{ '/blog/' | relative_url }}">Recent writing</a> Â· <a href="{{ '/research/' | relative_url }}">Research</a> Â· <a href="{{ '/teaching/' | relative_url }}">Teaching</a></p>
     </div>
   </footer>
 </body>
 </html>
+

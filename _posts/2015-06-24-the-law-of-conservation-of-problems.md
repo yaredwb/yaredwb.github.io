@@ -1,4 +1,4 @@
----
+﻿---
 layout: post
 title: "The Law of Conservation of Problems"
 date: 2015-06-24 20:29:21
@@ -17,3 +17,4 @@ https://www.youtube.com/watch?v=sDdhA_qCfYw
 Whatever we do, problems of all kind, old or new, will always&nbsp;be there.&nbsp;Regardless of what we become due to our societal upbringing, we are curious beings&nbsp;by nature and we always look for problems to solve and fix things that are not broken. It is almost as if we need problems to keep going forward; we will be bored otherwise. :-)
 
 Header image credit: https://www.youtube.com/watch?v=esZAzT2dEFk
+

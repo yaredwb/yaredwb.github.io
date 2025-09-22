@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 title: Teaching
 permalink: /teaching/
@@ -23,3 +23,4 @@ permalink: /teaching/
 - Industry workshops that translate research code into practical training material.
 
 More structured notes and teaching materials will be added here as they are published.
+

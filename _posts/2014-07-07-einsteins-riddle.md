@@ -1,4 +1,4 @@
----
+﻿---
 layout: post
 title: "Einstein's Riddle"
 date: 2014-07-07 14:54:28
@@ -49,3 +49,4 @@ The question is: WHO OWNS THE FISH?
 Try and solve that without cheating. :-)
 
 Header image credit: http://mentalfloss.com/article/82855/can-you-solve-einsteins-riddle
+

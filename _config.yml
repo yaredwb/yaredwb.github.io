@@ -1,7 +1,9 @@
-title: Yared W. Bekele, PhD
+﻿title: Yared W. Bekele, PhD
 description: Computational geomechanics, numerical modelling, and applied AI
 baseurl: ""
 url: "https://yaredwb.github.io"
+
+theme: null
 
 markdown: kramdown
 highlighter: rouge

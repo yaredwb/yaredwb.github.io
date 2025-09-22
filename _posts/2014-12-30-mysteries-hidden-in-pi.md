@@ -1,6 +1,6 @@
----
+﻿---
 layout: post
-title: "Mysteries Hidden in π"
+title: "Mysteries Hidden in Ï€"
 date: 2014-12-30 11:48:54
 author: yaredwb
 categories: ["Mathematics"]
@@ -10,7 +10,7 @@ The ever increasing power of computers has enabled mathematicians to calculate $
 
 The form of $latex \pi$ that is particularly interesting to many is its&nbsp;binary form. Binary is the fundamental language of computers where everything is represented by a bunch of 0s and 1s. In binary form, the&nbsp;$latex \pi$ we know as
 ```
-3.1415926535897932384626433832795028841971693993751…
+3.1415926535897932384626433832795028841971693993751â€¦
 ```
 would look something like
 ```
@@ -32,3 +32,4 @@ The result somewhat supports the hypothesis that the digits of $latex \pi$ are r
 I found my birthday and my phone number somewhere in the&nbsp;digits of $latex \pi$. See if you can find yours [here](http://www.exploratorium.edu/pi/pi_archive/Pi10-6.html)&nbsp;(1 million digits) or [here](http://pi.karmona.com/) (10 million digits). Go [here](http://www.angio.net/pi/piquery) if you want to find out the exact locations and how many times those numbers appear within the first 200 million digits of $latex \pi$.
 
 Header image credit: https://science.howstuffworks.com/math-concepts/pi.htm
+

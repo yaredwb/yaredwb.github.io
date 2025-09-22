@@ -1,4 +1,4 @@
----
+﻿---
 layout: post
 title: "Japan: Impressions from a Trip to the Far East"
 date: 2014-09-29 17:58:08
@@ -6,7 +6,7 @@ author: yaredwb
 categories: ["Places", "Technology"]
 ---
 
-I always wanted to visit Japan. And no, that is not a cliché - I really wanted to. &nbsp;Growing up, there were many reasons that shaped my impression of Japan. Watching the TV series [Oshin](http://www.imdb.com/title/tt0367380/) as a kid, for example, and observing the people, their houses, and how they did everything created my first image of the country and its culture. I also remember the portrait of a Japanese woman, an advertisement of Fuji Film, which used to hang in our home. I remember reading bits and pieces of Dr. Kebede Michael's 'ጃፓን እንደምን ሰለጠነች?'. A number of movies also contributed to what I thought of Japan. With these in mind, when the opportunity to travel there came up, I made sure that I did what was necessary&nbsp;to make it happen. It finally happened and I was lucky to visit two of Japan's beautiful cities - Kyoto and Tokyo. Here are my impressions of this amazing country.
+I always wanted to visit Japan. And no, that is not a clichÃ© - I really wanted to. &nbsp;Growing up, there were many reasons that shaped my impression of Japan. Watching the TV series [Oshin](http://www.imdb.com/title/tt0367380/) as a kid, for example, and observing the people, their houses, and how they did everything created my first image of the country and its culture. I also remember the portrait of a Japanese woman, an advertisement of Fuji Film, which used to hang in our home. I remember reading bits and pieces of Dr. Kebede Michael's 'áŒƒá“áŠ• áŠ¥áŠ•á‹°áˆáŠ• áˆ°áˆˆáŒ áŠá‰½?'. A number of movies also contributed to what I thought of Japan. With these in mind, when the opportunity to travel there came up, I made sure that I did what was necessary&nbsp;to make it happen. It finally happened and I was lucky to visit two of Japan's beautiful cities - Kyoto and Tokyo. Here are my impressions of this amazing country.
 
 **Incredibly Polite People**
 
@@ -78,3 +78,4 @@ I will finish this post by sharing&nbsp;my must-see places in Kyoto and Tokyo.
 **Kyoto**: Kinkakuji Temple, Fushimi Inari Shrine, Nijo Castle, Kyoto Imperial Palace
 
 **Tokyo**: Hachiko Dog Statue at Shibuya, Miraikan Museum, Tokyo Sky Tree, &nbsp;Asakusa, Akihabara Electric Town, Ginza District
+

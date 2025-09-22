@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 title: Writing
 permalink: /blog/
@@ -25,3 +25,4 @@ permalink: /blog/
   <p>No posts are published yet. Stay tuned.</p>
   {% endif %}
 </section>
+

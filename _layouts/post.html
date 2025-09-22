@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 ---
 
@@ -9,7 +9,7 @@ layout: default
     {% if page.author or page.categories %}
     <p class="post-meta-inline">
       {% if page.author %}By {{ page.author }}{% endif %}
-      {% if page.author and page.categories %} � {% endif %}
+      {% if page.author and page.categories %} · {% endif %}
       {% if page.categories %}{{ page.categories | uniq | join: ', ' }}{% endif %}
     </p>
     {% endif %}
@@ -22,3 +22,4 @@ layout: default
     <a href="{{ '/blog/' | relative_url }}">Back to all posts</a>
   </footer>
 </article>
+

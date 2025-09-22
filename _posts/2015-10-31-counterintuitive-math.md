@@ -1,4 +1,4 @@
----
+﻿---
 layout: post
 title: "Counterintuitive Math"
 date: 2015-10-31 21:39:39
@@ -54,3 +54,4 @@ Things get a bit spooky when infinities are involved. This sum has, surprisingly
 If you are given a set of numerical data about some naturally occurring item or event (e.g. depths of lakes), how many of the numbers would you guess have 1 as a&nbsp;first digit? How many with 2? There are 9 possibilities. It appears that all numbers from 1 to 9 have the same chance of being the first digit. That's not usually the case, though. [Frank Benford](https://en.wikipedia.org/wiki/Frank_Benford) has worked out a distribution that is almost always true for numbers in&nbsp;nature or related to nature. He stated that the number '1' appears as the first digit about 30% of the time, '2' about 17% of the time and decreasing for the next digits, with '9' having the least chance of about 5%. This law is actually used to detect fraud in financial markets. Checkout this video.
 
 [embed]https://www.youtube.com/watch?v=O8N26edbqLM[/embed]
+

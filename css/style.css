@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --color-page: #f5f7fb;
   --color-surface: #ffffff;
   --color-border: #e2e8f0;
@@ -494,3 +494,4 @@ pre {
     justify-content: center;
   }
 }
+

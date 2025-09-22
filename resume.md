@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 title: Resume
 permalink: /resume/
@@ -54,3 +54,4 @@ Thesis: Structural Analysis and Design of a Multipurpose Building. Graduated wit
 - Built GeoSim.AI, a set of AI assistants supporting geomechanics simulations and landslide risk assessments.  
 - Delivered Streamlit applications and open source codes that translate research into practical tools.  
 - Supervised and mentored MSc and PhD candidates, bringing advanced computation into applied projects.
+

@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 title: About
 permalink: /
@@ -93,3 +93,4 @@ show_title: false
     </article>
   </div>
 </section>
+
