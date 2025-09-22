@@ -7,14 +7,31 @@
 
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
+  
+  <!-- Open Graph -->
   <meta property="og:title" content="{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}">
   <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:site_name" content="{{ site.title }}">
+  
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}">
+  <meta name="twitter:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
 
+  <!-- Preconnect to external resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}">
   <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
+  
+  <!-- Theme color for mobile browsers -->
+  <meta name="theme-color" content="#3182ce">
+  <meta name="msapplication-TileColor" content="#3182ce">
+</head>
 </head>
 <body class="{% if page.page_class %}{{ page.page_class }}{% endif %}">
   <a class="skip-link" href="#content">Skip to content</a>
@@ -64,10 +81,31 @@
 
   <footer class="site-footer" role="contentinfo">
     <div class="container">
-      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.</p>
-      <p><a href="{{ '/blog/' | relative_url }}">Recent writing</a> · <a href="{{ '/research/' | relative_url }}">Research</a> · <a href="{{ '/teaching/' | relative_url }}">Teaching</a></p>
+      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Built with dedication to computational excellence.</p>
+      <p>
+        <a href="{{ '/blog/' | relative_url }}">Latest Writing</a> · 
+        <a href="{{ '/research/' | relative_url }}">Research</a> · 
+        <a href="{{ '/teaching/' | relative_url }}">Teaching</a> · 
+        <a href="{{ '/resume/' | relative_url }}">Resume</a>
+      </p>
     </div>
   </footer>
+
+  <!-- Performance optimization -->
+  <script>
+    // Improve loading performance
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(function() {
+        // Lazy load non-critical resources
+        const links = document.querySelectorAll('a[href^="http"]');
+        links.forEach(link => {
+          if (!link.getAttribute('target')) {
+            link.setAttribute('rel', 'noopener noreferrer');
+          }
+        });
+      });
+    }
+  </script>
 </body>
 </html>
 

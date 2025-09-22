@@ -7,41 +7,41 @@ show_title: false
 ---
 
 <div class="hero">
-  <p class="hero-eyebrow">Computational geomechanics and applied AI</p>
+  <p class="hero-eyebrow">Computational Geomechanics & Applied AI</p>
   <h1 class="hero-title">Hi, I am Yared W. Bekele.</h1>
-  <p class="hero-summary">I am a research scientist based in Trondheim, working at the intersection of geomechanics, numerical modelling, and data driven tools. I build and apply simulation software, teach computational methods, and collaborate with industry on complex soil and rock engineering problems.</p>
+  <p class="hero-summary">I am a research scientist based in Trondheim, working at the intersection of geomechanics, numerical modelling, and data-driven tools. I build and apply simulation software, teach computational methods, and collaborate with industry on complex soil and rock engineering problems.</p>
   <div class="hero-actions">
-    <a class="button" href="{{ '/resume/' | relative_url }}">View resume</a>
-    <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore research</a>
+    <a class="button" href="{{ '/resume/' | relative_url }}">View Resume</a>
+    <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore Research</a>
   </div>
 </div>
 
 <section class="section">
-  <h2 class="section-title">What I focus on</h2>
-  <p class="section-lead">My work blends rigorous mechanics with software craftsmanship so that difficult geotechnical questions can be explored with confidence.</p>
+  <h2 class="section-title">What I Focus On</h2>
+  <p class="section-lead">My work blends rigorous mechanics with software craftsmanship, enabling confident exploration of complex geotechnical questions through innovative computational approaches.</p>
   <div class="card-grid">
     <article class="card">
-      <h3>Numerical modelling</h3>
-      <p>Developing finite element and finite difference models for coupled hydro mechanical processes, with a focus on porous media challenges.</p>
+      <h3>Numerical Modelling</h3>
+      <p>Developing finite element and finite difference models for coupled hydro-mechanical processes, with specialized focus on porous media challenges and advanced constitutive modeling.</p>
     </article>
     <article class="card">
-      <h3>Software and automation</h3>
-      <p>Designing research codes, streamlining engineering workflows, and bringing modern programming practices into geotechnical projects.</p>
+      <h3>Software & Automation</h3>
+      <p>Designing research codes, streamlining engineering workflows, and bringing modern programming practices into geotechnical projects with emphasis on scalability and maintainability.</p>
     </article>
     <article class="card">
       <h3>Applied AI</h3>
-      <p>Prototyping assistants and machine learning models that augment simulations and decision making, from landslide risk tools to data curation.</p>
+      <p>Prototyping intelligent assistants and machine learning models that augment simulations and decision-making, from landslide risk assessment tools to automated data curation systems.</p>
     </article>
     <article class="card">
-      <h3>Teaching and mentorship</h3>
-      <p>Guiding students and teams in computational mechanics courses, applied programming, and thesis projects grounded in real world problems.</p>
+      <h3>Teaching & Mentorship</h3>
+      <p>Guiding students and teams in computational mechanics courses, applied programming methodologies, and thesis projects grounded in real-world engineering problems.</p>
     </article>
   </div>
 </section>
 
 <section class="section">
-  <h2 class="section-title">Recent writing</h2>
-  <p class="section-lead">Notes from research, teaching, and experiments with new technology.
+  <h2 class="section-title">Recent Writing</h2>
+  <p class="section-lead">Notes from research, teaching experiences, and experiments with emerging technologies in computational engineering.
   </p>
   {% assign recent_posts = site.posts | sort: 'date' | reverse %}
   {% if recent_posts.size > 0 %}
@@ -58,36 +58,36 @@ show_title: false
     </li>
     {% endfor %}
   </ul>
-  <p class="section-cta"><a class="text-link" href="{{ '/blog/' | relative_url }}">Browse all posts</a></p>
+  <p class="section-cta"><a class="text-link" href="{{ '/blog/' | relative_url }}">Browse All Posts</a></p>
   {% else %}
   <p>No posts yet. New writing will appear here soon.</p>
   {% endif %}
 </section>
 
 <section class="section">
-  <h2 class="section-title">Highlights</h2>
+  <h2 class="section-title">Research Highlights</h2>
   <div class="card-grid">
     <article class="card">
-      <h3>Selected publications</h3>
+      <h3>Selected Publications</h3>
       <ul>
         <li>Mixed isogeometric analysis for poroelastic media (2022)</li>
-        <li>Physics informed deep learning for consolidation (2020)</li>
+        <li>Physics-informed deep learning for consolidation (2020)</li>
         <li>Isogeometric analysis of coupled porous media processes (PhD)</li>
       </ul>
     </article>
     <article class="card">
-      <h3>Projects and tools</h3>
+      <h3>Projects & Tools</h3>
       <ul>
         <li>Streamlit applications for consolidation studies and terrain analysis</li>
         <li>GeoSim.AI assistants for landslide hazard workflows</li>
-        <li>Open source C++ implementations of porous media solvers</li>
+        <li>Open-source C++ implementations of porous media solvers</li>
       </ul>
     </article>
     <article class="card">
-      <h3>Teaching and outreach</h3>
+      <h3>Teaching & Outreach</h3>
       <ul>
         <li>Advanced computational methods in geotechnical engineering</li>
-        <li>Graduate seminars on constitutive modelling and simulation</li>
+        <li>Graduate seminars on constitutive modeling and simulation</li>
         <li>Supervision of MSc and PhD projects in soil mechanics</li>
       </ul>
     </article>

@@ -5,7 +5,7 @@ permalink: /blog/
 ---
 
 <section class="section">
-  <p class="section-lead">Long form notes on computational geomechanics, applied AI experiments, and teaching reflections. New posts will appear at the top of the list.</p>
+  <p class="section-lead">Long-form notes on computational geomechanics, applied AI experiments, and teaching reflections. New posts will appear at the top of the list.</p>
   {% assign posts = site.posts | sort: 'date' | reverse %}
   {% if posts.size > 0 %}
   <ul class="post-list">
@@ -17,12 +17,20 @@ permalink: /blog/
         {% if post.excerpt %}
         <p>{{ post.excerpt | strip_html | truncatewords: 36 }}</p>
         {% endif %}
+        {% if post.categories %}
+        <p class="post-card-meta">
+          <small>{{ post.categories | join: ', ' }}</small>
+        </p>
+        {% endif %}
       </article>
     </li>
     {% endfor %}
   </ul>
   {% else %}
-  <p>No posts are published yet. Stay tuned.</p>
+  <div class="empty-state">
+    <h3>No Posts Yet</h3>
+    <p>New content is being prepared. Check back soon for insights on computational methods, research findings, and engineering innovations.</p>
+  </div>
   {% endif %}
 </section>
 
