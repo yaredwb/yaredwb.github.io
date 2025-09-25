@@ -15,7 +15,7 @@ plugins:
 nav:
   - title: About
     url: /
-  - title: Resume
+  - title: CV
     url: /resume/
   - title: Research
     url: /research/
