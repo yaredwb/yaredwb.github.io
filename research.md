@@ -6,9 +6,9 @@ permalink: /research/
 
 <section class="section">
 <div style="display: flex; justify-content: center;">
-    <div style="max-width: 700px; width: 100%;">
+    <div>
         <p class="section-lead" style="text-align: center;">
-            Research notes, project updates, and technical explorations in computational geomechanics, AI applications, and engineering innovation. New posts will appear at the top of the list.
+            Research notes, project updates, and technical explorations in computational geomechanics, AI applications, and engineering innovation.
         </p>
         {% assign research_posts = site.research | sort: 'date' | reverse %}
         {% if research_posts.size > 0 %}

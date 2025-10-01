@@ -6,8 +6,8 @@ permalink: /teaching/
 
 <section class="section">
 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-    <p class="section-lead" style="text-align: center; max-width: 700px;">
-        Lecture notes, code examples, and educational materials on computational methods, geomechanics, and numerical modeling. New teaching content will appear at the top of the list.
+    <p class="section-lead" style="text-align: center;">
+        Lecture notes, code examples, and educational materials on computational methods, geomechanics, and numerical modeling.
     </p>
     
     {% assign teaching_posts = site.teaching | sort: 'date' | reverse %}

@@ -6,8 +6,8 @@ permalink: /blog/
 
 <section class="section">
 <div style="display: flex; justify-content: center;">
-    <div style="max-width: 700px; width: 100%;">
-        <p class="section-lead" style="text-align: center;">Long-form notes on and reflections on various topics. New posts will appear at the top of the list.</p>
+    <div>
+        <p class="section-lead" style="text-align: center;">Long-form notes on and reflections on various topics.</p>
         {% assign posts = site.posts | sort: 'date' | reverse %}
         {% if posts.size > 0 %}
         <ul class="post-list" style="padding-left: 0;">
