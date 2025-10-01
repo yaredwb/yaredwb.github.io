@@ -718,7 +718,10 @@ article.post-article::before {
 }
 
 .post-content img {
-  margin: var(--spacing-xl) 0;
+  display: block;
+  margin: var(--spacing-lg) 0;
+  border: none;
+  box-shadow: none;
 }
 
 .post-content blockquote {
