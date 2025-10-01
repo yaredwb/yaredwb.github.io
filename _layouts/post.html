@@ -19,7 +19,13 @@ layout: default
   </div>
   <footer class="post-footer">
     <span>Thanks for reading.</span>
-    <a href="{{ '/blog/' | relative_url }}">Back to all posts</a>
+    {% if page.collection == 'research' %}
+      <a href="{{ '/research/' | relative_url }}">Back to all research posts</a>
+    {% elsif page.collection == 'teaching' %}
+      <a href="{{ '/teaching/' | relative_url }}">Back to all teaching posts</a>
+    {% else %}
+      <a href="{{ '/blog/' | relative_url }}">Back to all posts</a>
+    {% endif %}
   </footer>
 </article>
 
