@@ -1469,16 +1469,9 @@ pre code {
 
 .resume-page .cv-certifications li {
   padding: var(--spacing-lg);
-  background: var(--color-surface);
   border-left: 3px solid var(--color-accent);
   border-radius: var(--radius-md);
   color: var(--color-text-secondary);
-  transition: all var(--transition-base);
-}
-
-.resume-page .cv-certifications li:hover {
-  transform: translateX(4px);
-  border-left-color: var(--color-success);
 }
 
 .resume-page .cv-certifications strong {
