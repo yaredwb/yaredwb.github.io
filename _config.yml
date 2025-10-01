@@ -16,6 +16,9 @@ collections:
   research:
     output: true
     permalink: /research/:title/
+  teaching:
+    output: true
+    permalink: /teaching/:title/
 
 nav:
   - title: About
@@ -39,6 +42,11 @@ defaults:
   - scope:
       path: ""
       type: "research"
+    values:
+      layout: post
+  - scope:
+      path: ""
+      type: "teaching"
     values:
       layout: post
 
