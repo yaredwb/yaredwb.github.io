@@ -72,7 +72,6 @@ body {
 img {
   max-width: 100%;
   height: auto;
-  border-radius: var(--radius-sm);
 }
 
 a {
@@ -719,8 +718,6 @@ article.post-article::before {
 }
 
 .post-content img {
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
   margin: var(--spacing-xl) 0;
 }
 

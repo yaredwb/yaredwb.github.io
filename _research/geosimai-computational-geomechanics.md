@@ -10,11 +10,11 @@ The ability to accomplish tasks via natural language instructions is one of the 
 
 ## Architecture of GeoSim.AI
 
-![GeoSimAI Architecture](//assets/figs/geosimai-architecture-v3.png)
+![GeoSimAI Architecture](/assets/figs/geosimai-architecture-v3.png)
 
 ## GeoSim.AI Interface
 
-![GeoSimAI Interface](//assets/figs/geosimai_chat_interface_011025.png)
+![GeoSimAI Interface](/assets/figs/geosimai_chat_interface_011025.png)
 
 ## Demos
 
