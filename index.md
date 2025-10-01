@@ -9,7 +9,7 @@ show_title: false
 <div class="hero">
   <p class="hero-eyebrow">Computational Geomechanics & Applied AI</p>
   <h1 class="hero-title">Hi, I am Yared W. Bekele.</h1>
-  <p class="hero-summary">I am a research scientist based in Trondheim, working at the intersection of geomechanics, numerical modelling, and data-driven tools. I build and apply simulation software, teach computational methods, and collaborate with industry on complex soil and rock engineering problems.</p>
+  <p class="hero-summary">I am a research scientist working at the intersection of computational geomechanics, machine learning and applied generarive AI. I build and apply simulation software, collaborate with industry on complex soil and rock engineering problems and teach computational methods in geotechnical engineering.</p>
   <div class="hero-actions">
     <a class="button" href="{{ '/resume/' | relative_url }}">View Resume</a>
     <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore Research</a>
@@ -21,15 +21,15 @@ show_title: false
   <p class="section-lead">My work blends rigorous mechanics with software craftsmanship, enabling confident exploration of complex geotechnical questions through innovative computational approaches.</p>
   <div class="card-grid">
     <article class="card">
-      <h3>Numerical Modelling</h3>
-      <p>Developing finite element and finite difference models for coupled hydro-mechanical processes, with specialized focus on porous media challenges and advanced constitutive modeling.</p>
+      <h3>Computational Modelling</h3>
+      <p>Applying advanced numerical methods in various application areas in computational science and engineering, mainly for coupled problems in geomechanics/poromechanics.</p>
     </article>
     <article class="card">
-      <h3>Software & Automation</h3>
+      <h3>Numerical Programming</h3>
       <p>Designing research codes, streamlining engineering workflows, and bringing modern programming practices into geotechnical projects with emphasis on scalability and maintainability.</p>
     </article>
     <article class="card">
-      <h3>Applied AI</h3>
+      <h3>Applied Generative AI</h3>
       <p>Prototyping intelligent assistants and machine learning models that augment simulations and decision-making, from landslide risk assessment tools to automated data curation systems.</p>
     </article>
     <article class="card">
@@ -62,35 +62,5 @@ show_title: false
   {% else %}
   <p>No posts yet. New writing will appear here soon.</p>
   {% endif %}
-</section>
-
-<section class="section">
-  <h2 class="section-title">Research Highlights</h2>
-  <div class="card-grid">
-    <article class="card">
-      <h3>Selected Publications</h3>
-      <ul>
-        <li>Mixed isogeometric analysis for poroelastic media (2022)</li>
-        <li>Physics-informed deep learning for consolidation (2020)</li>
-        <li>Isogeometric analysis of coupled porous media processes (PhD)</li>
-      </ul>
-    </article>
-    <article class="card">
-      <h3>Projects & Tools</h3>
-      <ul>
-        <li>Streamlit applications for consolidation studies and terrain analysis</li>
-        <li>GeoSim.AI assistants for landslide hazard workflows</li>
-        <li>Open-source C++ implementations of porous media solvers</li>
-      </ul>
-    </article>
-    <article class="card">
-      <h3>Teaching & Outreach</h3>
-      <ul>
-        <li>Advanced computational methods in geotechnical engineering</li>
-        <li>Graduate seminars on constitutive modeling and simulation</li>
-        <li>Supervision of MSc and PhD projects in soil mechanics</li>
-      </ul>
-    </article>
-  </div>
 </section>
 

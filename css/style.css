@@ -1281,6 +1281,39 @@ pre code {
   color: var(--color-text-secondary);
 }
 
+.resume-page .cv-social-links {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.resume-page .cv-social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-base);
+}
+
+.resume-page .cv-social-links a:hover {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.resume-page .cv-social-links svg {
+  width: 20px;
+  height: 20px;
+}
+
 .resume-page .cv-card-list--inline {
   display: flex;
   flex-wrap: wrap;
@@ -1420,6 +1453,31 @@ pre code {
 
 .resume-page .cv-card-stack .cv-card {
   border-left: 4px solid var(--color-success);
+}
+
+.resume-page .cv-certifications {
+  margin-top: var(--spacing-lg);
+}
+
+.resume-page .cv-certifications ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.resume-page .cv-certifications li {
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary);
+}
+
+.resume-page .cv-certifications li:last-child {
+  border-bottom: none;
+}
+
+.resume-page .cv-certifications strong {
+  color: var(--color-accent);
+  font-weight: 600;
 }
 
 .resume-page .cv-publications {
