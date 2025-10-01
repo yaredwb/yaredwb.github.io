@@ -63,5 +63,9 @@ exclude:
   - migrate_wordpress.py
   - yaredwbekelephd.WordPress.2025-06-04.xml
   - README.md
+  - README_NEW.md
   - Gemfile
   - Gemfile.lock
+  - "*.tmp"
+  - "*_preview.html"
+  - preview.html

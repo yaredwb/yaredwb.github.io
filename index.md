@@ -9,7 +9,7 @@ show_title: false
 <div class="hero">
   <p class="hero-eyebrow">Computational Geomechanics & Applied AI</p>
   <h1 class="hero-title">Hi, I am Yared W. Bekele.</h1>
-  <p class="hero-summary">I am a research scientist working at the intersection of computational geomechanics, machine learning and applied generarive AI. I build and apply simulation software, collaborate with industry on complex soil and rock engineering problems and teach computational methods in geotechnical engineering.</p>
+  <p class="hero-summary">I am a research scientist working at the intersection of computational geomechanics, machine learning and applied generative AI. I build and apply simulation software, collaborate with industry on complex soil and rock engineering problems and teach computational methods in geotechnical engineering.</p>
   <div class="hero-actions">
     <a class="button" href="{{ '/resume/' | relative_url }}">View Resume</a>
     <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore Research</a>
