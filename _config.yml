@@ -8,6 +8,12 @@ theme: null
 markdown: kramdown
 highlighter: rouge
 permalink: pretty
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  math_engine: mathjax
+
 plugins:
   - jekyll-feed
   - jekyll-sitemap

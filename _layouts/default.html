@@ -28,6 +28,22 @@
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}">
   <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
   
+  <!-- MathJax for LaTeX rendering -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+  
   <!-- Theme color for mobile browsers -->
   <meta name="theme-color" content="#3182ce">
   <meta name="msapplication-TileColor" content="#3182ce">

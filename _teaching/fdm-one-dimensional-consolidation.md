@@ -28,7 +28,7 @@ with $$ k $$ being the coefficient of permeability, $$ m_v $$ the coefficient of
 
 We will solve the consolidation problem over a 1D domain which is spatially discretized into $$ N $$ equally spaced units as shown in the figure below.
 
-![image](assets/figs/1D_spatial_disc.png){: .center-image }
+![image](/assets/figs/1D_spatial_disc.png){: .center-image }
 *Spatial discretization*
 
 The spatial discretization implies
@@ -43,7 +43,7 @@ $$
 t_n = n\Delta t
 $$
 
-![image](assets/figs/1D_temporal_disc.png){: .center-image }
+![image](/assets/figs/1D_temporal_disc.png){: .center-image }
 *Temporal discretization*
 
 The partial derivatives in the governing PDE can be approximated in various ways with respect to time and space. The most common approximations are discussed here.
@@ -82,7 +82,7 @@ $$
 
 An illustration of the explicit method is shown in the figure below, which is a so-called *stencil*.
 
-![Stencil for the explicit method](assets/figs/explicit_stencil.png){: .center-image }
+![Stencil for the explicit method](/assets/figs/explicit_stencil.png){: .center-image }
 *Stencil for the explicit method*
 
 The explicit method is known to be numerically stable and convergent for $$ \kappa \leq 1/2 $$. This implies that for a given spatial
@@ -110,7 +110,7 @@ $$
 
 The stencil for the implicit method is shown in the figure below. Let's assume that the pore pressure values at time $$ t_{n-1} $$ are known and we want to compute those at time $$ t_n $$. Unlike the explicit method, we cannot solve for $$ u_i^n $$ directly because this unknown is coupled with its neighboring unknowns in space $$ u_{i-1}^n $$ and $$ u_{i+1}^n. $$
 
-![Stencil for the implicit method](assets/figs/implicit_stencil.png){: .center-image }
+![Stencil for the implicit method](/assets/figs/implicit_stencil.png){: .center-image }
 *Stencil for the implicit method*
 
 Thus, the implicit method requires solving a system of equations at each time step. We will illustrate this for the simple case where $$ N=3 $$, i.e. a spatial discretization with 4 nodes. Let's assume that the values at the boundary nodes $$ z_0 $$ and $$ z_3 $$ are known from BCs. We can now use the implicit difference equation above to write the finite difference equations at the unknown nodes 1 and 2. This gives
@@ -230,7 +230,7 @@ $$
 
 The stencil for the Crank-Nicolson method is shown in the figure below.
 
-![Stencil for the Crank-Nocolson method](assets/figs/crank_nicolson_stencil.png){: .center-image }
+![Stencil for the Crank-Nocolson method](/assets/figs/crank_nicolson_stencil.png){: .center-image }
 *Stencil for the Crank-Nicolson method*
 
 Like the implicit method, the Crank-Nicolson method requires solving a system of equations at each time step since the unknown $$ u_i^{n+1} $$ is coupled with its neighboring unknowns $$ u_{i-1}^{n+1} $$ and $$ u_{i+1}^{n+1} $$. From the main difference equation above, we can write
@@ -285,7 +285,7 @@ for $$ i = 1,2,\cdots,N-1 $$. The error in the calculated pore pressure based on
 
 We will illustrate the three methods described earlier through an example. Consider a 1 m thick soil layer subjected to a surcharge loading of 50 kPa, see the figure below. The soil layer is drained both at the upper and lower boundaries i.e. the excess pore pressure can dissipate through both boundaries. The coefficient of consolidation of the soil is $$ 2 \times 10^{-6}~\mathrm{m^2/s} $$. For simplicity, we will ignore the initial hydrostatic pore pressure and focus only on the excess pore pressure.
 
-![Numerical example](assets/figs/numerical_example.png){: .center-image }
+![Numerical example](/assets/figs/numerical_example.png){: .center-image }
 *Numerical example*
 
 Let's first apply the explicit method to compute the excess pore pressure dissipation with time. We consider spatial discretizations with $$ N=10,~20,~40 $$ and 80. The time steps are then selected such that the stability criteria is satisfied. Dissipation of excess pore pressure with time is presented in terms of a dimensionless time $$ T $$, which is defined as
@@ -296,7 +296,7 @@ $$
 
 where $$ t $$ is the actual time and $$ H $$ is the length of the drainage path. For our example here, where dissipation is allowed at both boundaries, $$ H=0.5 $$ m. The results for the different discretizations are shown in the figure below.
 
-![Explicit result](assets/figs/explicit_results.png){: .center-image }
+![Explicit result](/assets/figs/explicit_results.png){: .center-image }
 *Results for the explicit method*
 
 For the results presented here, time steps are selected such that $$ \kappa \leq 1/2 $$. If this criteria is not satisfied for the explicit method, the numerical solution becomes unstable. To illustrate this consider a spatial discretization where $$ N=80 $$. This implies that $$ \Delta z = 1/80 = 0.0125 $$ m. Thus, the time step requirement is
@@ -307,10 +307,10 @@ $$
 
 The figure below shows oscillations in the computed pore pressure when $$ \Delta t = 50 $$ s is used. A major drawback of the explicit method is that, as the mesh size increases, the time step must decrease, making the analysis more computationally demanding.
 
-![Explicit oscillation](assets/figs/explicit_oscillation.png){: .center-image }
+![Explicit oscillation](/assets/figs/explicit_oscillation.png){: .center-image }
 *Oscillations when using the explicit method*
 
 The implicit and Crank-Nicolson schemes are numerically stable and large time steps can be used for various mesh sizes. The plots below show results from the implicit and Crank-Nicolson methods with large time steps than what the explicit method would allow for the mesh size used. The advantage of these methods is that they are numerically stable.
 
-![Implicit and Crank-Nicolson results](assets/figs/implicit_and_crank_nicolson_results.png){: .center-image }
+![Implicit and Crank-Nicolson results](/assets/figs/implicit_and_crank_nicolson_results.png){: .center-image }
 *Results for the implicit and Crank-Nicolson methods*
