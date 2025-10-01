@@ -5,7 +5,7 @@ permalink: /research/
 ---
 
 <section class="section">
-  <p class="section-lead" style="text-align: center;">Research notes, project updates, and technical explorations in computational geomechanics, AI applications, and engineering innovation.</p>
+  <p class="section-lead">Research notes, project updates, and technical explorations in computational geomechanics, AI applications, and engineering innovation.</p>
   
   {% assign research_posts = site.research | sort: 'date' | reverse %}
   {% if research_posts.size > 0 %}

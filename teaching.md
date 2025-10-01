@@ -5,7 +5,7 @@ permalink: /teaching/
 ---
 
 <section class="section">
-  <p class="section-lead" style="text-align: center;">Lecture notes, code examples, and educational materials on computational methods, geomechanics, and numerical modeling.</p>
+  <p class="section-lead">Lecture notes, code examples, and educational materials on computational methods, geomechanics, and numerical modeling.</p>
   
   {% assign teaching_posts = site.teaching | sort: 'date' | reverse %}
   {% if teaching_posts.size > 0 %}

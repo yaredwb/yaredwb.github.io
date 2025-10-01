@@ -5,7 +5,7 @@ permalink: /blog/
 ---
 
 <section class="section">
-  <p class="section-lead" style="text-align: center;">Long-form notes on and reflections on various topics.</p>
+  <p class="section-lead">Long-form notes on and reflections on various topics.</p>
   {% assign posts = site.posts | sort: 'date' | reverse %}
   {% if posts.size > 0 %}
   <ul class="post-list">
