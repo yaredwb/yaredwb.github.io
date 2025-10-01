@@ -12,6 +12,11 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
 
+collections:
+  research:
+    output: true
+    permalink: /research/:title/
+
 nav:
   - title: About
     url: /
@@ -31,6 +36,11 @@ defaults:
     values:
       layout: post
       permalink: /blog/:title/
+  - scope:
+      path: ""
+      type: "research"
+    values:
+      layout: post
 
 paginate: 5
 paginate_path: "/page:num/"
