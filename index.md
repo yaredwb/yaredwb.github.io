@@ -7,8 +7,10 @@ show_title: false
 ---
 
 <div class="hero">
-  <p class="hero-eyebrow">Geomechanics &middot; Software &middot; Applied AI</p>
-  <h1 class="hero-title">Hi, I'm Yared W. Bekele.</h1>
+  <div class="hero-logo">
+    <h1 class="hero-title">Yared W. Bekele</h1>
+    <p class="hero-tagline">Computational Geomechanics / Applied AI</p>
+  </div>
   <p class="hero-summary">
     I am a research scientist building computational pipelines that combine rigorous mechanics, domain expertise, and applied generative AI. I help engineering teams design resilient ground infrastructure, transform geotechnical data into insight, and automate decision-making for complex soil and rock systems.
   </p>
