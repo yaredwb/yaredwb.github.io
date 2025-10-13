@@ -1283,7 +1283,7 @@ html[data-theme="dark"] .site-footer {
 .cv-focus {
   display: grid;
   gap: var(--spacing-md);
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .cv-focus-item {
@@ -1637,6 +1637,10 @@ html[data-theme="dark"] .site-footer {
   }
 
   .cv-grid--projects {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-focus {
     grid-template-columns: 1fr;
   }
 
