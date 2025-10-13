@@ -754,6 +754,7 @@ html[data-theme="dark"] .section--alt {
   opacity: 0;
   transition: opacity var(--transition-base);
   pointer-events: none;
+  border-radius: inherit;
 }
 
 .spotlight-card:hover {
@@ -823,6 +824,7 @@ html[data-theme="dark"] .section--alt {
   display: grid;
   gap: var(--spacing-sm);
   transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+  overflow: hidden;
 }
 
 .post-card::after {
@@ -833,6 +835,7 @@ html[data-theme="dark"] .section--alt {
   opacity: 0;
   transition: opacity var(--transition-base);
   pointer-events: none;
+  border-radius: inherit;
 }
 
 .post-card:hover {
