@@ -780,7 +780,8 @@ html[data-theme="dark"] .section--alt {
 }
 
 .spotlight-card h3 a {
-  color: inherit;
+  color: var(--color-accent);
+  transition: color var(--transition-base);
 }
 
 .spotlight-card__summary {
@@ -824,10 +825,24 @@ html[data-theme="dark"] .section--alt {
   transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
+.post-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.14), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+
 .post-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
   border-color: var(--color-accent-soft);
+}
+
+.post-card:hover::after {
+  opacity: 1;
 }
 
 .post-card time {
@@ -841,6 +856,16 @@ html[data-theme="dark"] .section--alt {
 .post-card h3 {
   font-size: 1.35rem;
   margin: 0;
+}
+
+.post-card h3 a {
+  color: var(--color-accent);
+  transition: color var(--transition-base);
+}
+
+.post-card h3 a:hover,
+.post-card h3 a:focus-visible {
+  color: var(--color-accent-hover);
 }
 
 .post-card p {
