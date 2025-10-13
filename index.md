@@ -1,29 +1,164 @@
-## Main Interests and Competence
+---
+layout: default
+title: About
+permalink: /
+page_class: home
+show_title: false
+---
 
-- **Machine Learning and AI**: Developing machine learning models and generative AI assistants in geomechanics, particularly towards improving speed and accuracy for practical computational modelling problems
-- **Computational Modeling**: Applying advanced numerical methods in various application areas in computational science and engineering, mainly for coupled problems in geomechanics/poromechanics
-- **Numerical Programming**: Developing codes for professional research and hobby projects mainly based on Python and C++
-- **Data Analysis and Visualization**: Applying modern data analysis and visualisation tools and methods to engineering data for a better insight and content creation
-- **Academics**: Teaching and supervision. Giving lectures, particularly on computational modeling courses, and supervising/co-supervising undergraduate and graduate students
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-logo">
+        <h1 class="hero-title">Yared W. Bekele</h1>
+        <p class="hero-tagline">Computational Geomechanics / Applied AI</p>
+      </div>
+      <p class="hero-summary">
+        I am a research scientist building computational pipelines that combine rigorous mechanics, domain expertise, and applied generative AI. I help engineering teams design resilient ground infrastructure, transform geotechnical data into insight, and automate decision-making for complex soil and rock systems.
+      </p>
+      <div class="hero-actions">
+        <a class="button" href="{{ '/resume/' | relative_url }}">View Resume</a>
+        <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore Research</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-## GitHub Repositories and GitHub Pages
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">Practice Domains</h2>
+    <p class="section-lead">Where I spend most of my time: advancing modelling, tooling, and knowledge transfer for geotechnical engineering and computational mechanics.</p>
+  </div>
+  <div class="card-grid">
+    <article class="card">
+      <h3>Geomechanical Simulation</h3>
+      <p>Nonlinear hydro-mechanical analysis for slopes, foundations, and subsurface assets, with calibrated materials and scenario-driven studies.</p>
+    </article>
+    <article class="card">
+      <h3>AI-Augmented Workflows</h3>
+      <p>Assistive agents that translate field briefs into reproducible models, automate data curation, and support safety-critical decisions.</p>
+    </article>
+    <article class="card">
+      <h3>Research Software Engineering</h3>
+      <p>Python and C++ toolchains with tests, documentation, and automation pipelines that turn prototypes into maintainable assets.</p>
+    </article>
+    <article class="card">
+      <h3>Teaching & Mentorship</h3>
+      <p>Seminars, studio courses, and supervision covering numerical methods, scientific programming, and applied problem solving.</p>
+    </article>
+  </div>
+</section>
 
-- [GeoSim.AI](https://geosim.ai/)  - AI assistants for numerical simulations in geomechanics - a generative
-AI tool showing the potential of AI in enhancing productivity and efficiency through
-demonstration of slope stability analyses.
-- 3D terrain generator - `Python` : [3D Terrain Generator](https://3d-terrain-generator.streamlit.app/)
-- Isogeometric finite element codes for coupled problems in porous media - `C++`: [IFEM](https://github.com/yaredwb/IFEM)
-- Porous media theory: [https://yaredwb.github.io/PMT/](https://yaredwb.github.io/PMT/)
-- Physics-informed neural networks for one-dimensional consolidation: [https://yaredwb.github.io/PINN-Consolidation1D-Paper/](https://yaredwb.github.io/PINN-Consolidation1D-Paper/)
-- Finite difference method in 2D: [https://yaredwb.github.io/FDM2D/](https://yaredwb.github.io/FDM2D/) 
-- Finte difference method in 1D: [https://yaredwb.github.io/FDM1D/](https://yaredwb.github.io/FDM1D/)
-- Interactive web app for one-dimensional consolidation - `Python`: [Cons1D](https://consolidation-1d.streamlit.app/)
+<section class="section section--alt">
+  <div class="section-header section-header--split">
+    <div>
+      <h2 class="section-title">Research Spotlight</h2>
+      <p class="section-lead">Selected work at the intersection of computational geomechanics, data-driven modelling, and generative AI tooling.</p>
+    </div>
+    <a class="pill-link" href="{{ '/research/' | relative_url }}">See all research</a>
+  </div>
+  {% assign spotlight = site.research | sort: 'date' | reverse %}
+  {% if spotlight.size > 0 %}
+  <div class="spotlight-grid">
+    {% for post in spotlight limit: 1 %}
+    <article class="spotlight-card">
+      <span class="spotlight-card__eyebrow">{{ post.date | date: '%b %Y' }}</span>
+      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+      {% if post.excerpt %}
+      <p class="spotlight-card__summary">{{ post.excerpt | strip_html | truncatewords: 42 }}</p>
+      {% endif %}
+      {% if post.tags %}
+      <p class="spotlight-card-meta">{{ post.tags | join: ', ' }}</p>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <h3>Research updates are on the way</h3>
+    <p>In the meantime, explore my <a href="{{ '/resume/' | relative_url }}">CV</a> or <a href="{{ '/blog/' | relative_url }}">recent writing</a>.</p>
+  </div>
+  {% endif %}
+</section>
 
-All GitHub repositories [here](https://github.com/yaredwb)
+<section class="section">
+  <div class="section-header section-header--split">
+    <div>
+      <h2 class="section-title">Teaching & Mentorship</h2>
+      <p class="section-lead">Course material, hands-on demonstrations, and project guidance for computational mechanics and applied programming in geotechnical engineering.</p>
+    </div>
+    <a class="pill-link" href="{{ '/teaching/' | relative_url }}">Browse teaching resources</a>
+  </div>
+  {% assign teaching_posts = site.teaching | sort: 'date' | reverse %}
+  {% if teaching_posts.size > 0 %}
+  <ul class="post-list">
+    {% for post in teaching_posts limit: 1 %}
+    <li>
+      <article class="post-card">
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        {% if post.excerpt %}
+        <p>{{ post.excerpt | strip_html | truncatewords: 32 }}</p>
+        {% endif %}
+        {% if post.tags %}
+        <p class="post-card-meta">{{ post.tags | join: ', ' }}</p>
+        {% endif %}
+      </article>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="empty-state">
+    <h3>No teaching posts yet</h3>
+    <p>New lectures and walkthroughs are being prepared&mdash;check back soon for fresh material.</p>
+  </div>
+  {% endif %}
+</section>
 
-## Hobby Codes and Pages
+<section class="section section--alt">
+  <div class="section-header section-header--split">
+    <div>
+      <h2 class="section-title">Recent Writing</h2>
+      <p class="section-lead">Notes from experiments, reflections on emerging technology, and lessons learned from the lab and field.</p>
+    </div>
+    <a class="pill-link" href="{{ '/blog/' | relative_url }}">Browse the archive</a>
+  </div>
+  {% assign recent_posts = site.posts | sort: 'date' | reverse %}
+  {% if recent_posts.size > 0 %}
+  <ul class="post-list">
+    {% for post in recent_posts limit: 1 %}
+    <li>
+      <article class="post-card">
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        {% if post.excerpt %}
+        <p>{{ post.excerpt | strip_html | truncatewords: 32 }}</p>
+        {% endif %}
+        {% if post.categories %}
+        <p class="post-card-meta">{{ post.categories | join: ', ' }}</p>
+        {% endif %}
+      </article>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="section-cta">
+    <a class="pill-link" href="{{ '/archive/' | relative_url }}">View the full archive</a>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <h3>Writing will appear soon</h3>
+    <p>I'm curating new essays and field notes&mdash;subscribe via RSS or follow along on <a href="https://x.com/yaredwb">Twitter/X</a>.</p>
+  </div>
+  {% endif %}
+</section>
 
-- Geez Text Analyzer - `Python`: [Geez Analyzer](https://geeztextanalyzer.streamlit.app/)
-- Interactive Map of Ethiopia - `D3.js`/`Javascript`: [ETH-Fed](https://yaredwb.github.io/ETH_Fed/)
-
-Visit my personal website at [yaredwb.com](https://yaredwb.com/)
+<section class="section">
+  <div class="cta-panel">
+    <h2>Let's build resilient, intelligent infrastructure.</h2>
+    <p>Whether you need geotechnical simulation expertise, an AI-enabled engineering assistant, or a collaborator for computational research, I'm excited to help shape emerging ideas into working tools.</p>
+    <div class="hero-actions">
+      <a class="button" href="mailto:yaredworku@gmail.com">Start a conversation</a>
+      <a class="button button--ghost" href="{{ '/resume/' | relative_url }}">View my CV</a>
+    </div>
+  </div>
+</section>
