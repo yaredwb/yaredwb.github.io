@@ -7,16 +7,34 @@ show_title: false
 ---
 
 <div class="hero">
-  <div class="hero-logo">
-    <h1 class="hero-title">Yared W. Bekele</h1>
-    <p class="hero-tagline">Computational Geomechanics / Applied AI</p>
-  </div>
-  <p class="hero-summary">
-    I am a research scientist building computational pipelines that combine rigorous mechanics, domain expertise, and applied generative AI. I help engineering teams design resilient ground infrastructure, transform geotechnical data into insight, and automate decision-making for complex soil and rock systems.
-  </p>
-  <div class="hero-actions">
-    <a class="button" href="{{ '/resume/' | relative_url }}">View Resume</a>
-    <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore Research</a>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-logo">
+        <h1 class="hero-title">Yared W. Bekele</h1>
+        <p class="hero-tagline">Computational Geomechanics / Applied AI</p>
+      </div>
+      <p class="hero-summary">
+        I am a research scientist building computational pipelines that combine rigorous mechanics, domain expertise, and applied generative AI. I help engineering teams design resilient ground infrastructure, transform geotechnical data into insight, and automate decision-making for complex soil and rock systems.
+      </p>
+      <div class="hero-actions">
+        <a class="button" href="{{ '/resume/' | relative_url }}">View Resume</a>
+        <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore Research</a>
+      </div>
+    </div>
+    <aside class="hero-visual" aria-label="Current focus areas">
+      <div class="hero-visual__glow"></div>
+      <div class="hero-visual__card">
+        <h3>Current Focus</h3>
+        <ul>
+          <li>AI-enhanced numerical modelling toolchains</li>
+          <li>Decision support for landslide and broader ground-risk mitigation</li>
+          <li>Teaching pragmatic programming for engineering teams</li>
+        </ul>
+      </div>
+      <div class="hero-visual__badge">
+        <p>Collaborating with research partners, design offices, and educators to deploy trustworthy simulation and AI systems.</p>
+      </div>
+    </aside>
   </div>
 </div>
 
@@ -56,7 +74,7 @@ show_title: false
   {% assign spotlight = site.research | sort: 'date' | reverse %}
   {% if spotlight.size > 0 %}
   <div class="spotlight-grid">
-    {% for post in spotlight limit: 2 %}
+    {% for post in spotlight limit: 1 %}
     <article class="spotlight-card">
       <span class="spotlight-card__eyebrow">{{ post.date | date: '%b %Y' }}</span>
       <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
@@ -64,11 +82,7 @@ show_title: false
       <p class="spotlight-card__summary">{{ post.excerpt | strip_html | truncatewords: 42 }}</p>
       {% endif %}
       {% if post.tags %}
-      <div class="spotlight-card__tags">
-        {% for tag in post.tags %}
-        <span class="spotlight-card__tag">{{ tag }}</span>
-        {% endfor %}
-      </div>
+      <p class="spotlight-card-meta">{{ post.tags | join: ', ' }}</p>
       {% endif %}
     </article>
     {% endfor %}
@@ -92,7 +106,7 @@ show_title: false
   {% assign teaching_posts = site.teaching | sort: 'date' | reverse %}
   {% if teaching_posts.size > 0 %}
   <ul class="post-list">
-    {% for post in teaching_posts limit: 3 %}
+    {% for post in teaching_posts limit: 1 %}
     <li>
       <article class="post-card">
         <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
@@ -126,7 +140,7 @@ show_title: false
   {% assign recent_posts = site.posts | sort: 'date' | reverse %}
   {% if recent_posts.size > 0 %}
   <ul class="post-list">
-    {% for post in recent_posts limit: 3 %}
+    {% for post in recent_posts limit: 1 %}
     <li>
       <article class="post-card">
         <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>

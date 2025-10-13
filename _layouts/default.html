@@ -55,8 +55,9 @@
     <div class="container">
       <div class="site-brand">
         <a class="brand-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-        {% if site.description %}
-        <p class="brand-tagline">{{ site.description }}</p>
+        {% assign tagline = site.brand_tagline | default: site.description %}
+        {% if tagline %}
+        <p class="brand-tagline">{{ tagline }}</p>
         {% endif %}
       </div>
       <div class="site-controls">
