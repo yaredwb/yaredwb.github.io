@@ -55,22 +55,22 @@ show_title: false
 
 ## Research Interests &amp; Expertise
 
-<div class="cv-grid">
-  <article class="cv-grid-card">
-    <h3>🤖 Machine Learning &amp; AI in Geoscience</h3>
-    <p>Developing ML models and generative assistants tailored to geotechnical challenges. Current work targets landslide risk assessment, mining optimization, and tunnelling injection, combining physics-informed approaches with data-driven techniques.</p>
+<div class="cv-focus">
+  <article class="cv-focus-item">
+    <h3>Machine Learning &amp; AI for Geoscience</h3>
+    <p>Physics-informed and data-driven assistants that support landslide assessment, underground construction, and resource development while keeping domain expertise in the loop.</p>
   </article>
-  <article class="cv-grid-card">
-    <h3>🔬 Computational Geomechanics</h3>
-    <p>Applying advanced numerical methods (finite element, isogeometric analysis) to simulate fluid flow, heat flow, and deformation in soils/rocks with an emphasis on landslide risk assessment, climate adaptation of infrastructure foundations, and geothermal energy.</p>
+  <article class="cv-focus-item">
+    <h3>Computational Geomechanics</h3>
+    <p>Advanced finite element and porous media modelling to study coupled hydro-mechanical behaviour, climate adaptation of infrastructure, and risk mitigation strategies.</p>
   </article>
-  <article class="cv-grid-card">
-    <h3>💻 Programming for Research &amp; Applied Projects</h3>
-    <p>Building and maintaining robust Python and C++ codebases for research and hobby projects. Experienced with Git-based workflows, Docker, and modern engineering practices that improve collaboration and reproducibility.</p>
+  <article class="cv-focus-item">
+    <h3>Scientific Software Engineering</h3>
+    <p>Designing and maintaining Python/C++ codebases with testing, documentation, and automation that make research outputs reproducible and transferable to industry.</p>
   </article>
-  <article class="cv-grid-card">
-    <h3>📊 Data Analysis &amp; Visualization</h3>
-    <p>Employing modern data science tools and interactive web platforms to analyze, visualize, and communicate engineering data. Creating dashboards and apps that improve insights, decision-making, and stakeholder engagement.</p>
+  <article class="cv-focus-item">
+    <h3>Data Interpretation &amp; Communication</h3>
+    <p>Interactive dashboards, visual analytics, and reporting approaches that translate monitoring data and simulation results into actionable guidance for project teams.</p>
   </article>
 </div>
 

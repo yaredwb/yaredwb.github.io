@@ -21,44 +21,30 @@ show_title: false
         <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore Research</a>
       </div>
     </div>
-    <aside class="hero-visual" aria-label="Current focus areas">
-      <div class="hero-visual__glow"></div>
-      <div class="hero-visual__card">
-        <h3>Current Focus</h3>
-        <ul>
-          <li>AI-enhanced numerical modelling toolchains</li>
-          <li>Decision support for landslide and broader ground-risk mitigation</li>
-          <li>Teaching pragmatic programming for engineering teams</li>
-        </ul>
-      </div>
-      <div class="hero-visual__badge">
-        <p>Collaborating with research partners, design offices, and educators to deploy trustworthy simulation and AI systems.</p>
-      </div>
-    </aside>
   </div>
 </div>
 
 <section class="section">
   <div class="section-header">
-    <h2 class="section-title">How I Create Impact</h2>
-    <p class="section-lead">I bring modern numerical tools and AI assistants into geotechnical workflows&mdash;closing the loop between simulation, data, and field expertise.</p>
+    <h2 class="section-title">Practice Domains</h2>
+    <p class="section-lead">Where I spend most of my time: advancing modelling, tooling, and knowledge transfer for geotechnical engineering and computational mechanics.</p>
   </div>
   <div class="card-grid">
     <article class="card">
-      <h3>High-Fidelity Simulation</h3>
-      <p>Advanced finite element and multi-physics modelling for coupled hydro-mechanical processes, landslide scenarios, and infrastructure reliability studies.</p>
+      <h3>Geomechanical Simulation</h3>
+      <p>Nonlinear hydro-mechanical analysis for slopes, foundations, and subsurface assets, with calibrated materials and scenario-driven studies.</p>
     </article>
     <article class="card">
-      <h3>AI-Driven Engineering Tools</h3>
-      <p>Designing intelligent copilots and data-centric automation that translate natural language instructions into reproducible geotechnical analyses.</p>
+      <h3>AI-Augmented Workflows</h3>
+      <p>Assistive agents that translate field briefs into reproducible models, automate data curation, and support safety-critical decisions.</p>
     </article>
     <article class="card">
-      <h3>Production-Ready Research Code</h3>
-      <p>Turning prototypes into maintainable software with modern Python/C++ practices, documentation, and reproducible pipelines tailored to engineering teams.</p>
+      <h3>Research Software Engineering</h3>
+      <p>Python and C++ toolchains with tests, documentation, and automation pipelines that turn prototypes into maintainable assets.</p>
     </article>
     <article class="card">
       <h3>Teaching & Mentorship</h3>
-      <p>Guiding students, engineers, and researchers through computational mechanics, numerical modelling, and pragmatic software craftsmanship.</p>
+      <p>Seminars, studio courses, and supervision covering numerical methods, scientific programming, and applied problem solving.</p>
     </article>
   </div>
 </section>
