@@ -28,7 +28,7 @@ which is a form of the well-known Laplace equation.
 
 The first step is to spatially discretize the domain over which we aim to solve the problem and define the boundary conditions. A typical 2D discretization is shown in the figure below where the two-dimensional domain is discretized with a uniform grid mesh, i.e. $$ \Delta x = \Delta y $$.
 
-![2D grid](assets/figs/2D_grid.png){: .center-image }
+![2D grid](/assets/figs/2D_grid.png){: .center-image }
 *FDM 2D grid*
 
 This is achieved by dividing the $$ x $$ and $$ y $$ directions into $$ N_x $$ and $$ N_y $$ elements, where for a square domain we have $$ N = N_x = N_y $$. In general, if $$ L_x $$ and $$ L_y $$ represent the dimensions in the $$ x $$ and $$ y $$ directions, we have
@@ -76,7 +76,7 @@ This equation is represented by the five-point stencil with the highlighted node
 
 Consider a $$ 1~\mathrm{m} \times 1~\mathrm{m} $$ grid divided into an equal number of elements $$ N_x = N_y = 4 $$ in both directions ($$ N_x + 1 = N_y + 1 = 5 $$ nodes in each direction) as shown in the figure below. The grid involves 25 nodes which are numbered as shown.
 
-![2D 4x4 grid](assets/figs/2D_4x4_grid.png){: .center-image }
+![2D 4x4 grid](/assets/figs/2D_4x4_grid.png){: .center-image }
 *2D grid for $$N_x = N_y = 4$$*
 
 Assume the following boundary conditions are defined for the hydraulic head (in arbitrary units):
@@ -235,7 +235,7 @@ $$
 
 A two-dimensional color contour plot of this solution is shown in the figure below with 10 contour levels and linear interpolation between neighboring nodes.
 
-![Solution for a 4x4 grid](assets/figs/Solution_for_4x4_grid.png){: .center-image }
+![Solution for a 4x4 grid](/assets/figs/Solution_for_4x4_grid.png){: .center-image }
 *Solution for $$N_x = N_y = 4$$*
 
 ### Solution for an $N_x \times N_y$ Grid
@@ -299,11 +299,11 @@ def plotSolution(self, h2D):
     plt.ylabel(r'$y$ [$\mathrm{m}$]')
 ```
 
-![Solution for a 10x10 grid](assets/figs/Solution_for_10x10_grid.png){: .center-image }
+![Solution for a 10x10 grid](/assets/figs/Solution_for_10x10_grid.png){: .center-image }
 *Solution for $$N_x = N_y = 10$$*
 
-![Solution for a 50x50 grid](assets/figs/Solution_for_50x50_grid.png){: .center-image }
+![Solution for a 50x50 grid](/assets/figs/Solution_for_50x50_grid.png){: .center-image }
 *Solution for $$N_x = N_y = 50$$*
 
-![Solution for a 100x100 grid](assets/figs/Solution_for_100x100_grid.png){: .center-image }
+![Solution for a 100x100 grid](/assets/figs/Solution_for_100x100_grid.png){: .center-image }
 *Solution for $$N_x = N_y = 100$$*
