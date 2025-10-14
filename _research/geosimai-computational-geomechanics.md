@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "GeoSim.AI: A New Paradigm in Computational Geomechanics"
-date: 2025-10-01
+date: 2025-02-01
 tags: [AI, geomechanics, numerical simulation, LLM, generative AI]
 excerpt: "Introducing GeoSim.AI - a suite of AI assistants for numerical simulations in geomechanics that demonstrates the transformative potential of generative AI in geotechnical engineering."
 ---

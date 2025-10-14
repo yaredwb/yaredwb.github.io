@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Finite Difference Method for Two-Dimensional Groundwater Flow"
-date: 2025-10-14
+date: 2020-02-12
 tags: [finite difference, groundwater flow, numerical methods, FDM, geotechnical engineering]
 excerpt: "Code and excerpt from lecture notes demonstrating application of the finite difference method (FDM) to steady-state flow in two dimensions. The extracted lecture note is taken from a course I taught entitled Advanced Computational Methods in Geotechnical Engineering."
 ---

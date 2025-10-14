@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Finite Difference Method for One-Dimensional Consolidation"
-date: 2025-10-01
+date: 2020-02-10
 tags: [finite difference, consolidation, numerical methods, FDM, geotechnical engineering]
 excerpt: "Code and excerpt from lecture notes demonstrating application of the finite difference method (FDM) to one-dimensional consolidation. The extracted lecture note is taken from a course I taught entitled Advanced Computational Methods in Geotechnical Engineering."
 ---
