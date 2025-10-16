@@ -1028,8 +1028,9 @@ html[data-theme="dark"] .cta-panel {
 
 .post-content img {
   margin: var(--spacing-lg) auto;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
 }
 
 .post-content img.center-image {
