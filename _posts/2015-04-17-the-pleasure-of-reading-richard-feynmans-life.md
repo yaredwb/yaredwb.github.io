@@ -5,19 +5,24 @@ date: 2015-04-17 21:11:34
 author: yaredwb
 categories: ["Books"]
 ---
-I recently finished reading the autobiography of one of the greatest scientists of the 20th century, Richard Feynman, entitled [Surely You're Joking, Mr. Feynman](http://en.wikipedia.org/wiki/Surely_You%27re_Joking,_Mr._Feynman!). My feeling from beginning to end was 'why was I so late to read it?' It was undoubtedly one of the best books I have read. It was fascinating to look closer into the scientific and personal journey of this Nobel Prize winning physicist. He narrates several amazing stories. Even though he was a theoretical physicist, he developed many other interests like in art (drawing/painting), biology and bongo playing.  The way he lived his life made a striking impression on me. You observe from his captivating stories that he lived life the way he saw it - always passionately curious and fun loving. Feynman repeatedly mentions the influence of his father on the way he lived his life and what he became later. It was a great read. I encourage anyone to read the book. I share here some excerpts that I found especially interesting:
-When he was offered a top scientific position by the Institute for Advanced Study, he emphasizes that he does what he does not to fulfill people's expectations but for the pleasure of it:
-"... *You have no responsibility to live up to what other people think you ought to accomplish. I have no responsibility to be like what they expect me to be. It's their mistake, not my failing*. ..."
-While attending a social science conference and reading a paper written by one sociologist:
-"... *SThe individual member of the social community often receives his information via visual, symbolic channels. I went back and forth over it, and translated. You know what it means? SPeople read.* ..."
-He said he would never participate in such conferences. :-)
-Reciting a lecture he gave on science and society:
-"*... So I have just one wish for you  the good luck to be somewhere where you are free to maintain the kind of integrity I have described, and where you do not feel forced by a need to maintain your position in the organization, or financial support, or so on, to lose your integrity. May you have that freedom. ...*"
-About being drank and participating in hallucination experiments:
-"... *You see, I get so much fun out of thinking that I don"t want to destroy this pleasant machine that makes life such a big kick.* ..."
-Well, you wouldn't have much to read if I share everything here. :-)
-Fascinated by his story in the book, I expanded my research online and came across several of his lectures and documentaries about his life. The BBC series entitled Fun to Imagine was particularly interesting, which can be found on YouTube. In this series, Feynman explains various day to day phenomena and materials from a point of view you probably have never heard of. The way he explained fire scientifically, and simply, in this video was incredible:
-https://www.youtube.com/watch?v=ITpDrdtGAmo
-I am never going to look at fire in the same way I did. You could also see the pleasure he gets from understanding nature and explaining it to people.
-[The Fantastic Mr. Feynman](https://www.youtube.com/watch?v=LyqleIxXTpw) is a recent documentary about his life. [The Pleasure of Finding Things Out](http://en.wikipedia.org/wiki/The_Pleasure_of_Finding_Things_Out) is a collection of his interviews which can be found as a book and on YouTube.
+I recently finished reading the autobiography of one of the greatest scientists of the 20th century, Richard Feynman, entitled [*Surely You're Joking, Mr. Feynman!*](https://en.wikipedia.org/wiki/Surely_You%27re_Joking,_Mr._Feynman!). My feeling from beginning to end was, "why was I so late to read it?" It is undoubtedly one of the best books I have read. The stories take you close to the scientific and personal journey of this Nobel Prize winning physicist, who somehow also found time for art, biology, safe-cracking, bongo playing, and endless curiosity.
+
+Feynman repeatedly mentions the influence of his father on his approach to life and science. His anecdotes show a life lived with humour, integrity, and a willingness to ask "why?" about everything. I jotted down a few passages that resonated with me:
+
+> *You have no responsibility to live up to what other people think you ought to accomplish. I have no responsibility to be like what they expect me to be. It's their mistake, not my failing.*
+
+> *The individual member of the social community often receives his information via visual, symbolic channels. I went back and forth over it, and translated. You know what it means? People read.*
+
+> *So I have just one wish for you - the good luck to be somewhere where you are free to maintain the kind of integrity I have described, and where you do not feel forced by a need to maintain your position in the organization, or financial support, or so on, to lose your integrity. May you have that freedom.*
+
+> *You see, I get so much fun out of thinking that I don't want to destroy this pleasant machine that makes life such a big kick.*
+
+Fascinated by his story in the book, I went hunting for more. The BBC series **Fun to Imagine** is a brilliant example of Feynman explaining everyday phenomena with infectious enthusiasm. His description of fire is still my favourite.
+
+<div class="video-embed">
+  <iframe src="https://www.youtube-nocookie.com/embed/ITpDrdtGAmo" title="Richard Feynman explains fire" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+For longer dives, [*The Fantastic Mr. Feynman*](https://www.youtube.com/watch?v=LyqleIxXTpw) documentary and [*The Pleasure of Finding Things Out*](https://en.wikipedia.org/wiki/The_Pleasure_of_Finding_Things_Out) interview collection are excellent companions.
+
 Header image credit: https://reasoncenter.org/2019-05-20-surely-youre-joking-mr-feynman/

@@ -28,7 +28,7 @@ So, switching wins you the car 2/3 of the time! The concept works for any number
 
 Natural numbers are ordinary numbers that we use for counting i.e. $1,2,3,\ldots$. So, what is the sum of all natural numbers? An intuitive answer is positive infinity. The series is actually divergent and a trick used as a finite sum result is:
 
-$$1 + 2 + 3 + \ldots = -\\frac{1}{12}$$
+$$1 + 2 + 3 + \ldots = -\frac{1}{12}$$
 
 What?! That's impossible! Did you say that? Here is a mathematical proof by [Srinivasa Ramanujan](https://en.wikipedia.org/wiki/Srinivasa_Ramanujan). Let's call the sum $s$,
 
@@ -44,7 +44,7 @@ $$-3s = 1 - 2 + 3 - 4 + 5 - 6 + \ldots$$
 
 But $1 - 2 + 3 - 4 + 5 - 6 + \ldots$ is a well-known [alternating series](https://en.wikipedia.org/wiki/1_%E2%88%92_2_%2B_3_%E2%88%92_4_%2B_%E2%8B%AF) which converges to $1/4$. Thus, we have:
 
-$$-3s = \\frac{1}{4} \\Rightarrow s = -\\frac{1}{12}$$
+$$-3s = \frac{1}{4} \Rightarrow s = -\frac{1}{12}$$
 
 Things get a bit spooky when infinities are involved. This sum has, surprisingly, found an application in theoretical physics, particularly in string theory.
 
