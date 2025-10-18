@@ -7,5 +7,5 @@ gem "github-pages", group: :jekyll_plugins
 gem "webrick", "~> 1.8"
 
 # Windows file watcher (optional, speeds up livereload)
-gem "wdm", "~> 0.1.1", platforms: [:mswin, :mingw, :x64_mingw]
+# gem "wdm", "~> 0.1.1", platforms: [:mswin, :mingw, :x64_mingw]
 
