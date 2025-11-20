@@ -1,6 +1,6 @@
 ---
 layout: default
-title: About
+title: Home
 permalink: /
 page_class: home
 show_title: false
@@ -10,15 +10,15 @@ show_title: false
   <div class="hero-inner">
     <div class="hero-content">
       <div class="hero-logo">
-        <h1 class="hero-title">Yared W. Bekele</h1>
+        <h1 class="hero-title">Yared W. Bekele, PhD</h1>
         <p class="hero-tagline">Computational Geomechanics / Applied AI</p>
       </div>
       <p class="hero-summary">
-        I am a research scientist building computational pipelines that combine rigorous mechanics, domain expertise, and applied generative AI. I help engineering teams design resilient ground infrastructure, transform geotechnical data into insight, and automate decision-making for complex soil and rock systems.
+        I am a research scientist specializing in <strong>computational geomechanics</strong> and <strong>applied artificial intelligence</strong>. My work focuses on developing rigorous numerical models and data-driven tools to solve complex problems in geotechnical engineering.
       </p>
       <div class="hero-actions">
-        <a class="button" href="{{ '/resume/' | relative_url }}">View Resume</a>
-        <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore Research</a>
+        <a class="button" href="{{ '/research/' | relative_url }}">Research</a>
+        <a class="button button--ghost" href="{{ '/resume/' | relative_url }}">CV</a>
       </div>
     </div>
   </div>
@@ -26,139 +26,62 @@ show_title: false
 
 <section class="section">
   <div class="section-header">
-    <h2 class="section-title">Practice Domains</h2>
-    <p class="section-lead">Where I spend most of my time: advancing modelling, tooling, and knowledge transfer for geotechnical engineering and computational mechanics.</p>
+    <h2 class="section-title">Research Interests</h2>
   </div>
   <div class="card-grid">
     <article class="card">
-      <h3>Geomechanical Simulation</h3>
-      <p>Nonlinear hydro-mechanical analysis for slopes, foundations, and subsurface assets, with calibrated materials and scenario-driven studies.</p>
+      <h3>Computational Geomechanics</h3>
+      <p>Development of numerical methods for non-linear hydro-mechanical analysis of soil and rock structures.</p>
     </article>
     <article class="card">
-      <h3>AI-Augmented Workflows</h3>
-      <p>Assistive agents that translate field briefs into reproducible models, automate data curation, and support safety-critical decisions.</p>
+      <h3>Applied AI in Engineering</h3>
+      <p>Utilization of machine learning and generative AI to automate workflows and enhance decision-making in geotechnical design.</p>
     </article>
     <article class="card">
-      <h3>Research Software Engineering</h3>
-      <p>Python and C++ toolchains with tests, documentation, and automation pipelines that turn prototypes into maintainable assets.</p>
-    </article>
-    <article class="card">
-      <h3>Teaching & Mentorship</h3>
-      <p>Seminars, studio courses, and supervision covering numerical methods, scientific programming, and applied problem solving.</p>
+      <h3>Numerical Modelling</h3>
+      <p>Advanced finite element analysis and constitutive modelling for complex material behaviors.</p>
     </article>
   </div>
 </section>
 
-<section class="section section--alt">
+<section class="section">
   <div class="section-header section-header--split">
-    <div>
-      <h2 class="section-title">Research Spotlight</h2>
-      <p class="section-lead">Selected work at the intersection of computational geomechanics, data-driven modelling, and generative AI tooling.</p>
-    </div>
-    <a class="pill-link" href="{{ '/research/' | relative_url }}">See all research</a>
+    <h2 class="section-title">Selected Publications</h2>
+    <a class="pill-link" href="{{ '/research/' | relative_url }}">View all</a>
   </div>
   {% assign spotlight = site.research | sort: 'date' | reverse %}
   {% if spotlight.size > 0 %}
   <div class="spotlight-grid">
-    {% for post in spotlight limit: 1 %}
+    {% for post in spotlight limit: 3 %}
     <article class="spotlight-card">
-      <span class="spotlight-card__eyebrow">{{ post.date | date: '%b %Y' }}</span>
+      <span class="spotlight-card__eyebrow">{{ post.date | date: '%Y' }}</span>
       <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
       {% if post.excerpt %}
-      <p class="spotlight-card__summary">{{ post.excerpt | strip_html | truncatewords: 42 }}</p>
-      {% endif %}
-      {% if post.tags %}
-      <p class="spotlight-card-meta">{{ post.tags | join: ', ' }}</p>
+      <p class="spotlight-card__summary">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
       {% endif %}
     </article>
     {% endfor %}
   </div>
   {% else %}
-  <div class="empty-state">
-    <h3>Research updates are on the way</h3>
-    <p>In the meantime, explore my <a href="{{ '/resume/' | relative_url }}">CV</a> or <a href="{{ '/blog/' | relative_url }}">recent writing</a>.</p>
-  </div>
+  <p>No publications listed yet.</p>
   {% endif %}
 </section>
 
 <section class="section">
-  <div class="section-header section-header--split">
-    <div>
-      <h2 class="section-title">Teaching & Mentorship</h2>
-      <p class="section-lead">Course material, hands-on demonstrations, and project guidance for computational mechanics and applied programming in geotechnical engineering.</p>
-    </div>
-    <a class="pill-link" href="{{ '/teaching/' | relative_url }}">Browse teaching resources</a>
-  </div>
-  {% assign teaching_posts = site.teaching | sort: 'date' | reverse %}
-  {% if teaching_posts.size > 0 %}
-  <ul class="post-list">
-    {% for post in teaching_posts limit: 1 %}
-    <li>
-      <article class="post-card">
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
-        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-        {% if post.excerpt %}
-        <p>{{ post.excerpt | strip_html | truncatewords: 32 }}</p>
-        {% endif %}
-        {% if post.tags %}
-        <p class="post-card-meta">{{ post.tags | join: ', ' }}</p>
-        {% endif %}
-      </article>
-    </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <div class="empty-state">
-    <h3>No teaching posts yet</h3>
-    <p>New lectures and walkthroughs are being prepared&mdash;check back soon for fresh material.</p>
-  </div>
-  {% endif %}
-</section>
-
-<section class="section section--alt">
-  <div class="section-header section-header--split">
-    <div>
-      <h2 class="section-title">Recent Writing</h2>
-      <p class="section-lead">Notes from experiments, reflections on emerging technology, and lessons learned from the lab and field.</p>
-    </div>
-    <a class="pill-link" href="{{ '/blog/' | relative_url }}">Browse the archive</a>
+  <div class="section-header">
+    <h2 class="section-title">Recent News</h2>
   </div>
   {% assign recent_posts = site.posts | sort: 'date' | reverse %}
   {% if recent_posts.size > 0 %}
   <ul class="post-list">
-    {% for post in recent_posts limit: 1 %}
+    {% for post in recent_posts limit: 3 %}
     <li>
       <article class="post-card">
         <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
         <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-        {% if post.excerpt %}
-        <p>{{ post.excerpt | strip_html | truncatewords: 32 }}</p>
-        {% endif %}
-        {% if post.categories %}
-        <p class="post-card-meta">{{ post.categories | join: ', ' }}</p>
-        {% endif %}
       </article>
     </li>
     {% endfor %}
   </ul>
-  <div class="section-cta">
-    <a class="pill-link" href="{{ '/archive/' | relative_url }}">View the full archive</a>
-  </div>
-  {% else %}
-  <div class="empty-state">
-    <h3>Writing will appear soon</h3>
-    <p>I'm curating new essays and field notes&mdash;subscribe via RSS or follow along on <a href="https://x.com/yaredwb">Twitter/X</a>.</p>
-  </div>
   {% endif %}
-</section>
-
-<section class="section">
-  <div class="cta-panel">
-    <h2>Let's build resilient, intelligent infrastructure.</h2>
-    <p>Whether you need geotechnical simulation expertise, an AI-enabled engineering assistant, or a collaborator for computational research, I'm excited to help shape emerging ideas into working tools.</p>
-    <div class="hero-actions">
-      <a class="button" href="mailto:yaredworku@gmail.com">Start a conversation</a>
-      <a class="button button--ghost" href="{{ '/resume/' | relative_url }}">View my CV</a>
-    </div>
-  </div>
 </section>
