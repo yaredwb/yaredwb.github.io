@@ -113,10 +113,10 @@ body::before {
   position: fixed;
   inset: -20vh -20vw 0 -20vw;
   background:
-    radial-gradient(ellipse at top left, rgba(37, 99, 235, 0.16), transparent 55%),
-    radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.15), transparent 45%);
+    radial-gradient(ellipse at top left, rgba(37, 99, 235, 0.10), transparent 55%),
+    radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.08), transparent 45%);
   z-index: -2;
-  opacity: 0.9;
+  opacity: 0.6;
   pointer-events: none;
   transition: opacity var(--transition-slow);
 }

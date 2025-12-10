@@ -7,8 +7,8 @@ show_title: false
 
 <section class="section">
   <div class="section-header">
-    <h1 class="section-title">Teaching &amp; Learning</h1>
-    <p class="section-lead">Lecture notes, computational notebooks, and mentorship resources for engineers who want to wield numerical methods, coding practices, and AI responsibly in geotechnical settings.</p>
+    <h1 class="section-title">Teaching &amp; Supervision</h1>
+    <p class="section-lead">Course materials, computational notebooks, and resources for students and engineers in numerical methods, scientific programming, and geotechnical engineering.</p>
   </div>
   {% assign teaching_posts = site.teaching | sort: 'date' | reverse %}
   {% if teaching_posts.size > 0 %}
@@ -30,19 +30,19 @@ show_title: false
   </ul>
   {% else %}
   <div class="empty-state">
-    <h3>Teaching resources are coming soon</h3>
-    <p>Materials for upcoming workshops and course modules are in preparation. Reach out if you would like me to tailor content for your team or classroom.</p>
+    <h3>Teaching materials coming soon</h3>
+    <p>Lecture notes and tutorial notebooks are in preparation.</p>
   </div>
   {% endif %}
 </section>
 
 <section class="section section--alt">
   <div class="cta-panel">
-    <h2>Invite a workshop or guest lecture.</h2>
-    <p>From hands-on Python for engineers to applied AI in design offices, I craft sessions that meet people where they are and deliver usable skills.</p>
+    <h2>Guest Lectures &amp; Seminars</h2>
+    <p>I am available for guest lectures, seminars, or workshops on computational geomechanics, physics-informed machine learning, and scientific programming.</p>
     <div class="hero-actions">
-      <a class="button" href="mailto:yaredworku@gmail.com">Discuss a workshop</a>
-      <a class="button button--ghost" href="{{ '/blog/' | relative_url }}">Preview my approach</a>
+      <a class="button" href="mailto:yaredworku@gmail.com">Contact</a>
+      <a class="button button--ghost" href="{{ '/blog/' | relative_url }}">Notes &amp; Essays</a>
     </div>
   </div>
 </section>

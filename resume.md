@@ -13,7 +13,7 @@ show_title: false
     <h1 class="cv-title">Yared W. Bekele, PhD</h1>
     <p class="cv-tagline">Research Scientist &amp; Geotechnical Engineer</p>
     <p class="cv-summary">
-      Computational geomechanics specialist integrating numerical modelling, applied AI, and field knowledge to deliver resilient geotechnical solutions.
+      Computational geomechanics specialist focused on coupled numerical modelling, physics-informed machine learning, and developing tools that advance geotechnical research and practice.
     </p>
     <blockquote class="cv-quote">
       "It is a good morning exercise for a research scientist to discard a pet hypothesis every day before breakfast. It keeps him young." &mdash; Konrad Lorenz
@@ -58,25 +58,43 @@ show_title: false
   </div>
 </div>
 
-## Research Interests &amp; Expertise
+## Research Interests
 
 <div class="cv-focus">
   <article class="cv-focus-item">
-    <h3>Machine Learning &amp; AI for Geoscience</h3>
-    <p>Physics-informed and data-driven assistants that support landslide assessment, underground construction, and resource development while keeping domain expertise in the loop.</p>
-  </article>
-  <article class="cv-focus-item">
     <h3>Computational Geomechanics</h3>
-    <p>Advanced finite element and porous media modelling to study coupled hydro-mechanical behaviour, climate adaptation of infrastructure, and risk mitigation strategies.</p>
+    <p>Finite element and isogeometric analysis of coupled hydro-mechanical and thermo-hydro-mechanical processes in soils and rocks, with applications to landslides, ground freezing, and geothermal systems.</p>
   </article>
   <article class="cv-focus-item">
-    <h3>Scientific Software Engineering</h3>
-    <p>Designing and maintaining Python/C++ codebases with testing, documentation, and automation that make research outputs reproducible and transferable to industry.</p>
+    <h3>Physics-Informed Machine Learning</h3>
+    <p>Development of physics-informed neural networks for consolidation, poroelasticity, and other geomechanical boundary value problems that embed governing equations into learning architectures.</p>
   </article>
   <article class="cv-focus-item">
-    <h3>Data Interpretation &amp; Communication</h3>
-    <p>Interactive dashboards, visual analytics, and reporting approaches that translate monitoring data and simulation results into actionable guidance for project teams.</p>
+    <h3>Research Software Development</h3>
+    <p>Building reproducible Python and C++ codebases with testing, documentation, and automation that facilitate knowledge transfer from research to industry.</p>
   </article>
+  <article class="cv-focus-item">
+    <h3>Geotechnical Data Science</h3>
+    <p>Interactive dashboards, visual analytics, and data interpretation approaches that translate monitoring data and simulation results into actionable engineering insights.</p>
+  </article>
+</div>
+
+## Selected Publications
+
+<div class="cv-publications">
+    <ul>
+        <li><strong>Bekele YW.</strong> GeoSim.AI: AI assistants for numerical simulations in geomechanics. <em>arXiv preprint arXiv:2501.14186</em>, 2025.</li>
+        <li><strong>Bekele YW.</strong> Physics-informed neural networks with curriculum training for poroelastic flow and deformation processes. <em>Nordic Geotechnical Meeting (NGM2024)</em>, Gothenberg, Sweden, 2024.</li>
+        <li>Morales M, <strong>Bekele YW.</strong> Digitalization in rock mechanics: A parametric design for numerical models in Norway. <em>ISRM Nordic Rock Mechanics Symposium (NRMS)</em>, 2023.</li>
+        <li><strong>Bekele YW</strong>, Sinitsyn A. Risk Analysis of the Impact of Natural Hazards on Cultural Heritage. Development of a Risk Assessment Tool. <em>SINTEF</em>, 2023.</li>
+        <li><strong>Bekele YW</strong>, Fonn E, Kvamsdal T, Kvarving AM, Nordal S. Mixed Method for Isogeometric Analysis of Coupled Flow and Deformation in Poroelastic Media. <em>Applied Sciences</em> 12(6):2915, 2022.</li>
+        <li>Piciullo L, <strong>Bekele YW</strong>, Depina I, Nadim F, Langford J. A management tool to reduce the risk of damage caused by geotechnical groundworks. <em>IOP Conference Series: Earth and Environmental Science</em> 710(1), 012073, 2021.</li>
+        <li><strong>Bekele YW.</strong> Physics-informed deep learning for one-dimensional consolidation. <em>Journal of Rock Mechanics and Geotechnical Engineering</em> 13(2), 420-430, 2021.</li>
+        <li><strong>Bekele YW.</strong> Physics-informed deep learning for flow and deformation in poroelastic media. <em>arXiv preprint arXiv:2010.15426</em>, 2020.</li>
+        <li><strong>Bekele YW</strong>, Kyokawa H, Kvarving AM, Kvamsdal T, Nordal S. Isogeometric analysis of THM coupled processes in ground freezing. <em>Computers and Geotechnics</em> 88, 129-145, 2017.</li>
+        <li><strong>Bekele YW</strong>, Kvamsdal T, Kvarving AM, Nordal S. Adaptive isogeometric finite element analysis of steady-state groundwater flow. <em>International Journal for Numerical and Analytical Methods in Geomechanics</em> 40(5):738-765, 2016.</li>
+        <li><strong>Bekele YW.</strong> Isogeometric Analysis of Coupled Problems in Porous Media. <em>NTNU PhD Thesis</em>, 2016.</li>
+    </ul>
 </div>
 
 ## Education
@@ -189,7 +207,7 @@ show_title: false
   </ul>
 </div>
 
-## Selected Projects &amp; Web Applications
+## Software &amp; Web Applications
 
 <div class="cv-grid cv-grid--projects">
   <article class="cv-grid-card">
@@ -226,21 +244,4 @@ show_title: false
     <li><strong>English</strong> &mdash; Full Professional Proficiency</li>
     <li><strong>Norwegian</strong> &mdash; Full Professional Proficiency</li>
   </ul>
-</div>
-
-## Selected Publications
-<div class="cv-publications">
-    <ul>
-        <li><strong>Bekele YW.</strong> GeoSim.AI: AI assistants for numerical simulations in geomechanics. <em>arXiv preprint arXiv:2501.14186</em>, 2025.</li>
-        <li><strong>Bekele YW.</strong> Physics-informed neural networks with curriculum training for poroelastic flow and deformation processes. <em>Nordic Geotechnical Meeting (NGM2024)</em>, Gothenberg, Sweden, 2024.</li>
-        <li>Morales M, <strong>Bekele YW.</strong> Digitalization in rock mechanics: A parametric design for numerical models in Norway. <em>ISRM Nordic Rock Mechanics Symposium (NRMS)</em>, 2023.</li>
-        <li><strong>Bekele YW</strong>, Sinitsyn A. Risk Analysis of the Impact of Natural Hazards on Cultural Heritage. Development of a Risk Assessment Tool. <em>SINTEF</em>, 2023.</li>
-        <li><strong>Bekele YW</strong>, Fonn E, Kvamsdal T, Kvarving AM, Nordal S. Mixed Method for Isogeometric Analysis of Coupled Flow and Deformation in Poroelastic Media. <em>Applied Sciences</em> 12(6):2915, 2022.</li>
-        <li>Piciullo L, <strong>Bekele YW</strong>, Depina I, Nadim F, Langford J. A management tool to reduce the risk of damage caused by geotechnical groundworks. <em>IOP Conference Series: Earth and Environmental Science</em> 710(1), 012073, 2021.</li>
-        <li><strong>Bekele YW.</strong> Physics-informed deep learning for one-dimensional consolidation. <em>Journal of Rock Mechanics and Geotechnical Engineering</em> 13(2), 420-430, 2021.</li>
-        <li><strong>Bekele YW.</strong> Physics-informed deep learning for flow and deformation in poroelastic media. <em>arXiv preprint arXiv:2010.15426</em>, 2020.</li>
-        <li><strong>Bekele YW</strong>, Kyokawa H, Kvarving AM, Kvamsdal T, Nordal S. Isogeometric analysis of THM coupled processes in ground freezing. <em>Computers and Geotechnics</em> 88, 129-145, 2017.</li>
-        <li><strong>Bekele YW</strong>, Kvamsdal T, Kvarving AM, Nordal S. Adaptive isogeometric finite element analysis of steady-state groundwater flow. <em>International Journal for Numerical and Analytical Methods in Geomechanics</em> 40(5):738-765, 2016.</li>
-        <li><strong>Bekele YW.</strong> Isogeometric Analysis of Coupled Problems in Porous Media. <em>NTNU PhD Thesis</em>, 2016.</li>
-    </ul>
 </div>
