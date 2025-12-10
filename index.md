@@ -7,158 +7,82 @@ show_title: false
 ---
 
 <div class="hero">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-logo">
-        <h1 class="hero-title">Yared W. Bekele</h1>
-        <p class="hero-tagline">Research Scientist &amp; Geotechnical Engineer</p>
-      </div>
-      <p class="hero-summary">
-        I am a research scientist specializing in computational geomechanics, coupled hydro-thermo-mechanical modelling, and physics-informed machine learning for geotechnical applications. My work bridges rigorous numerical methods with practical engineering challenges in slope stability, underground construction, and climate adaptation of infrastructure.
-      </p>
-      <div class="hero-actions">
-        <a class="button" href="{{ '/resume/' | relative_url }}">Curriculum Vitae</a>
-        <a class="button button--ghost" href="https://scholar.google.com/citations?user=-QkPGDYAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>
-      </div>
-    </div>
+  <h1 class="hero-title">Yared W. Bekele</h1>
+  <p class="hero-tagline">Research Scientist · Computational Geomechanics · PhD</p>
+  <p class="hero-summary">
+    I develop numerical methods and machine learning approaches for geotechnical engineering problems. My research focuses on coupled processes in porous media, physics-informed neural networks, and tools that bridge rigorous mechanics with practical engineering applications.
+  </p>
+  <div class="hero-links">
+    <a href="https://scholar.google.com/citations?user=-QkPGDYAAAAJ&hl=en">Google Scholar</a>
+    <a href="https://github.com/yaredwb">GitHub</a>
+    <a href="https://www.linkedin.com/in/yaredworku/">LinkedIn</a>
   </div>
 </div>
 
 <section class="section">
-  <div class="section-header">
-    <h2 class="section-title">Research Areas</h2>
-    <p class="section-lead">My research focuses on advancing computational methods and AI-enabled tools for geotechnical engineering and porous media mechanics.</p>
-  </div>
+  <h2 class="section-title">Explore</h2>
   <div class="card-grid">
     <article class="card">
-      <h3>Computational Geomechanics</h3>
-      <p>Finite element and isogeometric analysis of coupled hydro-mechanical and thermo-hydro-mechanical processes in soils and rocks, with applications to slope stability and geothermal systems.</p>
+      <h3><a href="{{ '/research/' | relative_url }}">Research</a></h3>
+      <p>Computational geomechanics, physics-informed neural networks, and coupled hydro-thermo-mechanical modelling.</p>
     </article>
     <article class="card">
-      <h3>Physics-Informed Machine Learning</h3>
-      <p>Development of physics-informed neural networks for consolidation, poroelasticity, and other geomechanical boundary value problems.</p>
+      <h3><a href="{{ '/resume/' | relative_url }}">Publications</a></h3>
+      <p>Journal articles, conference papers, and technical reports on numerical methods and machine learning for geoscience.</p>
     </article>
     <article class="card">
-      <h3>Research Software Development</h3>
-      <p>Building well-documented Python and C++ codebases with testing and automation that make research outputs reproducible and transferable.</p>
+      <h3><a href="{{ '/teaching/' | relative_url }}">Teaching</a></h3>
+      <p>Course materials and resources for numerical methods, scientific programming, and geotechnical engineering.</p>
     </article>
     <article class="card">
-      <h3>Teaching &amp; Supervision</h3>
-      <p>Courses, seminars, and student supervision in numerical methods, scientific programming, and applied geomechanics.</p>
+      <h3><a href="{{ '/blog/' | relative_url }}">Writing</a></h3>
+      <p>Notes on computational methods, technology, and occasional reflections from research and practice.</p>
     </article>
   </div>
-</section>
-
-<section class="section section--alt">
-  <div class="section-header section-header--split">
-    <div>
-      <h2 class="section-title">Recent Research</h2>
-      <p class="section-lead">Selected work at the intersection of computational geomechanics, data-driven modelling, and physics-informed neural networks.</p>
-    </div>
-    <a class="pill-link" href="{{ '/research/' | relative_url }}">All research notes</a>
-  </div>
-  {% assign spotlight = site.research | sort: 'date' | reverse %}
-  {% if spotlight.size > 0 %}
-  <div class="spotlight-grid">
-    {% for post in spotlight limit: 1 %}
-    <article class="spotlight-card">
-      <span class="spotlight-card__eyebrow">{{ post.date | date: '%b %Y' }}</span>
-      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-      {% if post.excerpt %}
-      <p class="spotlight-card__summary">{{ post.excerpt | strip_html | truncatewords: 42 }}</p>
-      {% endif %}
-      {% if post.tags %}
-      <p class="spotlight-card-meta">{{ post.tags | join: ', ' }}</p>
-      {% endif %}
-    </article>
-    {% endfor %}
-  </div>
-  {% else %}
-  <div class="empty-state">
-    <h3>Research updates are on the way</h3>
-    <p>In the meantime, explore my <a href="{{ '/resume/' | relative_url }}">CV</a> or <a href="{{ '/blog/' | relative_url }}">notes</a>.</p>
-  </div>
-  {% endif %}
 </section>
 
 <section class="section">
-  <div class="section-header section-header--split">
-    <div>
-      <h2 class="section-title">Teaching &amp; Supervision</h2>
-      <p class="section-lead">Course materials, computational notebooks, and resources for students and engineers in geotechnical and computational mechanics.</p>
-    </div>
-    <a class="pill-link" href="{{ '/teaching/' | relative_url }}">Teaching resources</a>
-  </div>
-  {% assign teaching_posts = site.teaching | sort: 'date' | reverse %}
-  {% if teaching_posts.size > 0 %}
-  <ul class="post-list">
-    {% for post in teaching_posts limit: 1 %}
+  <h2 class="section-title">Selected Publications</h2>
+  <ul class="pub-list">
     <li>
-      <article class="post-card">
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
-        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-        {% if post.excerpt %}
-        <p>{{ post.excerpt | strip_html | truncatewords: 32 }}</p>
-        {% endif %}
-        {% if post.tags %}
-        <p class="post-card-meta">{{ post.tags | join: ', ' }}</p>
-        {% endif %}
-      </article>
+      <span class="pub-title">Physics-informed deep learning for one-dimensional consolidation.</span>
+      <span class="pub-venue">Journal of Rock Mechanics and Geotechnical Engineering</span>, 
+      <span class="pub-year">2021</span>
     </li>
-    {% endfor %}
+    <li>
+      <span class="pub-title">Mixed Method for Isogeometric Analysis of Coupled Flow and Deformation in Poroelastic Media.</span>
+      <span class="pub-venue">Applied Sciences</span>, 
+      <span class="pub-year">2022</span>
+    </li>
+    <li>
+      <span class="pub-title">Isogeometric analysis of THM coupled processes in ground freezing.</span>
+      <span class="pub-venue">Computers and Geotechnics</span>, 
+      <span class="pub-year">2017</span>
+    </li>
+    <li>
+      <span class="pub-title">Adaptive isogeometric finite element analysis of steady-state groundwater flow.</span>
+      <span class="pub-venue">Int. J. for Numerical and Analytical Methods in Geomechanics</span>, 
+      <span class="pub-year">2016</span>
+    </li>
   </ul>
-  {% else %}
-  <div class="empty-state">
-    <h3>Teaching materials coming soon</h3>
-    <p>New lectures and tutorial notebooks are being prepared.</p>
-  </div>
-  {% endif %}
+  <p style="margin-top: var(--space-md);"><a href="{{ '/resume/' | relative_url }}#selected-publications">View all publications →</a></p>
 </section>
 
-<section class="section section--alt">
-  <div class="section-header section-header--split">
-    <div>
-      <h2 class="section-title">Notes &amp; Essays</h2>
-      <p class="section-lead">Occasional reflections on computational methods, technology, and lessons from research and practice.</p>
-    </div>
-    <a class="pill-link" href="{{ '/blog/' | relative_url }}">All posts</a>
-  </div>
+<section class="section">
+  <h2 class="section-title">Recent Notes</h2>
   {% assign recent_posts = site.posts | sort: 'date' | reverse %}
   {% if recent_posts.size > 0 %}
   <ul class="post-list">
-    {% for post in recent_posts limit: 1 %}
+    {% for post in recent_posts limit: 3 %}
     <li>
       <article class="post-card">
         <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
         <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-        {% if post.excerpt %}
-        <p>{{ post.excerpt | strip_html | truncatewords: 32 }}</p>
-        {% endif %}
-        {% if post.categories %}
-        <p class="post-card-meta">{{ post.categories | join: ', ' }}</p>
-        {% endif %}
       </article>
     </li>
     {% endfor %}
   </ul>
-  <div class="section-cta">
-    <a class="pill-link" href="{{ '/archive/' | relative_url }}">Archive</a>
-  </div>
   {% else %}
-  <div class="empty-state">
-    <h3>Writing will appear soon</h3>
-    <p>Subscribe via RSS or follow along on <a href="https://x.com/yaredwb">Twitter/X</a>.</p>
-  </div>
+  <p class="empty-state">New posts coming soon.</p>
   {% endif %}
-</section>
-
-<section class="section">
-  <div class="cta-panel">
-    <h2>Contact</h2>
-    <p>I welcome inquiries about research collaboration, student supervision, or consulting on computational geomechanics projects.</p>
-    <div class="hero-actions">
-      <a class="button" href="mailto:yaredworku@gmail.com">Email</a>
-      <a class="button button--ghost" href="{{ '/resume/' | relative_url }}">View CV</a>
-    </div>
-  </div>
 </section>

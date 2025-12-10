@@ -16,14 +16,14 @@
   <meta property="og:site_name" content="{{ site.title }}">
   
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="{% if page.title %}{{ page.title }} &middot; {% endif %}{{ site.title }}">
   <meta name="twitter:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% elsif page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
 
-  <!-- Preconnect to external resources -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Signika:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}">
@@ -45,19 +45,17 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
   
-  <!-- Theme color for mobile browsers -->
-  <meta name="theme-color" content="#3182ce">
-  <meta name="msapplication-TileColor" content="#3182ce">
+  <meta name="theme-color" content="#2563eb">
 </head>
-<body class="site-body {% if page.page_class %}{{ page.page_class }}{% endif %}">
+<body class="{% if page.page_class %}{{ page.page_class }}{% endif %}">
   <a class="skip-link" href="#content">Skip to content</a>
-  <header class="site-header" role="banner">
+  
+  <header class="site-header">
     <div class="container">
       <div class="site-brand">
         <a class="brand-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-        {% assign tagline = site.brand_tagline | default: site.description %}
-        {% if tagline %}
-        <p class="brand-tagline">{{ tagline }}</p>
+        {% if site.brand_tagline %}
+        <p class="brand-tagline">{{ site.brand_tagline }}</p>
         {% endif %}
       </div>
       <div class="site-controls">
@@ -106,33 +104,18 @@
     </div>
   </main>
 
-  <footer class="site-footer" role="contentinfo">
+  <footer class="site-footer">
     <div class="container">
-      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}.</p>
+      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
       <p>
-        <a href="{{ '/blog/' | relative_url }}">Latest Writing</a> &middot; 
-        <a href="{{ '/research/' | relative_url }}">Research</a> &middot; 
-        <a href="{{ '/teaching/' | relative_url }}">Teaching</a> &middot; 
-        <a href="{{ '/resume/' | relative_url }}">CV</a>
+        <a href="{{ '/research/' | relative_url }}">Research</a> · 
+        <a href="{{ '/teaching/' | relative_url }}">Teaching</a> · 
+        <a href="{{ '/resume/' | relative_url }}">CV</a> · 
+        <a href="{{ '/blog/' | relative_url }}">Writing</a>
       </p>
     </div>
   </footer>
 
-  <!-- Performance optimization -->
-  <script>
-    // Improve loading performance
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(function() {
-        // Lazy load non-critical resources
-        const links = document.querySelectorAll('a[href^="http"]');
-        links.forEach(link => {
-          if (!link.getAttribute('target')) {
-            link.setAttribute('rel', 'noopener noreferrer');
-          }
-        });
-      });
-    }
-  </script>
   <script>
     (function() {
       const storageKey = 'preferred-color-scheme';
