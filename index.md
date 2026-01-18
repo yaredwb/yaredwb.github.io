@@ -1,7 +1,7 @@
 ---
 layout: default
 title: About
-permalink: /
+permalink: /about/
 page_class: home
 show_title: false
 ---
@@ -18,7 +18,7 @@ show_title: false
       </p>
       <div class="hero-actions">
         <a class="button" href="{{ '/resume/' | relative_url }}">View Resume</a>
-        <a class="button button--ghost" href="{{ '/research/' | relative_url }}">Explore Research</a>
+        <a class="button button--ghost" href="{{ '/' | relative_url }}">Explore Research</a>
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@ show_title: false
       <h2 class="section-title">Research Spotlight</h2>
       <p class="section-lead">Selected work at the intersection of computational geomechanics, data-driven modelling, and generative AI tooling.</p>
     </div>
-    <a class="pill-link" href="{{ '/research/' | relative_url }}">See all research</a>
+    <a class="pill-link" href="{{ '/' | relative_url }}">See all research</a>
   </div>
   {% assign spotlight = site.research | sort: 'date' | reverse %}
   {% if spotlight.size > 0 %}
@@ -142,12 +142,12 @@ show_title: false
     {% endfor %}
   </ul>
   <div class="section-cta">
-    <a class="pill-link" href="{{ '/archive/' | relative_url }}">View the full archive</a>
+    <a class="pill-link" href="{{ '/blog/' | relative_url }}">View the full archive</a>
   </div>
   {% else %}
   <div class="empty-state">
     <h3>Writing will appear soon</h3>
-    <p>I'm curating new essays and field notes&mdash;subscribe via RSS or follow along on <a href="https://x.com/yaredwb">Twitter/X</a>.</p>
+    <p>I'm curating new essays and field notes&mdash;follow along on <a href="https://x.com/yaredwb">Twitter/X</a>.</p>
   </div>
   {% endif %}
 </section>

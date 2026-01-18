@@ -995,7 +995,7 @@ html[data-theme="dark"] .cta-panel {
 
 .post-content {
   display: grid;
-  gap: 1.6em;
+  gap: 1em;
   color: var(--color-text-secondary);
 }
 
@@ -1003,27 +1003,61 @@ html[data-theme="dark"] .cta-panel {
   margin-top: 0;
 }
 
-.post-content h2 {
-  margin-top: 2.4em;
+.post-content h1,
+.post-content h2,
+.post-content h3 {
+  position: relative;
+}
+
+.post-content h1 {
+  margin-top: 0.8em;
   font-size: 1.85rem;
   font-weight: 700;
-  position: relative;
+}
+
+.post-content h1::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: var(--color-accent);
+  border-radius: var(--radius-xs);
+}
+
+.post-content h2 {
+  margin-top: 0.6em;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .post-content h2::after {
   content: "";
   position: absolute;
-  bottom: -10px;
+  bottom: -5px;
   left: 0;
-  width: 46px;
+  width: 40px;
   height: 3px;
   background: var(--color-accent);
   border-radius: var(--radius-xs);
 }
 
 .post-content h3 {
-  margin-top: 2em;
-  font-size: 1.4rem;
+  margin-top: 0.5em;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.post-content h3::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: var(--color-accent);
+  border-radius: var(--radius-xs);
 }
 
 .post-content img {

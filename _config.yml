@@ -28,16 +28,16 @@ collections:
     permalink: /teaching/:title/
 
 nav:
-  - title: About
-    url: /
-  - title: CV
-    url: /resume/
   - title: Research
-    url: /research/
+    url: /
   - title: Teaching
     url: /teaching/
   - title: Writing
     url: /blog/
+  - title: CV
+    url: /resume/
+  - title: About
+    url: /about/
 
 defaults:
   - scope:
@@ -70,3 +70,4 @@ exclude:
   - "*.tmp"
   - "*_preview.html"
   - preview.html
+  - vendor

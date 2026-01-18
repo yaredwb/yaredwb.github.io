@@ -31,7 +31,7 @@ show_title: false
   {% else %}
   <div class="empty-state">
     <h3>No posts yet</h3>
-    <p>Fresh writing is in the works. Subscribe to the <a href="{{ '/feed.xml' | relative_url }}">RSS feed</a> to be notified when new pieces are published.</p>
+    <p>Fresh writing is in the works. Follow along on <a href="https://x.com/yaredwb">Twitter/X</a> to be notified when new pieces are published.</p>
   </div>
   {% endif %}
 </section>
@@ -39,10 +39,10 @@ show_title: false
 <section class="section section--alt">
   <div class="cta-panel">
     <h2>Stay in the loop.</h2>
-    <p>Subscribe via RSS or follow along on <a href="https://x.com/yaredwb">Twitter/X</a> for new articles, project breakdowns, and teaching updates.</p>
+    <p>Follow along on <a href="https://x.com/yaredwb">Twitter/X</a> for new articles, project breakdowns, and teaching updates.</p>
     <div class="hero-actions">
-      <a class="button" href="{{ '/feed.xml' | relative_url }}">Subscribe via RSS</a>
-      <a class="button button--ghost" href="{{ '/archive/' | relative_url }}">Browse the archive</a>
+      <a class="button" href="https://x.com/yaredwb">Follow on X</a>
+      <a class="button button--ghost" href="{{ '/' | relative_url }}">Explore research</a>
     </div>
   </div>
 </section>

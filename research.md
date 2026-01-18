@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Research
-permalink: /research/
+permalink: /
+page_class: home
 show_title: false
 ---
 

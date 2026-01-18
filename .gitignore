@@ -2,6 +2,9 @@
 _site/
 .sass-cache/
 .jekyll-metadata
+vendor/
+.bundle/
 
 # Other
 .DS_Store
+*.Zone.Identifier

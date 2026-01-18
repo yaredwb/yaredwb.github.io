@@ -42,7 +42,7 @@ show_title: false
     <p>From hands-on Python for engineers to applied AI in design offices, I craft sessions that meet people where they are and deliver usable skills.</p>
     <div class="hero-actions">
       <a class="button" href="mailto:yaredworku@gmail.com">Discuss a workshop</a>
-      <a class="button button--ghost" href="{{ '/blog/' | relative_url }}">Preview my approach</a>
+      <a class="button button--ghost" href="{{ '/resume/' | relative_url }}">View my credentials</a>
     </div>
   </div>
 </section>
