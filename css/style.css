@@ -1679,6 +1679,33 @@ html[data-theme="dark"] .site-footer {
     grid-template-columns: 1fr;
   }
 
+  /* Post card mobile improvements */
+  .post-card {
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+  }
+
+  .post-card h3 {
+    font-size: 1.2rem;
+    line-height: 1.4;
+  }
+
+  .post-card p {
+    font-size: 0.95rem;
+  }
+
+  .post-card time {
+    font-size: 0.82rem;
+  }
+
+  .post-card-meta {
+    font-size: 0.78rem;
+  }
+
+  .section-lead {
+    font-size: 1rem;
+  }
+
 }
 
 @media (max-width: 560px) {
@@ -1690,16 +1717,67 @@ html[data-theme="dark"] .site-footer {
     margin-bottom: var(--spacing-2xl);
   }
 
+  .section-title {
+    font-size: clamp(1.5rem, 6vw, 1.95rem);
+  }
+
+  .section-lead {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
   .card {
     padding: var(--spacing-lg);
   }
 
+  .post-list {
+    gap: var(--spacing-md);
+  }
+
   .post-card {
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    gap: var(--spacing-xs);
+  }
+
+  .post-card h3 {
+    font-size: 1.1rem;
+    line-height: 1.35;
+  }
+
+  .post-card p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .post-card time {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+  }
+
+  .post-card-meta {
+    font-size: 0.75rem;
+    margin-top: var(--spacing-2xs);
+  }
+
+  .post-card:hover {
+    transform: translateY(-2px);
   }
 
   .post-article {
     border-radius: var(--radius-xl);
+  }
+
+  .cta-panel {
+    padding: var(--spacing-lg);
+  }
+
+  .cta-panel h2 {
+    font-size: 1.3rem;
+  }
+
+  .cta-panel p {
+    font-size: 0.9rem;
   }
 
   .cv-title {
@@ -1713,6 +1791,63 @@ html[data-theme="dark"] .site-footer {
 
   .cv-card-list--inline {
     gap: var(--spacing-sm);
+  }
+}
+
+/* Very small screens */
+@media (max-width: 400px) {
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+  }
+
+  .section-lead {
+    font-size: 0.9rem;
+  }
+
+  .post-card {
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+  }
+
+  .post-card h3 {
+    font-size: 1rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .post-card p {
+    font-size: 0.85rem;
+  }
+
+  .post-card time {
+    font-size: 0.72rem;
+  }
+
+  .post-card-meta {
+    font-size: 0.7rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .hero-actions .button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .cta-panel {
+    padding: var(--spacing-md);
+  }
+
+  .cta-panel h2 {
+    font-size: 1.15rem;
   }
 }
 .spotlight-card h3 a {
