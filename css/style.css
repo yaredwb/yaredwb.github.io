@@ -997,6 +997,7 @@ html[data-theme="dark"] .cta-panel {
 
 .post-content {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1em;
   color: var(--color-text-secondary);
   overflow-x: hidden;
@@ -1774,7 +1775,7 @@ html[data-theme="dark"] .site-footer {
 
 @media (max-width: 960px) {
   .site-header .container {
-    padding: var(--spacing-md) 0;
+    padding: var(--spacing-md) var(--spacing-md);
     gap: var(--spacing-lg);
   }
 
@@ -1820,11 +1821,30 @@ html[data-theme="dark"] .site-footer {
   .site-header .container {
     flex-direction: column;
     align-items: flex-start;
+    position: relative;
   }
 
   .site-controls {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
+  }
+
+  /* Position theme toggle in top right on mobile */
+  .theme-toggle {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .theme-toggle:hover,
+  .theme-toggle:focus-visible {
+    background: var(--color-surface-elevated);
+    border-color: var(--color-border);
   }
 
   .site-nav ul {
@@ -1834,11 +1854,6 @@ html[data-theme="dark"] .site-footer {
   .site-nav a {
     font-size: 0.9rem;
     padding: var(--spacing-xs) var(--spacing-sm);
-  }
-
-  .theme-toggle {
-    width: 40px;
-    height: 40px;
   }
 
   .hero {
