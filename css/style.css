@@ -1112,6 +1112,160 @@ html[data-theme="dark"] .cta-panel {
   max-width: 100%;
 }
 
+/* ============================================
+   MOBILE-FRIENDLY EQUATIONS (MathJax)
+   ============================================ */
+
+/* MathJax display equations - scrollable container */
+.post-content mjx-container[jax="CHTML"][display="true"] {
+  display: block !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding: var(--spacing-sm) 0;
+  margin: var(--spacing-md) 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Inline equations - prevent overflow */
+.post-content mjx-container[jax="CHTML"]:not([display="true"]) {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  vertical-align: middle;
+}
+
+/* Style scrollbar for equation containers */
+.post-content mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar {
+  height: 4px;
+}
+
+.post-content mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-track {
+  background: var(--color-border-light);
+  border-radius: 2px;
+}
+
+.post-content mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
+  background: var(--color-accent-soft);
+  border-radius: 2px;
+}
+
+/* ============================================
+   MOBILE-FRIENDLY IMAGES
+   ============================================ */
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--spacing-lg) auto;
+}
+
+.post-content figure {
+  max-width: 100%;
+  margin: var(--spacing-lg) 0;
+  overflow: hidden;
+}
+
+.post-content figure img {
+  margin: 0 auto;
+}
+
+.post-content figcaption {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  margin-top: var(--spacing-sm);
+  font-style: italic;
+}
+
+/* ============================================
+   MOBILE-FRIENDLY CODE BLOCKS
+   ============================================ */
+
+.post-content pre {
+  overflow-x: auto;
+  max-width: 100%;
+  padding: var(--spacing-md);
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  font-size: 0.9em;
+  line-height: 1.5;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content pre code {
+  white-space: pre;
+  word-wrap: normal;
+  overflow-wrap: normal;
+}
+
+.post-content code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-accent-soft);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-xs);
+}
+
+.post-content pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Code block scrollbar styling */
+.post-content pre::-webkit-scrollbar {
+  height: 6px;
+}
+
+.post-content pre::-webkit-scrollbar-track {
+  background: var(--color-border-light);
+  border-radius: 3px;
+}
+
+.post-content pre::-webkit-scrollbar-thumb {
+  background: var(--color-muted-soft);
+  border-radius: 3px;
+}
+
+/* ============================================
+   MOBILE-FRIENDLY TABLES
+   ============================================ */
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--spacing-lg) 0;
+  font-size: 0.95em;
+}
+
+/* Wrap tables in scrollable container */
+.post-content .table-wrapper,
+.post-content div:has(> table) {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content table th,
+.post-content table td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.post-content table th {
+  background: var(--color-surface-elevated);
+  font-weight: 600;
+}
+
+.post-content table tr:nth-child(even) {
+  background: var(--color-page-alt);
+}
+
 .post-footer {
   margin-top: var(--spacing-2xl);
   padding-top: var(--spacing-xl);
@@ -1867,6 +2021,63 @@ html[data-theme="dark"] .site-footer {
     font-size: 0.95rem;
   }
 
+  /* Mobile equation styling */
+  .post-content mjx-container[jax="CHTML"][display="true"] {
+    font-size: 0.85em;
+    padding: var(--spacing-xs) 0;
+    margin: var(--spacing-sm) calc(-1 * var(--spacing-xs));
+    padding-left: var(--spacing-xs);
+    padding-right: var(--spacing-xs);
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      transparent calc(100% - 30px), 
+      rgba(37, 99, 235, 0.05) 100%);
+  }
+
+  /* Visual hint for scrollable equations */
+  .post-content mjx-container[jax="CHTML"][display="true"]::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(90deg, transparent, var(--color-surface) 80%);
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  /* Mobile code block styling */
+  .post-content pre {
+    font-size: 0.8em;
+    padding: var(--spacing-sm);
+    margin-left: calc(-1 * var(--spacing-xs));
+    margin-right: calc(-1 * var(--spacing-xs));
+    border-radius: var(--radius-sm);
+  }
+
+  .post-content code {
+    font-size: 0.85em;
+    padding: 0.1em 0.3em;
+  }
+
+  /* Mobile image constraints */
+  .post-content img {
+    margin: var(--spacing-md) auto;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Mobile table styling */
+  .post-content table {
+    font-size: 0.85em;
+    margin: var(--spacing-md) 0;
+  }
+
+  .post-content table th,
+  .post-content table td {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
   .post-footer {
     flex-direction: column;
     gap: var(--spacing-sm);
@@ -1980,6 +2191,35 @@ html[data-theme="dark"] .site-footer {
   .post-content blockquote {
     padding: var(--spacing-sm) var(--spacing-md);
     font-size: 0.9rem;
+  }
+
+  /* Very small screen equation styling */
+  .post-content mjx-container[jax="CHTML"][display="true"] {
+    font-size: 0.75em;
+  }
+
+  .post-content mjx-container[jax="CHTML"]:not([display="true"]) {
+    font-size: 0.85em;
+  }
+
+  /* Very small screen code styling */
+  .post-content pre {
+    font-size: 0.75em;
+    padding: var(--spacing-xs);
+  }
+
+  .post-content code {
+    font-size: 0.8em;
+  }
+
+  /* Very small screen table styling */
+  .post-content table {
+    font-size: 0.8em;
+  }
+
+  .post-content table th,
+  .post-content table td {
+    padding: var(--spacing-2xs) var(--spacing-xs);
   }
 
   .video-item h3 {
