@@ -1765,6 +1765,11 @@ html[data-theme="dark"] .site-footer {
     padding: 0 var(--spacing-xs);
   }
 
+  /* Reduce gap between nav and content on mobile */
+  .site-content {
+    padding: var(--spacing-xl) 0 var(--spacing-2xl);
+  }
+
   .hero-title {
     font-size: clamp(2.5rem, 9vw, 3.1rem);
   }
@@ -1820,9 +1825,13 @@ html[data-theme="dark"] .site-footer {
     transform: translateY(-2px);
   }
 
+  /* Remove card styling on mobile - content only */
   .post-article {
-    border-radius: var(--radius-md);
-    padding: var(--spacing-md);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
   }
 
   .post-header h1 {
@@ -1945,12 +1954,6 @@ html[data-theme="dark"] .site-footer {
 
   .cta-panel h2 {
     font-size: 1.15rem;
-  }
-
-  /* Post article styles for very small screens */
-  .post-article {
-    padding: var(--spacing-sm);
-    border-radius: var(--radius-sm);
   }
 
   .post-header h1 {
