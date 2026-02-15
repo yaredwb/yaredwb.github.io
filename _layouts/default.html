@@ -47,6 +47,29 @@
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+
+  <!-- Mermaid.js -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      // Find all code blocks with language-mermaid
+      // Jekyll often adds this class to the outer div
+      const mermaidBlocks = document.querySelectorAll('.language-mermaid');
+      
+      mermaidBlocks.forEach(block => {
+        const content = block.innerText || block.textContent;
+        const div = document.createElement('div');
+        div.className = 'mermaid';
+        div.textContent = content;
+        block.parentNode.replaceChild(div, block);
+      });
+      
+      mermaid.initialize({ startOnLoad: true });
+    });
+  </script>
+  
+
   
   <!-- Theme color for mobile browsers -->
   <meta name="theme-color" content="#3182ce">
@@ -124,18 +147,15 @@
 
   <!-- Performance optimization -->
   <script>
-    // Improve loading performance
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(function() {
-        // Lazy load non-critical resources
-        const links = document.querySelectorAll('a[href^="http"]');
-        links.forEach(link => {
-          if (!link.getAttribute('target')) {
-            link.setAttribute('rel', 'noopener noreferrer');
-          }
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+      const links = document.querySelectorAll('a');
+      links.forEach(link => {
+        if (link.hostname && link.hostname !== window.location.hostname) {
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener noreferrer');
+        }
       });
-    }
+    });
   </script>
   <script>
     (function() {
