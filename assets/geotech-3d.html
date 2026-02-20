@@ -13,15 +13,37 @@
     <style>
         body { margin: 0; overflow: hidden; background-color: #0f172a; font-family: 'Inter', sans-serif; color: white; }
         
-        #main-grid {
-            position: absolute; top: 0; left: 20rem; width: calc(100vw - 20rem); height: 100vh;
-            display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; z-index: 1;
+        #main-container {
+            display: flex; flex-direction: column; width: 100vw; height: 100vh; overflow-y: auto; overflow-x: hidden;
         }
 
-        .quadrant { position: relative; width: 100%; height: 100%; overflow: hidden; }
+        @media (min-width: 1024px) {
+            #main-container { flex-direction: row; overflow: hidden; }
+        }
+
+        #main-grid {
+            flex: 1; display: grid; grid-template-columns: 1fr; grid-auto-rows: minmax(300px, 50vh); z-index: 1; width: 100%;
+        }
+
+        @media (min-width: 1024px) {
+            #main-grid {
+                width: calc(100vw - 20rem); height: 100vh;
+                grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+            }
+        }
+
+        .quadrant { position: relative; width: 100%; height: 100%; min-height: 350px; overflow: hidden; }
         .plotly-container { width: 100%; height: 100%; }
 
-        #ui-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 10; pointer-events: none; display: flex; }
+        #ui-layer {
+            width: 100%; z-index: 10; display: flex; flex-direction: column; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (min-width: 1024px) {
+            #ui-layer { position: absolute; top: 0; left: 0; width: 20rem; height: 100vh; pointer-events: none; border-bottom: none; }
+        }
+
         .pointer-events-auto { pointer-events: auto; }
         
         ::-webkit-scrollbar { width: 6px; }
@@ -44,60 +66,63 @@
 </head>
 <body>
 
-    <div id="main-grid">
-        <!-- Q1: 3D Visualization -->
-        <div id="q1" class="quadrant border-b border-r border-slate-700/60">
-            <span class="quad-title">3D Principal Stress</span>
-            <div id="label-s1" class="stress-label text-red-400">σ₁</div>
-            <div id="label-s2" class="stress-label text-green-400">σ₂</div>
-            <div id="label-s3" class="stress-label text-blue-400">σ₃</div>
-            <div id="label-hydro" class="stress-label text-slate-300 opacity-70">Hydro</div>
-        </div>
-
-        <!-- Q2: Pi-Plane Plot (Swapped with Biaxial) -->
-        <div id="q2" class="quadrant border-b border-slate-700/60">
-            <span class="quad-title">π-Plane (Deviatoric)</span>
-            <div id="plot-pi" class="plotly-container"></div>
-        </div>
-
-        <!-- Q3: p-q Plot -->
-        <div id="q3" class="quadrant border-r border-slate-700/60">
-            <span class="quad-title">p - q Plane (Triaxial)</span>
-            <div id="plot-pq" class="plotly-container"></div>
-        </div>
-
-        <!-- Q4: Biaxial Plot (Swapped with Pi-Plane) -->
-        <div id="q4" class="quadrant">
-            <span class="quad-title">σ₁ - σ₃ Plane (σ₂ = 0)</span>
-            <div id="plot-s1s3" class="plotly-container"></div>
-        </div>
-    </div>
-
-    <!-- UI Overlay -->
-    <div id="ui-layer">
-        <div class="glass-panel w-80 h-full flex flex-col pointer-events-auto overflow-y-auto shadow-2xl">
-            <div class="p-6 pb-2">
-                <div class="flex items-center gap-3 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-9 5-9-5"/><path d="m21 8-9 5-9-5"/><path d="m3 8 9-5 9 5"/></svg>
-                    <h1 class="text-xl font-bold tracking-tight">Geotech 3D</h1>
+    <div id="main-container">
+        <!-- UI Overlay -->
+        <div id="ui-layer">
+            <div class="glass-panel w-full lg:w-80 h-auto lg:h-full flex flex-col pointer-events-auto overflow-y-auto lg:shadow-2xl">
+                <div class="p-6 pb-2">
+                    <div class="flex items-center gap-3 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-9 5-9-5"/><path d="m21 8-9 5-9-5"/><path d="m3 8 9-5 9 5"/></svg>
+                        <h1 class="text-xl font-bold tracking-tight">Geotech 3D</h1>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-6">Constitutive Models in Principal Stress Space</p>
                 </div>
-                <p class="text-xs text-slate-400 mb-6">Constitutive Models in Principal Stress Space</p>
+
+                <!-- On mobile, make models a horizontal scrollable row if needed, or simple grid -->
+                <div class="px-4 grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-col gap-2 mb-4 lg:mb-0 lg:flex-1 w-full" id="model-buttons"></div>
+
+                <div class="p-6 mt-0 lg:mt-4 border-t border-slate-700/50 bg-slate-900/40">
+                    <h2 class="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-2" id="info-title">Model Name</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed mb-4" id="info-desc">Description goes here.</p>
+                    
+                    <div id="parameter-controls" class="mb-4 space-y-4"></div>
+
+                    <div class="flex items-center justify-end mt-4 pt-4 border-t border-slate-700/50">
+                        <label class="flex items-center space-x-2 cursor-pointer text-sm text-slate-300">
+                            <input type="checkbox" id="wireframe-toggle" class="rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500">
+                            <span>Wireframe Mesh</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-grid">
+            <!-- Q1: 3D Visualization -->
+            <div id="q1" class="quadrant border-b lg:border-r border-slate-700/60">
+                <span class="quad-title">3D Principal Stress</span>
+                <div id="label-s1" class="stress-label text-red-400">σ₁</div>
+                <div id="label-s2" class="stress-label text-green-400">σ₂</div>
+                <div id="label-s3" class="stress-label text-blue-400">σ₃</div>
+                <div id="label-hydro" class="stress-label text-slate-300 opacity-70">Hydro</div>
             </div>
 
-            <div class="flex-1 px-4 space-y-2" id="model-buttons"></div>
+            <!-- Q2: Pi-Plane Plot (Swapped with Biaxial) -->
+            <div id="q2" class="quadrant border-b border-slate-700/60">
+                <span class="quad-title">π-Plane (Deviatoric)</span>
+                <div id="plot-pi" class="plotly-container"></div>
+            </div>
 
-            <div class="p-6 mt-4 border-t border-slate-700/50 bg-slate-900/40">
-                <h2 class="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-2" id="info-title">Model Name</h2>
-                <p class="text-sm text-slate-300 leading-relaxed mb-4" id="info-desc">Description goes here.</p>
-                
-                <div id="parameter-controls" class="mb-4 space-y-4"></div>
+            <!-- Q3: p-q Plot -->
+            <div id="q3" class="quadrant border-b lg:border-b-0 lg:border-r border-slate-700/60">
+                <span class="quad-title">p - q Plane (Triaxial)</span>
+                <div id="plot-pq" class="plotly-container"></div>
+            </div>
 
-                <div class="flex items-center justify-end mt-4 pt-4 border-t border-slate-700/50">
-                    <label class="flex items-center space-x-2 cursor-pointer text-sm text-slate-300">
-                        <input type="checkbox" id="wireframe-toggle" class="rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500">
-                        <span>Wireframe Mesh</span>
-                    </label>
-                </div>
+            <!-- Q4: Biaxial Plot (Swapped with Pi-Plane) -->
+            <div id="q4" class="quadrant">
+                <span class="quad-title">σ₁ - σ₃ Plane (σ₂ = 0)</span>
+                <div id="plot-s1s3" class="plotly-container"></div>
             </div>
         </div>
     </div>
@@ -532,12 +557,22 @@
             camera.aspect = q1Element.clientWidth / q1Element.clientHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(q1Element.clientWidth, q1Element.clientHeight);
-            Plotly.Plots.resize('plot-pq');
-            Plotly.Plots.resize('plot-s1s3');
-            Plotly.Plots.resize('plot-pi');
+            
+            // Recompute plotting extents safely without jumping
+            clearTimeout(window.resizeTimer);
+            window.resizeTimer = setTimeout(() => {
+                update2DPlots();
+                Plotly.Plots.resize('plot-pq');
+                Plotly.Plots.resize('plot-s1s3');
+                Plotly.Plots.resize('plot-pi');
+            }, 100); // Debounce
         });
 
-        window.onload = animate;
+        // Initialize properly
+        window.addEventListener('load', () => {
+            update2DPlots(); 
+            animate();
+        });
     </script>
 </body>
 </html>
