@@ -14,15 +14,15 @@
         body { margin: 0; overflow: hidden; background-color: #0f172a; font-family: 'Inter', sans-serif; color: white; }
         
         #main-container {
-            display: flex; flex-direction: column; width: 100vw; height: 100vh; overflow-y: auto; overflow-x: hidden;
+            display: flex; flex-direction: column; width: 100vw; min-height: 100vh; overflow-x: hidden;
         }
 
         @media (min-width: 1024px) {
-            #main-container { flex-direction: row; overflow: hidden; }
+            #main-container { flex-direction: row; height: 100vh; overflow: hidden; }
         }
 
         #main-grid {
-            flex: 1; display: grid; grid-template-columns: 1fr; grid-auto-rows: minmax(300px, 50vh); z-index: 1; width: 100%;
+            flex: 1; display: grid; grid-template-columns: 1fr; grid-auto-rows: minmax(400px, auto); z-index: 1; width: 100%;
         }
 
         @media (min-width: 1024px) {
