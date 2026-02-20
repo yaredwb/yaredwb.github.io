@@ -119,9 +119,9 @@
                 <div id="plot-pq" class="plotly-container"></div>
             </div>
 
-            <!-- Q4: Biaxial Plot (Swapped with Pi-Plane) -->
+            <!-- Q4: Sigma 1 - Sigma 3 Plot (Triaxial) -->
             <div id="q4" class="quadrant">
-                <span class="quad-title">σ₁ - σ₃ Plane (σ₂ = 0)</span>
+                <span class="quad-title">σ₁ - σ₃ Plane (σ₂ = σ₃)</span>
                 <div id="plot-s1s3" class="plotly-container"></div>
             </div>
         </div>
@@ -223,8 +223,8 @@
         }, {responsive: true, displayModeBar: false, scrollZoom: false, staticPlot: false, doubleClick: false});
 
         Plotly.newPlot('plot-s1s3', [], { ...commonLayout, 
-            xaxis: { ...axStyle, title: 'σ₃ (kPa)', autorange: true, fixedrange: true },
-            yaxis: { ...axStyle, title: 'σ₁ (kPa)', autorange: true, scaleanchor: 'x', fixedrange: true }
+            xaxis: { ...axStyle, title: 'σ₃ (kPa)', fixedrange: true },
+            yaxis: { ...axStyle, title: 'σ₁ (kPa)', fixedrange: true, scaleanchor: 'x', scaleratio: 1, rangemode: 'tozero' }
         }, {responsive: true, displayModeBar: false, scrollZoom: false, staticPlot: false, doubleClick: false});
 
         // Removed static paper-based annotations
@@ -300,16 +300,19 @@
                 return { x: xArr, y: yArr, z: zArr };
             };
 
-            // --- 2. σ1-σ3 Biaxial Plane Contour ---
+            // --- 2. σ1-σ3 Plane (Triaxial, σ2 = σ3) Contour ---
             const layoutS = document.getElementById('plot-s1s3').layout;
-            layoutS.xaxis.range = [-50, maxExtentS];
-            layoutS.yaxis.range = [-50, maxExtentS];
+            layoutS.xaxis.range = [-20, maxExtentS];
+            layoutS.yaxis.range = [-20, maxExtentS * 1.5]; // Extra height to account for sig1 > sig3
 
-            const dataS = generateContour([-50, maxExtentS], [-50, maxExtentS], (x, y) => evaluateYieldFunction(y, 0, x, currentModelId, params));
-            Plotly.react('plot-s1s3', [{
-                x: dataS.x, y: dataS.y, z: dataS.z, type: 'contour', 
-                contours: {start:0, end:0, coloring: 'none'}, line: {color: colorStr, width: 3}
-            }], layoutS);
+            // Triaxial conditions: sig2 = sig3 = x. sig1 = y.
+            const dataS = generateContour([-50, maxExtentS], [-50, maxExtentS * 1.5], (x, y) => evaluateYieldFunction(y, x, x, currentModelId, params));
+            
+            // Add a subtle y=x line to represent isotropic state (sig1 = sig3)
+            Plotly.react('plot-s1s3', [
+                { x: [-50, maxExtentS], y: [-50, maxExtentS], mode: 'lines', line: {color: '#cbd5e1', dash: 'dash', width: 1}, name: 'Isotropic' },
+                { x: dataS.x, y: dataS.y, z: dataS.z, type: 'contour', contours: {start:0, end:0, coloring: 'none'}, line: {color: colorStr, width: 3}, showlegend: false }
+            ], layoutS);
 
             // --- 3. π-Plane Deviatoric Contour ---
             let p_pi = 50; 
