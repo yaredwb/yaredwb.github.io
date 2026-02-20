@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Soil Constitutive Models</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Plotly.js for rigorous mathematical 2D plotting -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #0f172a; font-family: 'Inter', sans-serif; color: white; }
+        
+        #main-grid {
+            position: absolute; top: 0; left: 20rem; width: calc(100vw - 20rem); height: 100vh;
+            display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; z-index: 1;
+        }
+
+        .quadrant { position: relative; width: 100%; height: 100%; overflow: hidden; }
+        .plotly-container { width: 100%; height: 100%; }
+
+        #ui-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 10; pointer-events: none; display: flex; }
+        .pointer-events-auto { pointer-events: auto; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border-right: 1px solid rgba(255, 255, 255, 0.1); }
+        .model-btn { transition: all 0.3s ease; border: 1px solid transparent; }
+        .model-btn:hover { background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.5); }
+        .model-btn.active { background: rgba(59, 130, 246, 0.3); border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+
+        .stress-label {
+            position: absolute; color: white; font-size: 0.875rem; font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); pointer-events: none; z-index: 20; transform: translate(-50%, -50%);
+        }
+        
+        .quad-title { position: absolute; top: 1rem; left: 1rem; font-size: 0.75rem; font-weight: 700; color: #cbd5e1; background: rgba(15,23,42,0.8); padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #334155; z-index: 10; }
+    </style>
+</head>
+<body>
+
+    <div id="main-grid">
+        <!-- Q1: 3D Visualization -->
+        <div id="q1" class="quadrant border-b border-r border-slate-700/60">
+            <span class="quad-title">3D Principal Stress</span>
+            <div id="label-s1" class="stress-label text-red-400">σ₁</div>
+            <div id="label-s2" class="stress-label text-green-400">σ₂</div>
+            <div id="label-s3" class="stress-label text-blue-400">σ₃</div>
+            <div id="label-hydro" class="stress-label text-slate-300 opacity-70">Hydro</div>
+        </div>
+
+        <!-- Q2: Pi-Plane Plot (Swapped with Biaxial) -->
+        <div id="q2" class="quadrant border-b border-slate-700/60">
+            <span class="quad-title">π-Plane (Deviatoric)</span>
+            <div id="plot-pi" class="plotly-container"></div>
+        </div>
+
+        <!-- Q3: p-q Plot -->
+        <div id="q3" class="quadrant border-r border-slate-700/60">
+            <span class="quad-title">p - q Plane (Triaxial)</span>
+            <div id="plot-pq" class="plotly-container"></div>
+        </div>
+
+        <!-- Q4: Biaxial Plot (Swapped with Pi-Plane) -->
+        <div id="q4" class="quadrant">
+            <span class="quad-title">σ₁ - σ₃ Plane (σ₂ = 0)</span>
+            <div id="plot-s1s3" class="plotly-container"></div>
+        </div>
+    </div>
+
+    <!-- UI Overlay -->
+    <div id="ui-layer">
+        <div class="glass-panel w-80 h-full flex flex-col pointer-events-auto overflow-y-auto shadow-2xl">
+            <div class="p-6 pb-2">
+                <div class="flex items-center gap-3 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-9 5-9-5"/><path d="m21 8-9 5-9-5"/><path d="m3 8 9-5 9 5"/></svg>
+                    <h1 class="text-xl font-bold tracking-tight">Geotech 3D</h1>
+                </div>
+                <p class="text-xs text-slate-400 mb-6">Constitutive Models in Principal Stress Space</p>
+            </div>
+
+            <div class="flex-1 px-4 space-y-2" id="model-buttons"></div>
+
+            <div class="p-6 mt-4 border-t border-slate-700/50 bg-slate-900/40">
+                <h2 class="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-2" id="info-title">Model Name</h2>
+                <p class="text-sm text-slate-300 leading-relaxed mb-4" id="info-desc">Description goes here.</p>
+                
+                <div id="parameter-controls" class="mb-4 space-y-4"></div>
+
+                <div class="flex items-center justify-end mt-4 pt-4 border-t border-slate-700/50">
+                    <label class="flex items-center space-x-2 cursor-pointer text-sm text-slate-300">
+                        <input type="checkbox" id="wireframe-toggle" class="rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500">
+                        <span>Wireframe Mesh</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const models = [
+            {
+                id: 'mohr-coulomb', name: 'Mohr-Coulomb', color: 0x3b82f6,
+                desc: 'The gold standard in geotechnical engineering. It forms an irregular hexagonal cone in principal stress space.',
+                controls: [
+                    { id: 'c', label: "Cohesion (c')", min: 0, max: 100, value: 20, unit: 'kPa' },
+                    { id: 'phi', label: "Friction Angle (φ')", min: 5, max: 45, value: 30, unit: '°' }
+                ]
+            },
+            {
+                id: 'drucker-prager', name: 'Drucker-Prager', color: 0x10b981,
+                desc: 'A smooth, circular cone approximating Mohr-Coulomb (matched here in compression). Mathematically continuous.',
+                controls: [
+                    { id: 'c', label: "Cohesion (c')", min: 0, max: 100, value: 20, unit: 'kPa' },
+                    { id: 'phi', label: "Friction Angle (φ')", min: 5, max: 45, value: 30, unit: '°' }
+                ]
+            },
+            {
+                id: 'tresca', name: 'Tresca', color: 0xf59e0b,
+                desc: 'A regular hexagonal cylinder representing a maximum shear stress criterion for undrained soils.',
+                controls: [
+                    { id: 'su', label: 'Undrained Shear Strength (su)', min: 10, max: 150, value: 50, unit: 'kPa' }
+                ]
+            },
+            {
+                id: 'von-mises', name: 'Von Mises', color: 0x8b5cf6,
+                desc: 'A circular cylinder providing a smooth approximation of Tresca based on distortion energy theory.',
+                controls: [
+                    { id: 'su', label: 'Undrained Shear Strength (su)', min: 10, max: 150, value: 50, unit: 'kPa' }
+                ]
+            },
+            {
+                id: 'cam-clay', name: 'Modified Cam-Clay', color: 0xec4899,
+                desc: 'An advanced elastoplastic model featuring an elliptical cap, coupling shear and volumetric strain.',
+                controls: [
+                    { id: 'p0', label: "Preconsolidation (p'c)", min: 50, max: 500, value: 200, unit: 'kPa' },
+                    { id: 'M', label: 'Critical State Slope (M)', min: 0.5, max: 2.0, value: 1.2, step: 0.1, unit: '' }
+                ]
+            }
+        ];
+
+        let currentModelId = 'mohr-coulomb';
+
+        // --- MATHEMATICAL YIELD EVALUATIONS ---
+        // F(σ1, σ2, σ3) <= 0 indicates elastic domain. F=0 is the yield surface.
+        function evaluateYieldFunction(s1, s2, s3, modelId, params) {
+            const p = (s1 + s2 + s3) / 3;
+            const ds1 = s1 - p, ds2 = s2 - p, ds3 = s3 - p;
+            let J2 = 0.5 * (ds1*ds1 + ds2*ds2 + ds3*ds3);
+            J2 = Math.max(0, J2); // Float precision safety
+            const q = Math.sqrt(3 * J2);
+
+            if (modelId === 'von-mises') return q - Math.sqrt(3) * params.su;
+            if (modelId === 'cam-clay') return (q*q) + (params.M*params.M * p * (p - params.p0));
+
+            if (modelId === 'drucker-prager') {
+                const phi = params.phi * Math.PI / 180;
+                const M_dp = (6 * Math.sin(phi)) / (3 - Math.sin(phi));
+                const k_dp = (6 * params.c * Math.cos(phi)) / (3 - Math.sin(phi));
+                return q - M_dp * p - k_dp;
+            }
+
+            // For Mohr-Coulomb and Tresca, use absolute sorted principal stresses.
+            // This robustly computes the exact vertices across all sextants 
+            // of the pi-plane without needing Lode angle trigonometry.
+            const sorted = [s1, s2, s3].sort((a, b) => b - a);
+            const sig1 = sorted[0]; // Major principal stress
+            const sig3 = sorted[2]; // Minor principal stress
+
+            if (modelId === 'tresca') {
+                return (sig1 - sig3) - 2 * params.su;
+            }
+            if (modelId === 'mohr-coulomb') {
+                const phi = params.phi * Math.PI / 180;
+                return (sig1 - sig3) - (sig1 + sig3) * Math.sin(phi) - 2 * params.c * Math.cos(phi);
+            }
+
+            return Number.MAX_VALUE;
+        }
+
+        // --- PLOTLY 2D PLOT MANAGEMENT ---
+        const commonLayout = {
+            paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
+            font: { color: '#94a3b8', family: 'Inter' }, margin: { t: 40, r: 30, b: 50, l: 60 },
+            showlegend: false, hovermode: false
+        };
+
+        const axStyle = { showgrid: false, gridcolor: '#334155', zerolinecolor: '#475569', zerolinewidth: 2, linecolor: '#475569' };
+
+        Plotly.newPlot('plot-pq', [], { ...commonLayout, 
+            xaxis: { ...axStyle, title: 'Mean Effective Stress, p (kPa)' },
+            yaxis: { ...axStyle, title: 'Deviatoric Stress, q (kPa)', scaleanchor: 'x', scaleratio: 1, rangemode: 'tozero' }
+        }, {responsive: true, displayModeBar: false});
+
+        Plotly.newPlot('plot-s1s3', [], { ...commonLayout, 
+            xaxis: { ...axStyle, title: 'Minor Principal Stress, σ₃ (kPa)', autorange: true },
+            yaxis: { ...axStyle, title: 'Major Principal Stress, σ₁ (kPa)', autorange: true, scaleanchor: 'x' }
+        }, {responsive: true, displayModeBar: false});
+
+        // Removed static paper-based annotations
+        Plotly.newPlot('plot-pi', [], { ...commonLayout, 
+            xaxis: { visible: false }, yaxis: { visible: false, scaleanchor: 'x' }
+        }, {responsive: true, displayModeBar: false});
+
+        function update2DPlots() {
+            const modelData = models.find(m => m.id === currentModelId);
+            const params = {};
+            const maxParams = {};
+            modelData.controls.forEach(c => {
+                params[c.id] = c.value;
+                maxParams[c.id] = c.max;
+            });
+            const colorStr = '#' + modelData.color.toString(16).padStart(6, '0');
+
+            // Calculate absolute maximum extent based on slider limits to keep axes stable during interaction
+            const maxExtentS = Math.max(
+                maxParams.p0 || 0, 
+                maxParams.su ? maxParams.su * 3 : 0, 
+                maxParams.c ? maxParams.c * 5 : 0, 
+                150
+            ) * 1.2;
+
+            // --- 1. p-q Plane (Exact Line Evaluation) ---
+            let pq_x = [], pq_y = [];
+            let tracesPQ = [];
+            
+            if (currentModelId === 'cam-clay') {
+                for(let i=0; i<=100; i++) {
+                    let p = params.p0 * (i/100);
+                    pq_x.push(p); 
+                    pq_y.push(params.M * Math.sqrt(Math.max(0, p * (params.p0 - p))));
+                }
+                tracesPQ.push({ x: pq_x, y: pq_y, mode: 'lines', line: {color: colorStr, width: 3}, fill: 'tozeroy', fillcolor: colorStr+'33', name: 'Yield Surface' });
+                tracesPQ.push({ x: [0, maxExtentS], y: [0, params.M * maxExtentS], mode: 'lines', line: {color: '#cbd5e1', dash: 'dash', width: 2}, name: 'Critical State Line' });
+            } else {
+                let p_min = -50;
+                if (currentModelId === 'mohr-coulomb' || currentModelId === 'drucker-prager') {
+                    p_min = params.phi > 0 ? -params.c / Math.tan(params.phi * Math.PI / 180) : -999; 
+                }
+                pq_x = [p_min, maxExtentS];
+                if (currentModelId === 'tresca') pq_y = [2*params.su, 2*params.su];
+                else if (currentModelId === 'von-mises') pq_y = [Math.sqrt(3)*params.su, Math.sqrt(3)*params.su];
+                else {
+                    const M_dp = (6*Math.sin(params.phi*Math.PI/180)) / (3-Math.sin(params.phi*Math.PI/180));
+                    const k_dp = (6*params.c*Math.cos(params.phi*Math.PI/180)) / (3-Math.sin(params.phi*Math.PI/180));
+                    pq_y = [M_dp*p_min + k_dp, M_dp*maxExtentS + k_dp];
+                }
+                tracesPQ.push({ x: pq_x, y: pq_y, mode: 'lines', line: {color: colorStr, width: 3}, fill: 'tozeroy', fillcolor: colorStr+'33' });
+            }
+
+            const layoutPQ = document.getElementById('plot-pq').layout;
+            layoutPQ.xaxis.range = [-20, maxExtentS];
+            layoutPQ.yaxis.range = [0, maxExtentS * 0.75];
+            Plotly.react('plot-pq', tracesPQ, layoutPQ);
+
+            // Helper to generate mathematically exact Contours by evaluating F(sig) = 0
+            const generateContour = (xRange, yRange, evalFn) => {
+                let xArr = [], yArr = [], zArr = [];
+                const steps = 60;
+                const dx = (xRange[1] - xRange[0])/steps;
+                const dy = (yRange[1] - yRange[0])/steps;
+                for(let i=0; i<=steps; i++) xArr.push(xRange[0] + i*dx);
+                for(let i=0; i<=steps; i++) yArr.push(yRange[0] + i*dy);
+                
+                for(let j=0; j<yArr.length; j++) {
+                    let row = [];
+                    for(let i=0; i<xArr.length; i++) row.push(evalFn(xArr[i], yArr[j]));
+                    zArr.push(row);
+                }
+                return { x: xArr, y: yArr, z: zArr };
+            };
+
+            // --- 2. σ1-σ3 Biaxial Plane Contour ---
+            const layoutS = document.getElementById('plot-s1s3').layout;
+            layoutS.xaxis.range = [-50, maxExtentS];
+            layoutS.yaxis.range = [-50, maxExtentS];
+
+            const dataS = generateContour([-50, maxExtentS], [-50, maxExtentS], (x, y) => evaluateYieldFunction(y, 0, x, currentModelId, params));
+            Plotly.react('plot-s1s3', [{
+                x: dataS.x, y: dataS.y, z: dataS.z, type: 'contour', 
+                contours: {start:0, end:0, coloring: 'none'}, line: {color: colorStr, width: 3}
+            }], layoutS);
+
+            // --- 3. π-Plane Deviatoric Contour ---
+            let p_pi = 50; 
+            let max_r_max = 50; // Determine max stable radius based on control maxes
+            if(currentModelId === 'cam-clay') {
+                p_pi = params.p0 / 2; // Slice at current widest point
+                max_r_max = Math.sqrt(2/3) * (maxParams.M * maxParams.p0 / 2);
+            } else if (currentModelId === 'tresca' || currentModelId === 'von-mises') {
+                max_r_max = Math.sqrt(2) * maxParams.su;
+            } else {
+                const phi = maxParams.phi * Math.PI / 180;
+                const M_dp = (6 * Math.sin(phi)) / (3 - Math.sin(phi));
+                const k_dp = (6 * maxParams.c * Math.cos(phi)) / (3 - Math.sin(phi));
+                max_r_max = Math.sqrt(2/3) * (M_dp * 50 + k_dp); // Typical slice
+            }
+            
+            const maxPExtent = Math.max(max_r_max * 1.5, 10);
+            
+            const dataPi = generateContour([-maxPExtent, maxPExtent], [-maxPExtent, maxPExtent], (x, y) => {
+                // Map local x, y back to principal stresses ensuring σ1 points UP (y>0)
+                let s1 = p_pi + Math.sqrt(2/3)*y;
+                let s2 = p_pi - y/Math.sqrt(6) + x/Math.sqrt(2);
+                let s3 = p_pi - y/Math.sqrt(6) - x/Math.sqrt(2);
+                return evaluateYieldFunction(s1, s2, s3, currentModelId, params);
+            });
+            
+            // Draw pure axes lines on pi plane explicitly scaling with stable maxPExtent
+            const shapes = [
+                {type: 'line', x0: 0, y0: 0, x1: 0, y1: maxPExtent*0.85, line: {color: '#f87171', width: 2}},
+                {type: 'line', x0: 0, y0: 0, x1: maxPExtent*0.85*0.866, y1: -maxPExtent*0.85*0.5, line: {color: '#4ade80', width: 2}},
+                {type: 'line', x0: 0, y0: 0, x1: -maxPExtent*0.85*0.866, y1: -maxPExtent*0.85*0.5, line: {color: '#60a5fa', width: 2}}
+            ];
+
+            // Add dynamically positioned labels precisely at the tips of the axes
+            const annotations = [
+                { x: 0, y: maxPExtent*0.9, xref: 'x', yref: 'y', text: 'σ₁', showarrow: false, font: {color: '#f87171', size: 14}, xanchor: 'center', yanchor: 'bottom' },
+                { x: maxPExtent*0.9*0.866, y: -maxPExtent*0.9*0.5, xref: 'x', yref: 'y', text: 'σ₂', showarrow: false, font: {color: '#4ade80', size: 14}, xanchor: 'left', yanchor: 'top' },
+                { x: -maxPExtent*0.9*0.866, y: -maxPExtent*0.9*0.5, xref: 'x', yref: 'y', text: 'σ₃', showarrow: false, font: {color: '#60a5fa', size: 14}, xanchor: 'right', yanchor: 'top' }
+            ];
+
+            const layoutPi = document.getElementById('plot-pi').layout;
+            layoutPi.xaxis.range = [-maxPExtent, maxPExtent];
+            layoutPi.yaxis.range = [-maxPExtent, maxPExtent];
+            layoutPi.shapes = shapes;
+            layoutPi.annotations = annotations;
+            
+            Plotly.react('plot-pi', [{
+                x: dataPi.x, y: dataPi.y, z: dataPi.z, type: 'contour', 
+                contours: {start:0, end:0, coloring: 'none'}, line: {color: colorStr, width: 3}
+            }], layoutPi);
+        }
+
+        // --- THREE.JS SETUP (Q1 ONLY) ---
+        const q1Element = document.getElementById('q1');
+        const scene = new THREE.Scene();
+        
+        const camera = new THREE.PerspectiveCamera(45, q1Element.clientWidth / q1Element.clientHeight, 0.1, 1000);
+        camera.position.set(25, 20, 30);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(q1Element.clientWidth, q1Element.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        q1Element.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; controls.dampingFactor = 0.05;
+
+        // Lighting & Environment
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        const dl1 = new THREE.DirectionalLight(0xffffff, 0.8); dl1.position.set(10, 20, 10); scene.add(dl1);
+        const dl2 = new THREE.DirectionalLight(0xaabbff, 0.5); dl2.position.set(-10, -10, -10); scene.add(dl2);
+        
+        // Base Axes
+        const axesGroup = new THREE.Group();
+        axesGroup.add(new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(0,0,0), 20, 0xf87171, 1.5, 0.8));
+        axesGroup.add(new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), 20, 0x4ade80, 1.5, 0.8));
+        axesGroup.add(new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,0), 20, 0x60a5fa, 1.5, 0.8));
+        
+        const hydroGeom = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-10,-10,-10), new THREE.Vector3(25,25,25)]);
+        const hydroLine = new THREE.Line(hydroGeom, new THREE.LineDashedMaterial({ color: 0xcccccc, dashSize: 0.5, gapSize: 0.2, transparent: true, opacity: 0.6 }));
+        hydroLine.computeLineDistances(); axesGroup.add(hydroLine);
+        scene.add(axesGroup);
+
+        const labelPositions = {
+            s1: new THREE.Vector3(22, 0, 0), s2: new THREE.Vector3(0, 22, 0),
+            s3: new THREE.Vector3(0, 0, 22), hydro: new THREE.Vector3(20, 20, 20)
+        };
+
+        const hydrostaticDir = new THREE.Vector3(1, 1, 1).normalize();
+        const alignQuaternion = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), hydrostaticDir);
+        
+        let yieldSurfaceMesh = null;
+        let wireframeMesh = null;
+        const objectsGroup = new THREE.Group();
+        scene.add(objectsGroup);
+
+        // UI & Parameter Handlers
+        function renderControls(modelData) {
+            const container = document.getElementById('parameter-controls');
+            container.innerHTML = '';
+            
+            modelData.controls.forEach(ctrl => {
+                const id = `ctrl-${ctrl.id}`;
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <div class="flex justify-between text-xs text-slate-300 mb-2">
+                        <span>${ctrl.label}</span>
+                        <span id="${id}-val" class="text-blue-400 font-mono font-semibold">${ctrl.value} ${ctrl.unit}</span>
+                    </div>
+                    <input type="range" id="${id}" min="${ctrl.min}" max="${ctrl.max}" value="${ctrl.value}" step="${ctrl.step || 1}" class="w-full accent-blue-500 bg-slate-700 h-1.5 rounded-lg appearance-none cursor-pointer">
+                `;
+                container.appendChild(div);
+
+                document.getElementById(id).addEventListener('input', (e) => {
+                    ctrl.value = parseFloat(e.target.value);
+                    document.getElementById(`${id}-val`).innerText = `${ctrl.value} ${ctrl.unit}`;
+                    updateTransforms(1); 
+                    update2DPlots();
+                });
+            });
+        }
+
+        // 3D Model Scaler (Mapped visually)
+        function updateTransforms(progress = 1) {
+            if (!yieldSurfaceMesh) return;
+            const modelData = models.find(m => m.id === currentModelId);
+            const S = 0.15; const MAX_P = 50; 
+            let scaleX = 1, scaleY = 1, scaleZ = 1, shiftP = 0;
+            const getVal = (id) => modelData.controls.find(c => c.id === id).value;
+
+            if (currentModelId === 'mohr-coulomb' || currentModelId === 'drucker-prager') {
+                const c = getVal('c'), phi = getVal('phi') * Math.PI / 180;
+                const pt = phi > 0 ? c / Math.tan(phi) : 0;
+                shiftP = -pt * S; scaleY = MAX_P + Math.abs(shiftP); 
+                const r = scaleY * Math.sin(phi); scaleX = r; scaleZ = r;
+            } 
+            else if (currentModelId === 'tresca' || currentModelId === 'von-mises') {
+                shiftP = -20; scaleY = MAX_P + 20;
+                const r = getVal('su') * S; scaleX = r; scaleZ = r;
+            }
+            else if (currentModelId === 'cam-clay') {
+                const p0 = getVal('p0'), L = p0 * S;
+                scaleY = L / 2;
+                const r = (p0 / 2) * getVal('M') * S; scaleX = r; scaleZ = r; shiftP = 0; 
+            }
+
+            yieldSurfaceMesh.scale.set(scaleX * progress, scaleY * progress, scaleZ * progress);
+            wireframeMesh.scale.set(scaleX * progress, scaleY * progress, scaleZ * progress);
+            
+            const offset = hydrostaticDir.clone().multiplyScalar(shiftP * progress);
+            yieldSurfaceMesh.position.copy(offset);
+            wireframeMesh.position.copy(offset);
+        }
+
+        function build3DModel(modelId) {
+            if (yieldSurfaceMesh) objectsGroup.remove(yieldSurfaceMesh);
+            if (wireframeMesh) objectsGroup.remove(wireframeMesh);
+
+            const modelData = models.find(m => m.id === modelId);
+            let geometry;
+            
+            switch(modelId) {
+                case 'mohr-coulomb': geometry = new THREE.CylinderGeometry(1, 0, 1, 6); geometry.translate(0, 0.5, 0); break;
+                case 'drucker-prager': geometry = new THREE.CylinderGeometry(1, 0, 1, 64); geometry.translate(0, 0.5, 0); break;
+                case 'tresca': geometry = new THREE.CylinderGeometry(1, 1, 1, 6); geometry.translate(0, 0.5, 0); break;
+                case 'von-mises': geometry = new THREE.CylinderGeometry(1, 1, 1, 64); geometry.translate(0, 0.5, 0); break;
+                case 'cam-clay': geometry = new THREE.SphereGeometry(1, 64, 64); geometry.translate(0, 1, 0); break;
+            }
+
+            const material = new THREE.MeshPhysicalMaterial({
+                color: modelData.color, metalness: 0.2, roughness: 0.1, transmission: 0.8,
+                thickness: 0.5, transparent: true, opacity: 0.85, side: THREE.DoubleSide
+            });
+            yieldSurfaceMesh = new THREE.Mesh(geometry, material);
+            wireframeMesh = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({ 
+                color: 0xffffff, transparent: true, opacity: document.getElementById('wireframe-toggle').checked ? 0.8 : 0.1 
+            }));
+
+            yieldSurfaceMesh.quaternion.copy(alignQuaternion);
+            wireframeMesh.quaternion.copy(alignQuaternion);
+            objectsGroup.add(yieldSurfaceMesh); objectsGroup.add(wireframeMesh);
+
+            document.getElementById('info-title').innerText = modelData.name;
+            document.getElementById('info-title').style.color = '#' + modelData.color.toString(16).padStart(6, '0');
+            document.getElementById('info-desc').innerText = modelData.desc;
+
+            renderControls(modelData);
+
+            let animProgress = 0.01;
+            const animateIn = () => {
+                if(animProgress < 1) {
+                    animProgress += 0.05;
+                    updateTransforms(Math.min(animProgress, 1));
+                    if(animProgress < 1) requestAnimationFrame(animateIn);
+                }
+            };
+            animateIn();
+            update2DPlots(); // Initialize standard plots
+        }
+
+        // --- INIT & EVENTS ---
+        const btnContainer = document.getElementById('model-buttons');
+        models.forEach(model => {
+            const btn = document.createElement('button');
+            btn.className = `model-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium ${model.id === currentModelId ? 'active text-white' : 'text-slate-300'}`;
+            btn.innerHTML = `<span class="inline-block w-3 h-3 rounded-full mr-2 shadow-sm" style="background-color: #${model.color.toString(16).padStart(6,'0')}"></span> ${model.name}`;
+            btn.onclick = () => {
+                document.querySelectorAll('.model-btn').forEach(b => { b.classList.remove('active', 'text-white'); b.classList.add('text-slate-300'); });
+                btn.classList.add('active', 'text-white'); btn.classList.remove('text-slate-300');
+                currentModelId = model.id; build3DModel(currentModelId);
+            };
+            btnContainer.appendChild(btn);
+        });
+
+        document.getElementById('wireframe-toggle').addEventListener('change', (e) => {
+            if(wireframeMesh) wireframeMesh.material.opacity = e.target.checked ? 0.8 : 0.1;
+        });
+
+        build3DModel(currentModelId);
+
+        function updateLabels() {
+            const rect = q1Element.getBoundingClientRect();
+            for (const [key, vector3] of Object.entries(labelPositions)) {
+                const vec = vector3.clone();
+                vec.project(camera);
+                const x = (vec.x * .5 + .5) * rect.width;
+                const y = (vec.y * -.5 + .5) * rect.height;
+                const el = document.getElementById(`label-${key}`);
+                
+                if (vec.z > 1 || x < 0 || x > rect.width || y < 0 || y > rect.height) el.style.display = 'none'; 
+                else { el.style.display = 'block'; el.style.left = `${x}px`; el.style.top = `${y}px`; }
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            updateLabels();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = q1Element.clientWidth / q1Element.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(q1Element.clientWidth, q1Element.clientHeight);
+            Plotly.Plots.resize('plot-pq');
+            Plotly.Plots.resize('plot-s1s3');
+            Plotly.Plots.resize('plot-pi');
+        });
+
+        window.onload = animate;
+    </script>
+</body>
+</html>
