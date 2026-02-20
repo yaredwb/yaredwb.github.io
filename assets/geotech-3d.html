@@ -11,13 +11,14 @@
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; overflow: hidden; background-color: #0f172a; font-family: 'Inter', sans-serif; color: white; }
+        body { margin: 0; overflow-y: auto; overflow-x: hidden; background-color: #0f172a; font-family: 'Inter', sans-serif; color: white; }
         
         #main-container {
             display: flex; flex-direction: column; width: 100vw; min-height: 100vh; overflow-x: hidden;
         }
 
         @media (min-width: 1024px) {
+            body { overflow: hidden; }
             #main-container { flex-direction: row; height: 100vh; overflow: hidden; }
         }
 
