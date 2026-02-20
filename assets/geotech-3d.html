@@ -218,19 +218,19 @@
         const axStyle = { showgrid: false, gridcolor: '#334155', zerolinecolor: '#475569', zerolinewidth: 2, linecolor: '#475569' };
 
         Plotly.newPlot('plot-pq', [], { ...commonLayout, 
-            xaxis: { ...axStyle, title: 'Mean Effective Stress, p (kPa)' },
-            yaxis: { ...axStyle, title: 'Deviatoric Stress, q (kPa)', scaleanchor: 'x', scaleratio: 1, rangemode: 'tozero' }
-        }, {responsive: true, displayModeBar: false});
+            xaxis: { ...axStyle, title: 'Mean Effective Stress, p (kPa)', fixedrange: true },
+            yaxis: { ...axStyle, title: 'Deviatoric Stress, q (kPa)', scaleanchor: 'x', scaleratio: 1, rangemode: 'tozero', fixedrange: true }
+        }, {responsive: true, displayModeBar: false, scrollZoom: false, staticPlot: false, doubleClick: false});
 
         Plotly.newPlot('plot-s1s3', [], { ...commonLayout, 
-            xaxis: { ...axStyle, title: 'Minor Principal Stress, σ₃ (kPa)', autorange: true },
-            yaxis: { ...axStyle, title: 'Major Principal Stress, σ₁ (kPa)', autorange: true, scaleanchor: 'x' }
-        }, {responsive: true, displayModeBar: false});
+            xaxis: { ...axStyle, title: 'Minor Principal Stress, σ₃ (kPa)', autorange: true, fixedrange: true },
+            yaxis: { ...axStyle, title: 'Major Principal Stress, σ₁ (kPa)', autorange: true, scaleanchor: 'x', fixedrange: true }
+        }, {responsive: true, displayModeBar: false, scrollZoom: false, staticPlot: false, doubleClick: false});
 
         // Removed static paper-based annotations
         Plotly.newPlot('plot-pi', [], { ...commonLayout, 
-            xaxis: { visible: false }, yaxis: { visible: false, scaleanchor: 'x' }
-        }, {responsive: true, displayModeBar: false});
+            xaxis: { visible: false, fixedrange: true }, yaxis: { visible: false, scaleanchor: 'x', fixedrange: true }
+        }, {responsive: true, displayModeBar: false, scrollZoom: false, staticPlot: false, doubleClick: false});
 
         function update2DPlots() {
             const modelData = models.find(m => m.id === currentModelId);
@@ -367,7 +367,7 @@
         const scene = new THREE.Scene();
         
         const camera = new THREE.PerspectiveCamera(45, q1Element.clientWidth / q1Element.clientHeight, 0.1, 1000);
-        camera.position.set(25, 20, 30);
+        camera.position.set(35, 30, 45); // Adjusted to not be weirdly zoomed in or out
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(q1Element.clientWidth, q1Element.clientHeight);
