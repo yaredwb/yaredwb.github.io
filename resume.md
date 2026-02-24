@@ -110,7 +110,7 @@ show_title: false
       <p class="cv-timeline-meta">1999-2004 &middot; Arba Minch University, Arba Minch, Ethiopia</p>
     </div>
     <div class="cv-timeline-body">
-      <p><strong>GPA:</strong> 3.9/4.0 (Magna Cum Laude)</p>
+      <p><strong>GPA:</strong> 3.9/4.0 (Very Great Distinction)</p>
     </div>
   </article>
 </div>
