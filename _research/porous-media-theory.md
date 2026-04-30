@@ -116,7 +116,7 @@ $$
 \end{equation}
 $$
 
-Eulerian description of the velocity and acceleration may be derived by using equation \ref{e:xalpha} in \ref{e:vaalpha}. Given an Eulerian description of the velocity $$ \mathbf v^\alpha(\mathbf x^\alpha,t) $$, the Eulerian acceleration $$ \mathbf a^\alpha $$ may be derived by evaluating the time derivative of the velocity where the Lagrangian coordinates are held constant. That is, by applying the chain rule
+Eulerian description of the velocity and acceleration may be derived by using equation $\ref{e:xalpha}$ in $\ref{e:vaalpha}$. Given an Eulerian description of the velocity $$ \mathbf v^\alpha(\mathbf x^\alpha,t) $$, the Eulerian acceleration $$ \mathbf a^\alpha $$ may be derived by evaluating the time derivative of the velocity where the Lagrangian coordinates are held constant. That is, by applying the chain rule
 
 $$
 \begin{equation}
@@ -142,7 +142,7 @@ $$
 \end{equation}
 $$
 
-Equations $$ \ref{e:mtdwrtalpha} $$ and $$ \ref{e:mtdwrtbeta} $$ result in the relation
+Equations $\ref{e:mtdwrtalpha}$ and $\ref{e:mtdwrtbeta}$ result in the relation
 
 $$
 \begin{equation}
@@ -273,7 +273,7 @@ $$
 \end{equation}
 $$
 
-In equation \ref{e:masbalalpha}, the motion of a particle of phase $$ \alpha $$ is expressed relative to the same phase. In practice, it is more convenient to take one of the phases (usually the solid phase) as a reference to describe the motion of all other phases. The individual mass balance equations for these phases can then be modified by introducing their relative velocity with respect to the reference phase.
+In equation $\ref{e:masbalalpha}$, the motion of a particle of phase $$ \alpha $$ is expressed relative to the same phase. In practice, it is more convenient to take one of the phases (usually the solid phase) as a reference to describe the motion of all other phases. The individual mass balance equations for these phases can then be modified by introducing their relative velocity with respect to the reference phase.
 
 ## Linear Momentum Balance
 
@@ -310,7 +310,7 @@ $$
 \end{equation}
 $$
 
-where $$ \mathbf n $$ is an outward unit normal vector on the boundary. Using \ref{e:transporttheorem}, applying the divergence theorem and considering the mass balance principle, the linear momentum balance equation for phase $$ \alpha $$ becomes
+where $$ \mathbf n $$ is an outward unit normal vector on the boundary. Using $\ref{e:transporttheorem}$, applying the divergence theorem and considering the mass balance principle, the linear momentum balance equation for phase $$ \alpha $$ becomes
 
 $$
 \begin{equation}
@@ -346,7 +346,7 @@ $$
 \end{equation}
 $$
 
-Using \ref{e:partialandtotalsums} and \ref{e:momexchangeconstraint} in \ref{e:genmombal}, the linear momentum balance equation for the mixture becomes
+Using $\ref{e:partialandtotalsums}$ and $\ref{e:momexchangeconstraint}$ in $\ref{e:genmombal}$, the linear momentum balance equation for the mixture becomes
 
 $$
 \begin{equation}
@@ -372,7 +372,7 @@ $$
 \end{equation}
 $$
 
-where $$ \mathbf x $$ is a position vector to the fixed point. The moment of the external forces using \ref{e:externalforces} is given by
+where $$ \mathbf x $$ is a position vector to the fixed point. The moment of the external forces using $\ref{e:externalforces}$ is given by
 
 $$
 \begin{equation}
@@ -450,7 +450,7 @@ $$
 where $$ e^\alpha = e^\alpha(\mathbf x,t) $$ is the specific internal energy $$ \alpha, h^\alpha = h^\alpha(\mathbf x,t) $$ is the partial energy source and $$ \mathbf q^\alpha = \mathbf q^\alpha(\mathbf x,t) $$ is the partial heat flux
 vector.
 
-Using \ref{e:energies} in \ref{e:thermodynamics}, simplifying the material time derivatives of the integrals and utilizing the mass and linear momentum balance equations in \ref{e:masbalalpha} and \ref{e:mombalalpha}, the energy balance equation for phase $$ \alpha $$ becomes
+Using $\ref{e:energies}$ in $\ref{e:thermodynamics}$, simplifying the material time derivatives of the integrals and utilizing the mass and linear momentum balance equations in $\ref{e:masbalalpha}$ and $\ref{e:mombalalpha}$, the energy balance equation for phase $$ \alpha $$ becomes
 
 $$
 \begin{equation}
@@ -550,14 +550,14 @@ $$
 \end{equation}
 $$
 
-together with the energy balance in \ref{e:enebal}. The inequality in \ref{e:entropyineq} considers a general case where the constituents have a different absolute temperature $$ T^\alpha $$. It may be simplified for the case when all the constituents have the same
+together with the energy balance in $\ref{e:enebal}$. The inequality in $\ref{e:entropyineq}$ considers a general case where the constituents have a different absolute temperature $$ T^\alpha $$. It may be simplified for the case when all the constituents have the same
 absolute temperature $$ T = T^\alpha $$.
 
 ## Phase Transitions
 
 The physical processes in a porous medium sometimes involve the transition of one phase into another such as phase change from liquid to vapor, liquid to solid or solid to liquid. These types of phase changes are referred to as first-order transitions, see de Boer and Bluhm (1999)[^20], whereas other transitions such as from a super fluid to ordinary fluid (e.g. helium) are called second-order transitions. The discussion here focuses on first-order transitions. We take a closer look here at the effect of phase transitions in a porous medium.
 
-The balance equations in the [conservation laws](#conservation-laws) section are presented in a general form such that the effect of phase transition(s) on the conserved quantities can be considered. Consider a two-phase porous medium where phase transition from one phase to another occurs, e.g. freezing/melting. The exchange of quantities during phase change remains constrained. For instance, the mass balance equations for the individual constituents, according to \ref{e:masbalalpha}, are given by
+The balance equations in the [conservation laws](#conservation-laws) section are presented in a general form such that the effect of phase transition(s) on the conserved quantities can be considered. Consider a two-phase porous medium where phase transition from one phase to another occurs, e.g. freezing/melting. The exchange of quantities during phase change remains constrained. For instance, the mass balance equations for the individual constituents, according to $\ref{e:masbalalpha}$, are given by
 
 $$
 \begin{equation}
@@ -568,7 +568,7 @@ $$
 \end{equation}
 $$
 
-wherein the sum on the mass exchange term is omitted since we have only one phase contributing to the mass of another. The constraint in \ref{e:massconstraint} implies
+wherein the sum on the mass exchange term is omitted since we have only one phase contributing to the mass of another. The constraint in $\ref{e:massconstraint}$ implies
 
 $$
 \begin{equation}
@@ -614,7 +614,7 @@ s^\alpha - s^\beta = \frac{L}{T}
 \end{equation}
 $$
 
-where $$ L $$ is the specific latent heat which depends on the type of phase change that occurs e.g. latent heat of fusion for melting. Using this in \ref{e:clausius1} gives
+where $$ L $$ is the specific latent heat which depends on the type of phase change that occurs e.g. latent heat of fusion for melting. Using this in $\ref{e:clausius1}$ gives
 
 $$
 \begin{equation}
@@ -705,7 +705,7 @@ The balance equations presented in [Conservation Laws](#conservation-laws) are v
 
 The effective stress concept is widely used in porous media applications, especially in soil mechanics. The historical development of this concept is documented in de Boer and Ehlers (1990)[^29]. The concept was already conceived and studied by scientists by the end of the 19th century. A significant development with a mathematical background came later in early 20th century from the significant contributions of Paul Fillunger and especially Karl von Terzaghi; see Skempton (1960)[^30].
 
-The main idea behind effective stress in a porous medium is separating the stress that effectively causes solid deformation, hence the name, from all other stresses in the mixture. If we consider a porous medium composed of two phases, solid (s) and fluid (f), the total stress as the sum of the partial stresses is given according to \ref{e:partialandtotalsums} by
+The main idea behind effective stress in a porous medium is separating the stress that effectively causes solid deformation, hence the name, from all other stresses in the mixture. If we consider a porous medium composed of two phases, solid (s) and fluid (f), the total stress as the sum of the partial stresses is given according to $\ref{e:partialandtotalsums}$ by
 
 $$
 \begin{equation}
@@ -759,7 +759,7 @@ $$
 \end{equation}
 $$
 
-where $$ K_\mathrm{s} $$ is the bulk modulus of the solid skeleton. The effective stress relation in \ref{e:effstress} is usually modified by a corrective parameter known as Biot's coefficient, $$ \alpha $$, Lewis and Schrefler (1998)[^17]. The modified effective stress equation (keeping the same notation for the modified effective stress) reads
+where $$ K_\mathrm{s} $$ is the bulk modulus of the solid skeleton. The effective stress relation in $\ref{e:effstress}$ is usually modified by a corrective parameter known as Biot's coefficient, $$ \alpha $$, Lewis and Schrefler (1998)[^17]. The modified effective stress equation (keeping the same notation for the modified effective stress) reads
 
 $$
 \begin{equation}
@@ -827,7 +827,7 @@ $$
 \end{equation}
 $$
 
-where $$ \rho_\mathrm{w} $$ and $$ \rho_{\mathrm{w}\mathrm{o}} $$ are the current and initial densities, $$ \alpha_\mathrm{w} $$ is the thermal expansion coefficient, $$ K_\mathrm{w} $$ is the bulk modulus and $$ p^\mathrm{w} $$ and $$ p^\mathrm{w}_\mathrm{o} $$ are the current and initial pore water pressures. Performing Taylor series expansion of \ref{e:eqofstatewater0} and retaining first order terms gives
+where $$ \rho_\mathrm{w} $$ and $$ \rho_{\mathrm{w}\mathrm{o}} $$ are the current and initial densities, $$ \alpha_\mathrm{w} $$ is the thermal expansion coefficient, $$ K_\mathrm{w} $$ is the bulk modulus and $$ p^\mathrm{w} $$ and $$ p^\mathrm{w}_\mathrm{o} $$ are the current and initial pore water pressures. Performing Taylor series expansion of $\ref{e:eqofstatewater0}$ and retaining first order terms gives
 
 $$
 \begin{equation}
@@ -860,7 +860,7 @@ $$
 \end{equation}
 $$
 
-where $$ \alpha_\mathrm{s} $$ is the thermal expansion coefficient of the solid. The first term on the right hand side of the equation above represents the volumetric strain of the solid. This strain may be negligible for soils but significant for materials such as rock. Introducing a constitutive equation for the first invariant of the effective stress and using Biot's coefficient from \ref{e:Biotscoeff}, an alternative form of the solid compressibility may be written as
+where $$ \alpha_\mathrm{s} $$ is the thermal expansion coefficient of the solid. The first term on the right hand side of the equation above represents the volumetric strain of the solid. This strain may be negligible for soils but significant for materials such as rock. Introducing a constitutive equation for the first invariant of the effective stress and using Biot's coefficient from $\ref{e:Biotscoeff}$, an alternative form of the solid compressibility may be written as
 
 $$
 \begin{equation}

@@ -1114,42 +1114,60 @@ html[data-theme="dark"] .cta-panel {
 }
 
 /* ============================================
-   MOBILE-FRIENDLY EQUATIONS (MathJax)
+   EQUATIONS (MathJax)
    ============================================ */
 
-/* MathJax display equations - scrollable container */
+/* Display equations: let MathJax keep its native centering, but allow
+   horizontal scroll only when the equation is wider than the column.
+   Keeping `display: block` (without !important) preserves MathJax's
+   text-align: center on the inner math while still letting overflow
+   kick in when needed. The equation number from `tags: 'ams'` stays
+   on the right because it's part of the same scrollable line. */
 .post-content mjx-container[jax="CHTML"][display="true"] {
-  display: block !important;
+  display: block;
   overflow-x: auto;
   overflow-y: hidden;
   max-width: 100%;
-  padding: var(--spacing-sm) 0;
-  margin: var(--spacing-md) 0;
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-xs) 0;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
 }
 
-/* Inline equations - prevent overflow */
+/* Inline equations: don't introduce a per-line scrollbar — that looks
+   broken inside paragraphs. Just keep the math on the baseline. Tall
+   inline math (e.g. fractions) is allowed to push the line height,
+   which is the conventional behavior. */
 .post-content mjx-container[jax="CHTML"]:not([display="true"]) {
   display: inline-block;
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
   vertical-align: middle;
+  max-width: 100%;
 }
 
-/* Style scrollbar for equation containers */
+/* Equation numbers from `tags: 'ams'` — keep them aligned with the
+   right edge of the column rather than the (possibly overflowing)
+   equation. */
+.post-content mjx-container[jax="CHTML"][display="true"] mjx-math {
+  margin: 0 auto;
+}
+
+/* Slim, themed scrollbar for overflowing display equations */
 .post-content mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar {
-  height: 4px;
+  height: 6px;
 }
 
 .post-content mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-track {
-  background: var(--color-border-light);
-  border-radius: 2px;
+  background: transparent;
 }
 
 .post-content mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar-thumb {
-  background: var(--color-accent-soft);
-  border-radius: 2px;
+  background: var(--color-border-strong);
+  border-radius: 3px;
+}
+
+.post-content mjx-container[jax="CHTML"][display="true"]:hover::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
 }
 
 /* ============================================
@@ -2036,30 +2054,13 @@ html[data-theme="dark"] .site-footer {
     font-size: 0.95rem;
   }
 
-  /* Mobile equation styling */
+  /* Mobile equation styling — reclaim the small horizontal padding the
+     post-content normally has so wide equations get a few extra pixels
+     before they need to scroll. */
   .post-content mjx-container[jax="CHTML"][display="true"] {
-    font-size: 0.85em;
-    padding: var(--spacing-xs) 0;
-    margin: var(--spacing-sm) calc(-1 * var(--spacing-xs));
-    padding-left: var(--spacing-xs);
-    padding-right: var(--spacing-xs);
-    background: linear-gradient(90deg, 
-      transparent 0%, 
-      transparent calc(100% - 30px), 
-      rgba(37, 99, 235, 0.05) 100%);
-  }
-
-  /* Visual hint for scrollable equations */
-  .post-content mjx-container[jax="CHTML"][display="true"]::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 20px;
-    background: linear-gradient(90deg, transparent, var(--color-surface) 80%);
-    pointer-events: none;
-    opacity: 0.7;
+    font-size: 0.95em;
+    margin: var(--spacing-md) calc(-1 * var(--spacing-xs));
+    padding: var(--spacing-xs);
   }
 
   /* Mobile code block styling */
@@ -2208,13 +2209,14 @@ html[data-theme="dark"] .site-footer {
     font-size: 0.9rem;
   }
 
-  /* Very small screen equation styling */
+  /* Very small screen equation styling — keep math close to body size
+     so symbols stay legible; rely on horizontal scroll for overflow. */
   .post-content mjx-container[jax="CHTML"][display="true"] {
-    font-size: 0.75em;
+    font-size: 0.9em;
   }
 
   .post-content mjx-container[jax="CHTML"]:not([display="true"]) {
-    font-size: 0.85em;
+    font-size: 0.95em;
   }
 
   /* Very small screen code styling */
