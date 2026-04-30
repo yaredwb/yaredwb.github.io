@@ -91,6 +91,25 @@ html {
   font-size: 16px;
 }
 
+/* Cross-document View Transitions: navigations between pages cross-fade
+   instead of hard-cutting in browsers that support it. No-op elsewhere. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -221,6 +240,25 @@ p {
   transition: border-color var(--transition-base), background var(--transition-base);
 }
 
+/* Reading progress: tiny accent bar fed by --read-progress (set in JS).
+   Visible only on post pages (.post collection adds page-class). */
+.site-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: var(--read-progress, 0%);
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-hover));
+  transition: width 80ms linear;
+  pointer-events: none;
+  opacity: 0;
+}
+
+body.has-progress .site-header::after {
+  opacity: 1;
+}
+
 html[data-theme="dark"] .site-header {
   background: rgba(11, 18, 32, 0.84);
 }
@@ -333,31 +371,30 @@ html[data-theme="dark"] .site-header {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(249, 250, 252, 0.95));
-  color: var(--color-text);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 0;
+  background: transparent;
+  color: var(--color-muted);
   cursor: pointer;
-  transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+  transition: color var(--transition-base), background var(--transition-base);
   position: relative;
 }
 
 .theme-toggle:hover,
 .theme-toggle:focus-visible {
-  transform: translateY(-2px);
-  border-color: var(--color-border-strong);
-  box-shadow: var(--shadow-sm);
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
 }
 
 .theme-toggle__icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   fill: currentColor;
   position: absolute;
   opacity: 0;
-  transform: scale(0.8) rotate(-10deg);
+  transform: scale(0.8) rotate(-12deg);
   transition: opacity var(--transition-base), transform var(--transition-base);
 }
 
@@ -366,19 +403,9 @@ html[data-theme="dark"] .site-header {
   transform: scale(1) rotate(0deg);
 }
 
-.theme-toggle__icon--moon {
-  transform: scale(0.6) translateY(-6px);
-}
-
-html[data-theme="dark"] .theme-toggle {
-  background: linear-gradient(135deg, rgba(17, 26, 45, 0.95), rgba(17, 26, 45, 0.8));
-  color: var(--color-muted);
-  border-color: rgba(148, 163, 184, 0.4);
-}
-
 html[data-theme="dark"] .theme-toggle__icon--sun {
   opacity: 0;
-  transform: scale(0.6) translateY(6px);
+  transform: scale(0.8) rotate(12deg);
 }
 
 html[data-theme="dark"] .theme-toggle__icon--moon {
@@ -523,16 +550,15 @@ html[data-theme="dark"] .hero::after {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-md) var(--spacing-xl);
-  border-radius: var(--radius-lg);
-  font-weight: 700;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
   font-size: 0.95rem;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
   color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  box-shadow: var(--shadow-md);
+  letter-spacing: 0;
+  box-shadow: var(--shadow-sm);
   transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
   position: relative;
   overflow: hidden;
@@ -542,15 +568,15 @@ html[data-theme="dark"] .hero::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), transparent 60%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 60%);
   opacity: 0;
   transition: opacity var(--transition-base);
 }
 
 .button:hover,
 .button:focus-visible {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .button:hover::before,
@@ -561,8 +587,7 @@ html[data-theme="dark"] .hero::after {
 .button.button--ghost {
   background: transparent;
   color: var(--color-text);
-  border: 1px solid var(--color-border);
-  letter-spacing: 0.05em;
+  border: 1px solid var(--color-border-strong);
   box-shadow: none;
 }
 
@@ -571,7 +596,7 @@ html[data-theme="dark"] .hero::after {
   color: var(--color-accent);
   border-color: var(--color-accent);
   background: var(--color-accent-soft);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
 }
 
 .section {
@@ -682,14 +707,10 @@ html[data-theme="dark"] .section--alt {
   transition: opacity var(--transition-base);
 }
 
+/* Static info cards (Practice Domains, CV grid items) — they aren't
+   links, so the big lift was misleading. Just a calm border tint. */
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-accent-soft);
-}
-
-.card:hover::before {
-  opacity: 1;
+  border-color: var(--color-border-strong);
 }
 
 .card h3 {
@@ -768,10 +789,9 @@ html[data-theme="dark"] .section--alt {
 
 .spotlight-card__eyebrow {
   font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--color-muted);
-  font-weight: 700;
+  color: var(--color-accent);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .spotlight-card h3 {
@@ -791,11 +811,9 @@ html[data-theme="dark"] .section--alt {
 }
 
 .spotlight-card-meta {
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--color-muted-soft);
+  font-weight: 500;
 }
 
 .listing-grid {
@@ -849,11 +867,11 @@ html[data-theme="dark"] .section--alt {
 }
 
 .post-card time {
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+  letter-spacing: 0;
   color: var(--color-muted);
-  font-weight: 700;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
 }
 
 .post-card h3 {
@@ -878,11 +896,9 @@ html[data-theme="dark"] .section--alt {
 
 .post-card-meta {
   margin-top: var(--spacing-xs);
-  color: var(--color-muted);
-  font-size: 0.82rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  color: var(--color-muted-soft);
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .empty-state {
@@ -977,11 +993,10 @@ html[data-theme="dark"] .cta-panel {
 }
 
 .post-header time {
-  font-size: 0.92rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  font-size: 0.9rem;
   color: var(--color-muted);
-  font-weight: 700;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
 }
 
 .post-header h1 {
@@ -1833,7 +1848,7 @@ html[data-theme="dark"] .site-footer {
 @media (max-width: 760px) {
   .site-header {
     position: static;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--color-surface);
   }
 
   .site-header .container {
@@ -1852,17 +1867,6 @@ html[data-theme="dark"] .site-footer {
     position: absolute;
     top: var(--spacing-md);
     right: var(--spacing-md);
-    width: 40px;
-    height: 40px;
-    margin: 0;
-    background: transparent;
-    border-color: transparent;
-  }
-
-  .theme-toggle:hover,
-  .theme-toggle:focus-visible {
-    background: var(--color-surface-elevated);
-    border-color: var(--color-border);
   }
 
   .site-nav ul {

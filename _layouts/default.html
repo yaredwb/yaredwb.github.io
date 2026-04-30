@@ -157,6 +157,33 @@
       });
     });
   </script>
+
+  <!-- Reading progress bar (post pages only) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const article = document.querySelector('.post-article');
+      if (!article) return;
+      document.body.classList.add('has-progress');
+      const root = document.documentElement;
+      let ticking = false;
+      const update = () => {
+        const rect = article.getBoundingClientRect();
+        const start = window.scrollY + rect.top;
+        const end = start + article.offsetHeight - window.innerHeight;
+        const span = end - start;
+        const ratio = span > 0 ? (window.scrollY - start) / span : 0;
+        const pct = Math.max(0, Math.min(1, ratio)) * 100;
+        root.style.setProperty('--read-progress', pct + '%');
+        ticking = false;
+      };
+      const onScroll = () => {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      update();
+    });
+  </script>
   <script>
     (function() {
       const storageKey = 'preferred-color-scheme';
