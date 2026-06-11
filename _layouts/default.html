@@ -23,7 +23,7 @@
   <!-- Preconnect to external resources -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Signika:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}">
@@ -72,20 +72,14 @@
 
   
   <!-- Theme color for mobile browsers -->
-  <meta name="theme-color" content="#3182ce">
-  <meta name="msapplication-TileColor" content="#3182ce">
+  <meta name="theme-color" content="#fffcf0">
+  <meta name="msapplication-TileColor" content="#bc5215">
 </head>
 <body class="site-body {% if page.page_class %}{{ page.page_class }}{% endif %}">
   <a class="skip-link" href="#content">Skip to content</a>
   <header class="site-header" role="banner">
     <div class="container">
-      <div class="site-brand">
-        <a class="brand-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-        {% assign tagline = site.brand_tagline | default: site.description %}
-        {% if tagline %}
-        <p class="brand-tagline">{{ tagline }}</p>
-        {% endif %}
-      </div>
+      <a class="brand-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
       <div class="site-controls">
         {% if site.nav %}
         <nav class="site-nav" aria-label="Primary">
@@ -96,6 +90,10 @@
               {% if page.url == nav_url %}
                 {% assign is_active = true %}
               {% elsif page.collection == 'posts' and item.url == '/blog/' %}
+                {% assign is_active = true %}
+              {% elsif page.collection == 'research' and item.url == '/research/' %}
+                {% assign is_active = true %}
+              {% elsif page.collection == 'teaching' and item.url == '/teaching/' %}
                 {% assign is_active = true %}
               {% endif %}
               <li>
@@ -134,14 +132,16 @@
 
   <footer class="site-footer" role="contentinfo">
     <div class="container">
-      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Built with dedication to computational excellence.</p>
-      <p>
-        <a href="{{ '/' | relative_url }}">Research</a> &middot;
-        <a href="{{ '/teaching/' | relative_url }}">Teaching</a> &middot;
-        <a href="{{ '/blog/' | relative_url }}">Writing</a> &middot;
-        <a href="{{ '/resume/' | relative_url }}">CV</a> &middot;
-        <a href="{{ '/about/' | relative_url }}">About</a>
-      </p>
+      <div class="footer-inner">
+        <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
+        <nav class="footer-nav" aria-label="Footer">
+          <a href="{{ '/research/' | relative_url }}">Research</a>
+          <a href="{{ '/teaching/' | relative_url }}">Teaching</a>
+          <a href="{{ '/blog/' | relative_url }}">Writing</a>
+          <a href="{{ '/resume/' | relative_url }}">CV</a>
+          <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+        </nav>
+      </div>
     </div>
   </footer>
 
@@ -183,6 +183,163 @@
       window.addEventListener('resize', onScroll, { passive: true });
       update();
     });
+  </script>
+
+  <!-- Hero deformation field: a faint FEM mesh with a slow travelling wave,
+       painted behind the home hero. No-op off the home page or without a
+       canvas; renders a single static frame under reduced-motion. -->
+  <script>
+    (function () {
+      const canvas = document.querySelector('.hero-field');
+      if (!canvas || !canvas.getContext) return;
+      const ctx = canvas.getContext('2d');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      let w = 0, h = 0, dpr = 1, cols = 0, rows = 0, stepX = 0, stepY = 0;
+      let accent = [188, 82, 21];
+      let raf = 0, start = 0, onScreen = true, built = false;
+
+      const hexToRgb = (s) => {
+        const m = /^#?([0-9a-f]{6})$/i.exec((s || '').trim());
+        if (!m) return null;
+        const n = parseInt(m[1], 16);
+        return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+      };
+
+      const readColors = () => {
+        const cs = getComputedStyle(document.documentElement);
+        accent = hexToRgb(cs.getPropertyValue('--color-accent')) || accent;
+      };
+
+      const resize = () => {
+        const r = canvas.getBoundingClientRect();
+        if (!r.width || !r.height) { built = false; return; }
+        w = r.width; h = r.height;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        // square-ish cells, a touch denser on wide screens
+        const target = w < 600 ? 44 : 54;
+        cols = Math.max(6, Math.round(w / target));
+        rows = Math.max(3, Math.round(h / target));
+        stepX = w / cols;
+        stepY = h / rows;
+        built = true;
+      };
+
+      const draw = (time) => {
+        if (!built) { resize(); if (!built) return; }
+        if (!start) start = time;
+        const t = (time - start) / 1000;
+        ctx.clearRect(0, 0, w, h);
+
+        const nc = cols + 1, nr = rows + 1;
+        const px = new Float32Array(nc * nr);
+        const py = new Float32Array(nc * nr);
+        const pa = new Float32Array(nc * nr);
+        const AMP = Math.min(8, stepY * 0.42);
+
+        for (let j = 0; j <= rows; j++) {
+          for (let i = 0; i <= cols; i++) {
+            const bx = i * stepX, by = j * stepY;
+            // two travelling components, with real vertical phase, so the
+            // deformation reads as a wavefront propagating across the ground
+            const d = Math.sin(bx * 0.012 + by * 0.011 - t * 0.48) * AMP
+                    + Math.sin(bx * 0.020 - by * 0.015 - t * 0.82) * (AMP * 0.42);
+            const dx = Math.sin(by * 0.018 + t * 0.34) * 3.5;
+            const k = i + j * nc;
+            px[k] = bx + dx;
+            py[k] = by + d;
+            // brightness rides the wave crest, so light travels with it
+            const crest = (d / (AMP * 1.42) + 1) / 2;
+            pa[k] = Math.max(0, Math.min(1, crest));
+          }
+        }
+
+        const [r, g, b] = accent;
+
+        // mesh lines — uniform and faint; the radial CSS mask fades the edges
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(' + r + ',' + g + ',' + b + ',0.042)';
+        ctx.beginPath();
+        for (let j = 0; j <= rows; j++) {
+          for (let i = 0; i <= cols; i++) {
+            const k = i + j * nc;
+            if (i < cols) { ctx.moveTo(px[k], py[k]); ctx.lineTo(px[k + 1], py[k + 1]); }
+            if (j < rows) { ctx.moveTo(px[k], py[k]); ctx.lineTo(px[k + nc], py[k + nc]); }
+          }
+        }
+        ctx.stroke();
+
+        // nodes — brighter on the crest of the passing wave
+        for (let j = 0; j <= rows; j++) {
+          for (let i = 0; i <= cols; i++) {
+            const k = i + j * nc;
+            const c = pa[k];
+            const a = 0.05 + c * c * 0.3;
+            ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + a.toFixed(3) + ')';
+            ctx.beginPath();
+            ctx.arc(px[k], py[k], 0.8 + c * 1.05, 0, 6.2832);
+            ctx.fill();
+          }
+        }
+      };
+
+      const loop = (time) => {
+        draw(time);
+        raf = requestAnimationFrame(loop);
+      };
+
+      const stop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0; } };
+      const play = () => {
+        if (raf || reduce.matches || !onScreen || document.hidden) return;
+        start = 0;
+        raf = requestAnimationFrame(loop);
+      };
+
+      const renderStatic = () => { resize(); start = 0; draw(0); };
+
+      const init = () => {
+        readColors();
+        resize();
+        if (reduce.matches) { draw(0); } else { play(); }
+      };
+
+      window.addEventListener('resize', () => {
+        resize();
+        if (reduce.matches) draw(0);
+      }, { passive: true });
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop(); else play();
+      });
+
+      // pause when scrolled out of view
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+          onScreen = entries[0].isIntersecting;
+          if (onScreen) play(); else stop();
+        }, { threshold: 0 }).observe(canvas);
+      }
+
+      // re-read colours when the theme toggles, repaint if static
+      new MutationObserver(() => {
+        readColors();
+        if (reduce.matches || !raf) draw(0);
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+      reduce.addEventListener('change', () => {
+        stop();
+        if (reduce.matches) renderStatic(); else play();
+      });
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
   </script>
   <script>
     (function() {

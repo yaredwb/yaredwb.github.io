@@ -193,27 +193,27 @@ show_title: false
 
 <div class="cv-grid cv-grid--projects">
   <article class="cv-grid-card">
-    <h3>🤖 <a href="https://geosim.ai/">GeoSim.AI</a></h3>
+    <h3><a href="https://geosim.ai/">GeoSim.AI</a></h3>
     <p>AI assistants for numerical simulations in geomechanics that demonstrate productivity gains in slope stability assessments.</p>
   </article>
   <article class="cv-grid-card">
-    <h3>🗻 <a href="https://3d-terrain-generator.streamlit.app/">3D Terrain Generator</a></h3>
+    <h3><a href="https://3d-terrain-generator.streamlit.app/">3D Terrain Generator</a></h3>
     <p>Web app that generates 3D terrain plots from XYZ point clouds or geographic bounds, including slope profiles for risk analysis.</p>
   </article>
   <article class="cv-grid-card">
-    <h3>🔬 <a href="https://disfrac.streamlit.app/">DISFRAC</a></h3>
+    <h3><a href="https://disfrac.streamlit.app/">DISFRAC</a></h3>
     <p>Invitation-only tool for estimating in-situ rock stresses from hydraulic fracturing test data.</p>
   </article>
   <article class="cv-grid-card">
-    <h3>🧠 <a href="https://yaredwb.github.io/PINN-Consolidation1D-Paper/">Deep Learning for 1D Consolidation</a></h3>
+    <h3><a href="https://yaredwb.github.io/PINN-Consolidation1D-Paper/">Deep Learning for 1D Consolidation</a></h3>
     <p>Explores physics-informed neural networks for soil mechanics and poroelastic consolidation.</p>
   </article>
   <article class="cv-grid-card">
-    <h3>📚 <a href="https://yaredwb.github.io/PMT/">Porous Media Theory</a></h3>
+    <h3><a href="https://yaredwb.github.io/PMT/">Porous Media Theory</a></h3>
     <p>Interactive reference for coupled problems in geoengineering, including landslide simulations and heat flow analyses.</p>
   </article>
   <article class="cv-grid-card">
-    <h3>⚡ <a href="https://yaredwb.github.io/FDM2D/">FDM2D</a></h3>
+    <h3><a href="https://yaredwb.github.io/FDM2D/">FDM2D</a></h3>
     <p>Finite difference solver for steady-state groundwater flow in 2D, translating research models into accessible tools.</p>
   </article>
 </div>

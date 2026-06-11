@@ -1,49 +1,39 @@
 ---
 layout: default
 title: Research
-permalink: /
-page_class: home
+permalink: /research/
 show_title: false
 ---
 
-<section class="section">
-  <div class="section-header">
-    <h1 class="section-title">Research Notes</h1>
-    <p class="section-lead">Exploring computational geomechanics, numerical modelling, and AI-enabled engineering workflows. These updates capture in-progress thinking, published work, and prototypes that move research ideas into the field.</p>
-  </div>
-  {% assign research_posts = site.research | sort: 'date' | reverse %}
-  {% if research_posts.size > 0 %}
-  <ul class="post-list">
-    {% for post in research_posts %}
-    <li>
-      <article class="post-card">
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
-        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+<header class="page-intro">
+  <p class="eyebrow">Research</p>
+  <h1>Research notes</h1>
+  <p class="lead">Computational geomechanics, numerical modelling, and AI-enabled engineering workflows &mdash; published work, prototypes, and in-progress thinking.</p>
+</header>
+
+{% assign research_posts = site.research | sort: 'date' | reverse %}
+{% if research_posts.size > 0 %}
+<ol class="entry-list">
+  {% for post in research_posts %}
+  <li>
+    <article class="entry">
+      <time class="entry-date" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
+      <div class="entry-body">
+        <h2 class="entry-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
         {% if post.excerpt %}
         <p>{{ post.excerpt | strip_html | truncatewords: 36 }}</p>
         {% endif %}
-        {% if post.tags %}
-        <p class="post-card-meta">{{ post.tags | join: ', ' }}</p>
+        {% if post.tags and post.tags.size > 0 %}
+        <p class="entry-tags">{{ post.tags | join: ' · ' }}</p>
         {% endif %}
-      </article>
-    </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <div class="empty-state">
-    <h3>No research posts yet</h3>
-    <p>I am currently preparing case studies and technical notes&mdash;check back soon or reach out directly to discuss ongoing work.</p>
-  </div>
-  {% endif %}
-</section>
-
-<section class="section section--alt">
-  <div class="cta-panel">
-    <h2>Partner on applied research.</h2>
-    <p>Interested in co-developing tools, validating a concept, or stress-testing a numerical model? I'd love to collaborate on projects that push geotechnical engineering forward.</p>
-    <div class="hero-actions">
-      <a class="button" href="mailto:yaredworku@gmail.com">Propose a collaboration</a>
-      <a class="button button--ghost" href="{{ '/resume/' | relative_url }}">Review credentials</a>
-    </div>
-  </div>
-</section>
+      </div>
+    </article>
+  </li>
+  {% endfor %}
+</ol>
+{% else %}
+<div class="empty-state">
+  <h3>No research posts yet</h3>
+  <p>Case studies and technical notes are in preparation &mdash; check back soon.</p>
+</div>
+{% endif %}
