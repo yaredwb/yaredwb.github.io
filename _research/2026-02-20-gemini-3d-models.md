@@ -23,11 +23,9 @@ In few interactions, Gemini 3.1 Pro produced the complete, working code for this
 
 Most impressively, it grasped the physical and mathematical nuances of the models: it knew that Mohr-Coulomb forms an irregular hexagonal shape while Drucker-Prager acts as a smooth continuous approximation. The underlying algorithmic logic correctly implemented the mathematical yield functions for all five constitutive models, ensuring the principal stress sorting exactly resolved the vertices of the hexagons on the $\pi$-plane.
 
-Here is the embedded result. I highly recommend dragging the 3D canvas and playing with the parameters:
+Here is the embedded result. Click **Open interactive view** for the full dashboard, then drag the 3D canvas and play with the parameters:
 
-<div style="position: relative; width: 100%; height: 750px; border-radius: 12px; overflow: hidden; margin: 2.5rem 0; border: 1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-  <iframe src="{{ '/assets/geotech-3d.html' | relative_url }}" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
-</div>
+{% include app-embed.html src="/assets/geotech-3d.html" title="3D Soil Constitutive Models" hint="Interactive — open for the full dashboard" %}
 
 ## Reflections on AI-Assisted Engineering Visualizations
 

@@ -1,0 +1,26 @@
+{%- comment -%}
+Reusable interactive-app embed. Shows a scaled preview of the app's full
+(desktop-width) layout inline, and opens it in a large floating lightbox on
+click. Params: src (required), title, hint, base_w, base_h.
+The preview iframe renders at base_w/base_h (a desktop viewport, so the app
+uses its wide layout) and is scaled to the column by a script; the overlay
+button and the bar button both open the lightbox.
+{%- endcomment -%}
+{%- assign embed_src = include.src | relative_url -%}
+<div class="app-embed" data-base-w="{{ include.base_w | default: 1180 }}" data-base-h="{{ include.base_h | default: 720 }}">
+  <div class="app-embed__bar">
+    <span class="app-embed__hint">{{ include.hint | default: "Interactive tool — open for the full view" }}</span>
+    <button type="button" class="app-embed__btn" data-embed-expand data-embed-src="{{ embed_src }}" data-embed-title="{{ include.title | escape }}">
+      Expand
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3v6h2V6.41l4.3 4.3 1.41-1.42L6.41 5H9V3zm12 12h-2v2.59l-4.3-4.3-1.41 1.42L17.59 19H15v2h6v-6z"/></svg>
+    </button>
+  </div>
+  <div class="app-embed__frame">
+    <iframe class="app-embed__iframe" src="{{ embed_src }}" title="{{ include.title | escape }}" loading="lazy" allowfullscreen></iframe>
+    <button type="button" class="app-embed__open" data-embed-expand data-embed-src="{{ embed_src }}" data-embed-title="{{ include.title | escape }}" aria-label="Open interactive view">
+      <span class="app-embed__open-pill">Open interactive view
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3v6h2V6.41l4.3 4.3 1.41-1.42L6.41 5H9V3zm12 12h-2v2.59l-4.3-4.3-1.41 1.42L17.59 19H15v2h6v-6z"/></svg>
+      </span>
+    </button>
+  </div>
+</div>

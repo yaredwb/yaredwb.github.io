@@ -1077,6 +1077,257 @@ html[data-theme="dark"] .highlight .err { color: #d14d41; }
   border: 0;
 }
 
+/* ---------- Interactive app embeds ---------- */
+
+/* Inline preview of a full-window web app. The iframe renders at a desktop
+   size (so the app uses its wide layout) and a script scales it to the
+   column; the whole frame is a button that opens the app in a lightbox. */
+.app-embed {
+  margin: var(--spacing-xl) 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-raised);
+}
+
+.app-embed__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs) var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app-embed__hint {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.app-embed__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  padding: 0.35em 0.85em;
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.app-embed__btn:hover,
+.app-embed__btn:focus-visible {
+  color: var(--color-accent-contrast);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.app-embed__btn svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+.app-embed__frame {
+  position: relative;
+  width: 100%;
+  height: 460px; /* pre-script fallback before scaling kicks in */
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.app-embed__iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  pointer-events: none; /* preview only — interaction happens in the lightbox */
+}
+
+.app-embed.is-scaled .app-embed__iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--embed-base-w);
+  height: var(--embed-base-h);
+  max-width: none; /* override .post-content iframe { max-width: 100% } */
+  transform: scale(var(--embed-scale, 1));
+  transform-origin: top left;
+}
+
+.app-embed__open {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-embed__open-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6em 1.1em;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: rgba(16, 15, 15, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--transition-base), transform var(--transition-base), background var(--transition-base);
+}
+
+.app-embed__open-pill svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+.app-embed__open:hover .app-embed__open-pill,
+.app-embed__open:focus-visible .app-embed__open-pill {
+  opacity: 1;
+  transform: none;
+  background: rgba(16, 15, 15, 0.78);
+}
+
+/* Touch devices have no hover — keep the affordance visible */
+@media (hover: none) {
+  .app-embed__open-pill {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Lightbox: the app opened in a large floating window */
+.embed-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 2vw, 28px);
+}
+
+.embed-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 15, 15, 0.74);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: embed-fade var(--transition-base) ease-out;
+}
+
+.embed-lightbox__panel {
+  position: relative;
+  width: min(1300px, 96vw);
+  height: min(900px, 92vh);
+  display: flex;
+  flex-direction: column;
+  background: #0f172a;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 30px 70px -20px rgba(16, 15, 15, 0.6);
+  animation: embed-rise var(--transition-base) ease-out;
+}
+
+.embed-lightbox__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-xs) var(--spacing-md);
+  background: var(--color-page);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.embed-lightbox__title {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.embed-lightbox__close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  padding: 0.35em 0.85em;
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.embed-lightbox__close:hover,
+.embed-lightbox__close:focus-visible {
+  color: var(--color-accent-contrast);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.embed-lightbox__frame {
+  flex: 1;
+  min-height: 0;
+}
+
+.embed-lightbox__frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #0f172a;
+}
+
+@keyframes embed-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes embed-rise {
+  from { opacity: 0; transform: translateY(10px) scale(0.99); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .embed-lightbox__backdrop,
+  .embed-lightbox__panel {
+    animation: none;
+  }
+}
+
 /* ---------- Footer ---------- */
 
 .site-footer {

@@ -341,6 +341,84 @@
       }
     })();
   </script>
+  <!-- Interactive app embeds: scale the inline preview to the column and
+       open the app in a floating lightbox on click. No-op without embeds. -->
+  <script>
+    (function () {
+      if (!document.querySelector('.app-embed, [data-embed-expand]')) return;
+
+      // Scale each inline preview so the desktop-width iframe fits the column
+      document.querySelectorAll('.app-embed[data-base-w]').forEach((el) => {
+        const frame = el.querySelector('.app-embed__frame');
+        if (!frame) return;
+        const bw = parseFloat(el.dataset.baseW) || 1180;
+        const bh = parseFloat(el.dataset.baseH) || 720;
+        el.style.setProperty('--embed-base-w', bw + 'px');
+        el.style.setProperty('--embed-base-h', bh + 'px');
+        const fit = () => {
+          const w = frame.clientWidth;
+          if (!w) return;
+          const s = w / bw;
+          el.style.setProperty('--embed-scale', s.toFixed(4));
+          frame.style.height = Math.round(bh * s) + 'px';
+        };
+        el.classList.add('is-scaled');
+        fit();
+        if ('ResizeObserver' in window) new ResizeObserver(fit).observe(frame);
+        else window.addEventListener('resize', fit, { passive: true });
+      });
+
+      // Lightbox
+      let box = null, lastFocus = null;
+      const onKey = (e) => { if (e.key === 'Escape') closeBox(); };
+      function closeBox() {
+        if (!box) return;
+        box.remove();
+        box = null;
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', onKey);
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+      function openBox(src, title) {
+        if (!src) return;
+        closeBox();
+        lastFocus = document.activeElement;
+        box = document.createElement('div');
+        box.className = 'embed-lightbox';
+        box.setAttribute('role', 'dialog');
+        box.setAttribute('aria-modal', 'true');
+        box.setAttribute('aria-label', title || 'Interactive application');
+        box.innerHTML =
+          '<div class="embed-lightbox__backdrop" data-embed-close></div>' +
+          '<div class="embed-lightbox__panel">' +
+            '<div class="embed-lightbox__bar">' +
+              '<span class="embed-lightbox__title"></span>' +
+              '<button type="button" class="embed-lightbox__close" data-embed-close aria-label="Close">Close ✕</button>' +
+            '</div>' +
+            '<div class="embed-lightbox__frame"><iframe allowfullscreen></iframe></div>' +
+          '</div>';
+        box.querySelector('.embed-lightbox__title').textContent = title || '';
+        const iframe = box.querySelector('iframe');
+        iframe.title = title || 'Interactive application';
+        iframe.src = src;
+        box.addEventListener('click', (e) => {
+          if (e.target.closest('[data-embed-close]')) closeBox();
+        });
+        document.body.appendChild(box);
+        document.body.style.overflow = 'hidden';
+        document.addEventListener('keydown', onKey);
+        const close = box.querySelector('.embed-lightbox__close');
+        if (close) close.focus();
+      }
+
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-embed-expand]');
+        if (!btn) return;
+        e.preventDefault();
+        openBox(btn.dataset.embedSrc, btn.dataset.embedTitle);
+      });
+    })();
+  </script>
   <script>
     (function() {
       const storageKey = 'preferred-color-scheme';
