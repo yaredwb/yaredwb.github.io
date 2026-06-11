@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "One Prompt, Five Models: Interactive Explainers of Thermo-Hydro-Mechanical Processes"
+title: "One Prompt, Five AI Models: Interactive Explainers of Thermo-Hydro-Mechanical Processes"
 date: 2026-06-11
 tags: [AI, LLM, Visualization, THM, Porous Media, Geotechnical Engineering, Comparison]
 excerpt: "I gave five frontier AI models the same one-sentence prompt: build a website explaining coupled thermo-hydro-mechanical processes in porous media, with beautiful and interactive illustrations. The results ranged from genuinely impressive to broken. All five are embedded here, with my honest assessment of each."
