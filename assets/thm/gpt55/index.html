@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thermo-Hydro-Mechanical Porous Media</title>
+    <meta
+      name="description"
+      content="Interactive explanations of thermo-hydro-mechanical processes in porous media with equations, diagrams, and a coupled simulator."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#lab" aria-label="THM porous media home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>THM Porous Media</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#principles">Principles</a>
+        <a href="#equations">Equations</a>
+        <a href="#coupling">Coupling</a>
+        <a href="#scales">Scales</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lab" id="lab" aria-labelledby="lab-title">
+        <div class="lab-copy">
+          <p class="eyebrow">Interactive coupled sample</p>
+          <h1 id="lab-title">Thermo-hydro-mechanical processes in porous media</h1>
+          <p class="lead">
+            Porous materials deform, conduct heat, and transmit fluids at the same time. Adjust the
+            loading below to see how heat gradients, pore-pressure gradients, and effective stress
+            combine inside a saturated sample.
+          </p>
+
+          <div class="metrics" aria-label="Computed response indicators">
+            <article>
+              <span>Darcy flux</span>
+              <strong id="metric-flux">0.00 mm/s</strong>
+            </article>
+            <article>
+              <span>Thermal strain</span>
+              <strong id="metric-strain">0.00%</strong>
+            </article>
+            <article>
+              <span>Porosity change</span>
+              <strong id="metric-porosity">0.00%</strong>
+            </article>
+          </div>
+        </div>
+
+        <div class="lab-stage" aria-label="Interactive porous media simulator">
+          <canvas id="sample-canvas" width="960" height="720"></canvas>
+          <div class="canvas-legend" aria-label="Canvas legend">
+            <span><i class="legend-hot"></i> hot boundary</span>
+            <span><i class="legend-flow"></i> pore water flux</span>
+            <span><i class="legend-stress"></i> external stress</span>
+          </div>
+        </div>
+
+        <form class="controls" id="controls" aria-label="Simulator controls">
+          <div class="control-group">
+            <label for="temperature">
+              <span>Temperature contrast</span>
+              <output id="temperature-out">70&deg;C</output>
+            </label>
+            <input id="temperature" name="temperature" type="range" min="10" max="140" value="70" />
+          </div>
+
+          <div class="control-group">
+            <label for="pressure">
+              <span>Pressure gradient</span>
+              <output id="pressure-out">1.8 MPa/m</output>
+            </label>
+            <input id="pressure" name="pressure" type="range" min="0.2" max="4" value="1.8" step="0.1" />
+          </div>
+
+          <div class="control-group">
+            <label for="load">
+              <span>Vertical load</span>
+              <output id="load-out">9 MPa</output>
+            </label>
+            <input id="load" name="load" type="range" min="0" max="24" value="9" step="0.5" />
+          </div>
+
+          <div class="control-group">
+            <label for="permeability">
+              <span>Log permeability</span>
+              <output id="permeability-out">10^-14 m&sup2;</output>
+            </label>
+            <input id="permeability" name="permeability" type="range" min="-16" max="-12" value="-14" step="0.1" />
+          </div>
+
+          <div class="control-grid">
+            <label class="toggle">
+              <input type="checkbox" id="show-heat" checked />
+              <span>Heat vectors</span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox" id="show-flow" checked />
+              <span>Flow paths</span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox" id="show-mesh" checked />
+              <span>Deformed mesh</span>
+            </label>
+          </div>
+        </form>
+      </section>
+
+      <section class="section" id="principles" aria-labelledby="principles-title">
+        <div class="section-heading">
+          <p class="eyebrow">Physical principles</p>
+          <h2 id="principles-title">Three fields, one porous skeleton</h2>
+          <p>
+            A representative elementary volume contains mineral grains, connected pore space, and a
+            pore fluid. THM theory tracks temperature, pore pressure, and displacement as primary
+            fields, then closes the problem with material laws.
+          </p>
+        </div>
+
+        <div class="principle-grid">
+          <article class="principle-card thermal">
+            <div class="diagram" aria-hidden="true">
+              <svg viewBox="0 0 240 150" role="img">
+                <defs>
+                  <linearGradient id="heat-grad" x1="0" x2="1">
+                    <stop offset="0" stop-color="#f45b42" />
+                    <stop offset="1" stop-color="#1f8ed6" />
+                  </linearGradient>
+                </defs>
+                <rect x="18" y="28" width="204" height="94" rx="14" fill="url(#heat-grad)" />
+                <path d="M46 77h132" stroke="#fff" stroke-width="7" stroke-linecap="round" />
+                <path d="M160 57l28 20-28 20" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="64" cy="77" r="17" fill="#fff6" />
+                <circle cx="112" cy="77" r="11" fill="#fff8" />
+                <circle cx="153" cy="77" r="8" fill="#fffc" />
+              </svg>
+            </div>
+            <h3>Thermal transport</h3>
+            <p>
+              Heat moves by conduction through the composite solid-fluid medium and by advection
+              when pore water carries thermal energy.
+            </p>
+            <code>q_T = -lambda_eff grad(T) + rho_w c_w v T</code>
+          </article>
+
+          <article class="principle-card hydraulic">
+            <div class="diagram" aria-hidden="true">
+              <svg viewBox="0 0 240 150" role="img">
+                <rect x="22" y="26" width="196" height="98" rx="16" fill="#dff6fa" />
+                <g fill="#277f95">
+                  <circle cx="58" cy="59" r="18" />
+                  <circle cx="98" cy="88" r="14" />
+                  <circle cx="139" cy="58" r="20" />
+                  <circle cx="178" cy="91" r="15" />
+                </g>
+                <path d="M38 77c35-34 59 35 92 0s48-13 73 12" fill="none" stroke="#0d5f78" stroke-width="8" stroke-linecap="round" />
+                <path d="M185 73l23 16-26 10" fill="none" stroke="#0d5f78" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <h3>Fluid mass balance</h3>
+            <p>
+              Pore pressure changes when fluid enters, leaves, expands thermally, or is squeezed by
+              deformation of the pore volume.
+            </p>
+            <code>v = -(k / mu) (grad(p) - rho_f g)</code>
+          </article>
+
+          <article class="principle-card mechanical">
+            <div class="diagram" aria-hidden="true">
+              <svg viewBox="0 0 240 150" role="img">
+                <rect x="42" y="38" width="156" height="76" rx="12" fill="#eef1f5" stroke="#36445a" stroke-width="4" />
+                <path d="M62 55h116M62 75h116M62 95h116M83 45v62M121 45v62M159 45v62" stroke="#9aa7b8" stroke-width="3" />
+                <path d="M120 8v44" stroke="#c3413d" stroke-width="9" stroke-linecap="round" />
+                <path d="M103 35l17 23 17-23" fill="#c3413d" />
+                <path d="M120 142V98" stroke="#c3413d" stroke-width="9" stroke-linecap="round" />
+                <path d="M137 115l-17-23-17 23" fill="#c3413d" />
+              </svg>
+            </div>
+            <h3>Effective stress</h3>
+            <p>
+              The skeleton responds to effective stress, not total stress alone. Pore pressure
+              unloads grain contacts while thermal expansion adds eigenstrain.
+            </p>
+            <code>sigma' = sigma - alpha_B p I</code>
+          </article>
+        </div>
+      </section>
+
+      <section class="equations section" id="equations" aria-labelledby="equations-title">
+        <div class="section-heading">
+          <p class="eyebrow">Mathematical model</p>
+          <h2 id="equations-title">Balance laws plus constitutive closure</h2>
+          <p>
+            The standard small-strain THM problem couples conservation of energy, conservation of
+            fluid mass, and quasi-static momentum balance.
+          </p>
+        </div>
+
+        <div class="equation-workbench">
+          <div class="equation-tabs" role="tablist" aria-label="Equation families">
+            <button class="tab active" type="button" role="tab" aria-selected="true" data-equation="energy">Energy</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-equation="mass">Fluid mass</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-equation="momentum">Momentum</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-equation="closure">Closure</button>
+          </div>
+
+          <article class="equation-panel">
+            <div>
+              <p class="equation-label" id="equation-label">Energy conservation</p>
+              <div class="equation" id="equation-text">
+                (rho c)_eff dT/dt = div(lambda_eff grad T) - rho_f c_f v dot grad T + Q_T
+              </div>
+            </div>
+            <p id="equation-explain">
+              The left side stores heat in the solid-fluid mixture. The right side accounts for
+              conduction, advective heat transport by flowing water, and sources such as injection
+              or reactions.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="coupling" aria-labelledby="coupling-title">
+        <div class="section-heading">
+          <p class="eyebrow">Coupling map</p>
+          <h2 id="coupling-title">How one field drives another</h2>
+          <p>
+            Select a coupling path to see the mechanism. Strong THM effects usually appear when
+            more than one path is active at the same time.
+          </p>
+        </div>
+
+        <div class="coupling-layout">
+          <div class="coupling-matrix" aria-label="Interactive coupling matrix">
+            <button type="button" class="matrix-cell active" data-coupling="thermal-hydro">
+              <span>T &rarr; H</span>
+              Thermal pressurization
+            </button>
+            <button type="button" class="matrix-cell" data-coupling="hydro-thermal">
+              <span>H &rarr; T</span>
+              Advective heat
+            </button>
+            <button type="button" class="matrix-cell" data-coupling="thermal-mech">
+              <span>T &rarr; M</span>
+              Thermal strain
+            </button>
+            <button type="button" class="matrix-cell" data-coupling="mech-thermal">
+              <span>M &rarr; T</span>
+              Dissipation
+            </button>
+            <button type="button" class="matrix-cell" data-coupling="hydro-mech">
+              <span>H &rarr; M</span>
+              Poroelastic stress
+            </button>
+            <button type="button" class="matrix-cell" data-coupling="mech-hydro">
+              <span>M &rarr; H</span>
+              Consolidation
+            </button>
+          </div>
+
+          <article class="coupling-detail">
+            <p class="equation-label" id="coupling-kicker">T -> H</p>
+            <h3 id="coupling-title-text">Thermal pressurization</h3>
+            <p id="coupling-body">
+              Heating expands pore fluid and grains by different amounts. In low-permeability rock,
+              fluid expansion cannot drain quickly, so pore pressure rises and effective stress
+              falls.
+            </p>
+            <div class="coupling-formula" id="coupling-formula">
+              dp &asymp; Lambda dT, where Lambda depends on compressibility and expansion mismatch.
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section scales" id="scales" aria-labelledby="scales-title">
+        <div class="section-heading">
+          <p class="eyebrow">Scales and regimes</p>
+          <h2 id="scales-title">When coupling matters</h2>
+          <p>
+            Coupling is governed by material properties and time scales. Use the sliders to compare
+            diffusion, advection, and deformation response for a representative length.
+          </p>
+        </div>
+
+        <div class="scale-board">
+          <form class="scale-controls" aria-label="Scale calculator">
+            <label for="length">
+              <span>Length scale</span>
+              <output id="length-out">10 m</output>
+            </label>
+            <input id="length" type="range" min="1" max="100" value="10" />
+
+            <label for="diffusivity">
+              <span>Hydraulic diffusivity</span>
+              <output id="diffusivity-out">1e-6 m&sup2;/s</output>
+            </label>
+            <input id="diffusivity" type="range" min="-9" max="-3" value="-6" step="0.1" />
+
+            <label for="velocity">
+              <span>Pore velocity</span>
+              <output id="velocity-out">1e-7 m/s</output>
+            </label>
+            <input id="velocity" type="range" min="-10" max="-4" value="-7" step="0.1" />
+          </form>
+
+          <div class="scale-results">
+            <article>
+              <span>Diffusion time</span>
+              <strong id="diffusion-time">3.2 years</strong>
+              <p>Pressure and temperature equilibrate over roughly L<sup>2</sup> / c.</p>
+            </article>
+            <article>
+              <span>Peclet number</span>
+              <strong id="peclet">1.0</strong>
+              <p>Pe = v L / D compares advective transport with diffusive smoothing.</p>
+            </article>
+            <article>
+              <span>Regime</span>
+              <strong id="regime">mixed</strong>
+              <p id="regime-copy">Advection and diffusion both shape the response.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Built as an interactive guide to coupled heat transfer, groundwater flow, and porous
+        skeleton deformation.
+      </p>
+    </footer>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Thermo-Hydro-Mechanical Processes in Porous Media — An Interactive Primer</title>
+<meta name="description" content="An interactive, visual explanation of the physical and mathematical principles governing coupled thermal, hydraulic, and mechanical processes in porous media." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<!-- KaTeX for equation rendering -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+
+<!-- ============ Scroll progress + nav ============ -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top">
+    <span class="brand-mark" aria-hidden="true">
+      <span class="dot t"></span><span class="dot h"></span><span class="dot m"></span>
+    </span>
+    <span class="brand-text">THM<span class="brand-sub">porous media</span></span>
+  </a>
+  <nav class="nav-links" aria-label="Section navigation">
+    <a href="#porous">Porous Media</a>
+    <a href="#triangle">Coupling</a>
+    <a href="#thermal">Thermal</a>
+    <a href="#hydraulic">Hydraulic</a>
+    <a href="#mechanical">Mechanical</a>
+    <a href="#consolidation">Consolidation</a>
+    <a href="#equations">Equations</a>
+  </nav>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+</header>
+
+<!-- ============ Hero ============ -->
+<section class="hero" id="top">
+  <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="hero-veil"></div>
+  <div class="hero-inner">
+    <p class="eyebrow reveal">Physics · Mathematics · Visualization</p>
+    <h1 class="hero-title reveal">
+      Thermo&#8209;Hydro&#8209;Mechanical<br />
+      <span class="grad-text">Processes in Porous Media</span>
+    </h1>
+    <p class="hero-lead reveal">
+      Soils, rocks, concrete, bone, and engineered membranes are not solids — they are
+      <em>multiphase continua</em>: a deformable skeleton threaded by fluid-filled pores,
+      all carrying heat. Squeeze it, heat it, or flood it, and every effect ripples into the others.
+      This is an interactive tour of the <strong>coupled physics</strong> and the
+      <strong>equations</strong> that describe it.
+    </p>
+    <div class="hero-cta reveal">
+      <a class="btn btn-primary" href="#porous">Begin the tour ↓</a>
+      <a class="btn btn-ghost" href="#triangle">See the coupling map</a>
+    </div>
+    <div class="hero-chips reveal" aria-hidden="true">
+      <span class="chip chip-t">T · heat transfer</span>
+      <span class="chip chip-h">H · fluid flow</span>
+      <span class="chip chip-m">M · deformation</span>
+    </div>
+  </div>
+  <a class="scroll-hint" href="#porous" aria-label="Scroll down"><span></span></a>
+</section>
+
+<main>
+
+<!-- ============ 1. Porous media / REV ============ -->
+<section class="section" id="porous">
+  <div class="section-head reveal">
+    <span class="kicker">01 — Foundations</span>
+    <h2>What <em>is</em> a porous medium?</h2>
+    <p class="section-intro">
+      Zoom in on a grain of sandstone and you see solid mineral, void space, and fluid in a
+      tangled microstructure. We cannot track every pore. Instead we average over a small volume
+      large enough to be statistically meaningful but small compared to the structure — the
+      <strong>Representative Elementary Volume (REV)</strong>. Properties like
+      <em>porosity</em> become smooth, well-defined fields.
+    </p>
+  </div>
+
+  <div class="rev-layout">
+    <figure class="card sim-card reveal">
+      <figcaption class="sim-title">
+        <span>Finding the REV</span>
+        <small>Grow the averaging window and watch porosity settle</small>
+      </figcaption>
+      <canvas id="revCanvas" class="sim-canvas" height="380"></canvas>
+      <div class="controls">
+        <label class="control">
+          <span class="control-label">Window size <b id="revSizeVal">small</b></span>
+          <input type="range" id="revSize" min="6" max="100" value="14" />
+        </label>
+        <div class="readout" id="revReadout">
+          <span class="readout-item"><b id="revPhi">—</b><small>measured porosity φ</small></span>
+        </div>
+      </div>
+    </figure>
+
+    <div class="rev-aside reveal">
+      <div class="concept">
+        <h3>Porosity</h3>
+        <p>The fraction of the bulk volume that is void:</p>
+        <div class="eq">$$ \phi = \frac{V_\text{void}}{V_\text{total}}, \qquad 0 < \phi < 1 $$</div>
+        <p>
+          At <em>tiny</em> scales the window sits inside a single grain (φ → 0) or a single pore
+          (φ → 1). The reading swings wildly. Enlarge the window past the REV and it converges to a
+          stable bulk value — the scale at which continuum equations become valid.
+        </p>
+      </div>
+      <div class="concept">
+        <h3>The three phases &amp; three physics</h3>
+        <ul class="phase-list">
+          <li><span class="tag tag-m">solid skeleton</span> bears stress, deforms, conducts heat</li>
+          <li><span class="tag tag-h">pore fluid</span> stores &amp; transmits pressure, flows, advects heat</li>
+          <li><span class="tag tag-t">thermal field</span> shared by both, drives expansion &amp; flow</li>
+        </ul>
+        <p class="muted">
+          Each phase obeys a conservation law; the <strong>couplings</strong> between them are what
+          make THM rich — and the subject of everything below.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. The THM triangle ============ -->
+<section class="section section-alt" id="triangle">
+  <div class="section-head reveal">
+    <span class="kicker">02 — The big picture</span>
+    <h2>The coupling triangle</h2>
+    <p class="section-intro">
+      Three processes, six one-way couplings. Hover or tap an arrow to see how one field
+      drives another — and the exact term it adds to the governing equations.
+    </p>
+  </div>
+
+  <div class="triangle-layout">
+    <div class="triangle-wrap card reveal">
+      <svg id="thmTriangle" viewBox="0 0 520 460" role="img" aria-label="Interactive THM coupling diagram">
+        <defs>
+          <marker id="arrowT" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" /></marker>
+        </defs>
+        <!-- edges are injected/managed via JS for hover; static paths here -->
+        <g id="edgesGroup"></g>
+        <!-- nodes -->
+        <g class="node node-t" data-node="T" transform="translate(260,70)">
+          <circle r="52"></circle>
+          <text class="node-letter" y="-2">T</text>
+          <text class="node-name" y="22">Thermal</text>
+        </g>
+        <g class="node node-h" data-node="H" transform="translate(110,360)">
+          <circle r="52"></circle>
+          <text class="node-letter" y="-2">H</text>
+          <text class="node-name" y="22">Hydraulic</text>
+        </g>
+        <g class="node node-m" data-node="M" transform="translate(410,360)">
+          <circle r="52"></circle>
+          <text class="node-letter" y="-2">M</text>
+          <text class="node-name" y="22">Mechanical</text>
+        </g>
+      </svg>
+    </div>
+
+    <aside class="triangle-info card reveal" id="couplingInfo" aria-live="polite">
+      <div class="ci-content" id="ciContent">
+        <h3>Six couplings</h3>
+        <p class="muted">Hover an arrow on the diagram — or a chip below — to see how one field drives another, and the exact term it adds to the equations. Click to pin it.</p>
+      </div>
+      <div class="coupling-chips" id="couplingChips"></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ 3. Thermal ============ -->
+<section class="section topic topic-thermal" id="thermal">
+  <div class="section-head reveal">
+    <span class="kicker kicker-t">03 — Thermal</span>
+    <h2>Heat in a porous solid</h2>
+    <p class="section-intro">
+      Heat moves by <strong>conduction</strong> through the solid–fluid mixture and is carried
+      bodily by moving fluid (<strong>advection</strong>). Energy is conserved.
+    </p>
+  </div>
+
+  <div class="topic-grid">
+    <div class="topic-text reveal">
+      <div class="law">
+        <h3>Fourier's law</h3>
+        <p>Heat flux flows down the temperature gradient:</p>
+        <div class="eq">$$ \mathbf{q}_h = -\,\lambda_\text{eff}\,\nabla T $$</div>
+        <p class="muted">
+          $\lambda_\text{eff}$ is the effective conductivity of the saturated mixture — a blend of
+          solid and fluid conductivities weighted by porosity.
+        </p>
+      </div>
+      <div class="law">
+        <h3>Energy conservation</h3>
+        <p>Storage = conduction in − advected out + sources:</p>
+        <div class="eq">$$ (\rho c)_\text{eff}\,\frac{\partial T}{\partial t}
+          \;+\; (\rho c)_f\,\mathbf{q}\!\cdot\!\nabla T
+          \;=\; \nabla\!\cdot\!\big(\lambda_\text{eff}\nabla T\big) \;+\; Q $$</div>
+        <ul class="term-list">
+          <li><span class="term">$(\rho c)_\text{eff}\,\partial_t T$</span> heat stored in skeleton + fluid</li>
+          <li><span class="term term-h">$(\rho c)_f\,\mathbf{q}\!\cdot\!\nabla T$</span> heat carried by Darcy flux → <em>H→T coupling</em></li>
+          <li><span class="term">$\nabla\!\cdot(\lambda_\text{eff}\nabla T)$</span> conduction</li>
+          <li><span class="term">$Q$</span> internal sources (reactions, decay heat…)</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure class="card sim-card reveal">
+      <figcaption class="sim-title">
+        <span>Transient heat diffusion</span>
+        <small>Click &amp; drag on the field to inject heat</small>
+      </figcaption>
+      <canvas id="heatCanvas" class="sim-canvas pixelated" height="320"></canvas>
+      <div class="controls">
+        <label class="control">
+          <span class="control-label">Thermal diffusivity</span>
+          <input type="range" id="heatDiff" min="5" max="100" value="45" />
+        </label>
+        <div class="seg">
+          <button class="seg-btn active" data-heatmode="pulse">Hot spot</button>
+          <button class="seg-btn" data-heatmode="edge">Hot wall</button>
+          <button class="seg-btn" id="heatReset">Reset</button>
+        </div>
+      </div>
+      <p class="sim-note">A simple explicit finite-difference solution of $\partial_t T = D\,\nabla^2 T$.</p>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 4. Hydraulic ============ -->
+<section class="section topic topic-hydro section-alt" id="hydraulic">
+  <div class="section-head reveal">
+    <span class="kicker kicker-h">04 — Hydraulic</span>
+    <h2>Fluid flow through pores</h2>
+    <p class="section-intro">
+      A pressure difference drives fluid through the tortuous pore network. At the continuum scale
+      the messy microflow collapses into one elegant statement: <strong>Darcy's law</strong>.
+    </p>
+  </div>
+
+  <div class="topic-grid">
+    <figure class="card sim-card reveal">
+      <figcaption class="sim-title">
+        <span>Darcy flow around a low-permeability lens</span>
+        <small>Tracers follow the seepage field; colour = pressure</small>
+      </figcaption>
+      <canvas id="darcyCanvas" class="sim-canvas" height="320"></canvas>
+      <div class="controls">
+        <label class="control">
+          <span class="control-label">Lens permeability</span>
+          <input type="range" id="darcyK" min="0" max="100" value="6" />
+        </label>
+        <label class="control">
+          <span class="control-label">Pressure gradient</span>
+          <input type="range" id="darcyGrad" min="20" max="100" value="60" />
+        </label>
+      </div>
+      <p class="sim-note">Pressure solves $\nabla\!\cdot(k\,\nabla p)=0$; velocity is $\mathbf{q}=-\tfrac{k}{\mu}\nabla p$.</p>
+    </figure>
+
+    <div class="topic-text reveal">
+      <div class="law">
+        <h3>Darcy's law</h3>
+        <p>The volumetric flux (specific discharge) is proportional to the pressure gradient:</p>
+        <div class="eq">$$ \mathbf{q} = -\,\frac{k}{\mu}\,\big(\nabla p - \rho_f\,\mathbf{g}\big) $$</div>
+        <ul class="term-list">
+          <li><span class="term term-h">$k$</span> intrinsic permeability (geometry of the pores)</li>
+          <li><span class="term">$\mu$</span> fluid viscosity (falls as $T$ rises → <em>T→H</em>)</li>
+          <li><span class="term">$\rho_f\,\mathbf{g}$</span> buoyancy / gravity drive</li>
+        </ul>
+      </div>
+      <div class="law">
+        <h3>Mass conservation &amp; storage</h3>
+        <p>Combine fluid mass balance with Darcy's law to get a pressure-diffusion equation:</p>
+        <div class="eq">$$ S\,\frac{\partial p}{\partial t}
+          \;+\; \alpha\,\frac{\partial \varepsilon_v}{\partial t}
+          \;=\; \nabla\!\cdot\!\Big(\tfrac{k}{\mu}\nabla p\Big) $$</div>
+        <ul class="term-list">
+          <li><span class="term term-h">$S$</span> storage coefficient (fluid + pore compressibility)</li>
+          <li><span class="term term-m">$\alpha\,\partial_t \varepsilon_v$</span> skeleton volume change feeds pressure → <em>M→H coupling</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. Mechanical ============ -->
+<section class="section topic topic-mech" id="mechanical">
+  <div class="section-head reveal">
+    <span class="kicker kicker-m">05 — Mechanical</span>
+    <h2>Deformation &amp; effective stress</h2>
+    <p class="section-intro">
+      The skeleton carries load and deforms. The decisive idea of poromechanics: the grains feel
+      only the <strong>effective stress</strong> — total stress minus the pressure the pore fluid
+      already supports.
+    </p>
+  </div>
+
+  <div class="topic-grid">
+    <div class="topic-text reveal">
+      <div class="law">
+        <h3>The effective stress principle</h3>
+        <p>Pore pressure carries part of the total load; the rest is borne by grain contacts:</p>
+        <div class="eq">$$ \boldsymbol{\sigma} = \boldsymbol{\sigma}' - \alpha\,p\,\mathbf{I} $$</div>
+        <ul class="term-list">
+          <li><span class="term term-m">$\boldsymbol{\sigma}'$</span> effective stress — controls strength &amp; deformation</li>
+          <li><span class="term term-h">$\alpha\,p$</span> pressure support → <em>H→M coupling</em></li>
+          <li><span class="term">$\alpha = 1 - K/K_s$</span> Biot coefficient ($0<\alpha\le 1$)</li>
+        </ul>
+      </div>
+      <div class="law">
+        <h3>Constitutive &amp; equilibrium</h3>
+        <p>Linear thermo-poro-elasticity links effective stress to strain and temperature:</p>
+        <div class="eq">$$ \boldsymbol{\sigma}' = \mathbb{C}:\boldsymbol{\varepsilon} - 3K\beta_s\,\Delta T\,\mathbf{I} $$</div>
+        <p>and quasi-static momentum balance closes the system:</p>
+        <div class="eq">$$ \nabla\!\cdot\!\boldsymbol{\sigma} + \rho\,\mathbf{g} = \mathbf{0} $$</div>
+        <p class="muted">The $\Delta T$ term is the <em>T→M coupling</em>: heat the skeleton and it expands.</p>
+      </div>
+    </div>
+
+    <figure class="card sim-card reveal">
+      <figcaption class="sim-title">
+        <span>Load sharing: total = effective + pore pressure</span>
+        <small>Drag the load; toggle drainage</small>
+      </figcaption>
+      <canvas id="stressCanvas" class="sim-canvas" height="320"></canvas>
+      <div class="controls">
+        <label class="control">
+          <span class="control-label">Applied total stress σ</span>
+          <input type="range" id="stressLoad" min="0" max="100" value="60" />
+        </label>
+        <div class="seg">
+          <button class="seg-btn active" data-drain="undrained">Undrained</button>
+          <button class="seg-btn" data-drain="drained">Drained</button>
+        </div>
+      </div>
+      <p class="sim-note">
+        Undrained: a sudden load is taken almost entirely by the trapped fluid (σ′ barely moves).
+        Drainage lets pressure dissipate and transfers load to the skeleton.
+      </p>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 6. Consolidation (the canonical coupled demo) ============ -->
+<section class="section section-alt" id="consolidation">
+  <div class="section-head reveal">
+    <span class="kicker">06 — Coupling in action</span>
+    <h2>Terzaghi consolidation</h2>
+    <p class="section-intro">
+      The textbook H–M coupling. Load a saturated clay layer: the fluid takes the load instantly as
+      excess pore pressure, then slowly drains away, handing the load to the skeleton, which settles.
+      The pressure obeys a diffusion equation — the same mathematics as heat.
+    </p>
+  </div>
+
+  <figure class="card sim-card sim-wide reveal">
+    <div class="consol-grid">
+      <div class="consol-col">
+        <h4 class="mini-title">Saturated layer</h4>
+        <canvas id="consolColumn" class="sim-canvas"></canvas>
+      </div>
+      <div class="consol-col consol-col-wide">
+        <h4 class="mini-title">Excess pore-pressure isochrones</h4>
+        <canvas id="consolIso" class="sim-canvas"></canvas>
+      </div>
+      <div class="consol-col">
+        <h4 class="mini-title">Degree of consolidation</h4>
+        <canvas id="consolU" class="sim-canvas"></canvas>
+      </div>
+    </div>
+    <div class="controls controls-wide">
+      <button class="btn btn-small" id="consolPlay">▶ Play</button>
+      <label class="control control-grow">
+        <span class="control-label">Time factor $T_v=c_v t/H^2$ &nbsp; <b id="consolTvVal">0.00</b></span>
+        <input type="range" id="consolTv" min="0" max="200" value="2" />
+      </label>
+      <div class="readout">
+        <span class="readout-item"><b id="consolUVal">0%</b><small>consolidation U</small></span>
+      </div>
+    </div>
+    <p class="sim-note">
+      Excess pressure: $\;u/u_0 = \sum_{m=0}^{\infty}\tfrac{2}{M}\sin(M Z)\,e^{-M^2 T_v}$,
+      with $M=\tfrac{\pi}{2}(2m{+}1)$, $Z=z/H$. Double drainage (top &amp; bottom).
+    </p>
+  </figure>
+</section>
+
+<!-- ============ 7. Full equation system ============ -->
+<section class="section" id="equations">
+  <div class="section-head reveal">
+    <span class="kicker">07 — The full system</span>
+    <h2>The coupled THM equations</h2>
+    <p class="section-intro">
+      Three conservation laws, three unknown fields — displacement $\mathbf{u}$, pressure $p$,
+      temperature $T$ — knitted together by the coupling terms highlighted in colour.
+    </p>
+  </div>
+
+  <div class="eqsys reveal">
+    <div class="eqsys-row">
+      <div class="eqsys-badge badge-m">M</div>
+      <div class="eqsys-body">
+        <h3>Momentum balance</h3>
+        <div class="eq eq-big">$$ \nabla\!\cdot\!\big(\mathbb{C}:\boldsymbol{\varepsilon}
+          \;{\color{#59e0ff}-\;\alpha p\,\mathbf{I}}
+          \;{\color{#ffb838}-\;3K\beta_s\Delta T\,\mathbf{I}}\big) + \rho\mathbf{g} = \mathbf{0} $$</div>
+        <p class="muted">Deformation driven by loads, <span class="hl-h">pore pressure</span>, and <span class="hl-t">thermal expansion</span>.</p>
+      </div>
+    </div>
+
+    <div class="eqsys-row">
+      <div class="eqsys-badge badge-h">H</div>
+      <div class="eqsys-body">
+        <h3>Fluid mass balance</h3>
+        <div class="eq eq-big">$$ S\frac{\partial p}{\partial t}
+          \;{\color{#a3e635}+\;\alpha\frac{\partial \varepsilon_v}{\partial t}}
+          \;{\color{#ffb838}-\;3\alpha_m\frac{\partial T}{\partial t}}
+          = \nabla\!\cdot\!\Big(\tfrac{k}{\mu}\nabla p\Big) $$</div>
+        <p class="muted">Pressure fed by storage, <span class="hl-m">skeleton compaction</span>, and <span class="hl-t">thermal pressurization</span>; relaxed by Darcy flow.</p>
+      </div>
+    </div>
+
+    <div class="eqsys-row">
+      <div class="eqsys-badge badge-t">T</div>
+      <div class="eqsys-body">
+        <h3>Energy balance</h3>
+        <div class="eq eq-big">$$ (\rho c)_\text{eff}\frac{\partial T}{\partial t}
+          \;{\color{#59e0ff}+\;(\rho c)_f\,\mathbf{q}\!\cdot\!\nabla T}
+          = \nabla\!\cdot\!\big(\lambda_\text{eff}\nabla T\big) + Q $$</div>
+        <p class="muted">Heat stored and conducted, plus <span class="hl-h">advection by seepage</span>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="closure card reveal">
+    <h3>Closing relations</h3>
+    <div class="closure-grid">
+      <div><span class="cl-name">Strain–displacement</span><div class="eq">$ \boldsymbol{\varepsilon} = \tfrac{1}{2}(\nabla\mathbf{u}+\nabla\mathbf{u}^{\mathsf T}) $</div></div>
+      <div><span class="cl-name">Biot coefficient</span><div class="eq">$ \alpha = 1 - K/K_s $</div></div>
+      <div><span class="cl-name">Storage</span><div class="eq">$ S = \dfrac{\phi}{K_f} + \dfrac{\alpha-\phi}{K_s} $</div></div>
+      <div><span class="cl-name">Darcy flux</span><div class="eq">$ \mathbf{q} = -\tfrac{k}{\mu}(\nabla p - \rho_f\mathbf{g}) $</div></div>
+    </div>
+    <p class="muted closure-note">
+      Solve these together — usually by the finite element method — and you predict how a dam,
+      a geothermal reservoir, a nuclear-waste repository, or a settling foundation responds over time.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark" aria-hidden="true"><span class="dot t"></span><span class="dot h"></span><span class="dot m"></span></span>
+      <span>THM in Porous Media</span>
+    </div>
+    <p class="muted">
+      An interactive primer on coupled thermo-hydro-mechanical physics. Built with vanilla
+      JavaScript, HTML canvas, and KaTeX. The simulations are deliberately simplified for clarity
+      and intuition — not engineering design.
+    </p>
+    <p class="footer-fine muted">
+      Key ideas after Terzaghi (effective stress, 1925) and Biot (poroelasticity, 1941).
+    </p>
+  </div>
+</footer>
+
+<script defer src="assets/js/sims.js"></script>
+<script defer src="assets/js/app.js"></script>
+</body>
+</html>

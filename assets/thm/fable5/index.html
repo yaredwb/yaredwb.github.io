@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thermo-Hydro-Mechanical Processes in Porous Media — An Interactive Primer</title>
+<meta name="description" content="An interactive explainer of coupled thermo-hydro-mechanical (THM) processes in porous media: heat transport, Darcy flow, effective stress, consolidation, thermal pressurization, and the full coupled equations.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='9' r='6' fill='%23ff9e64'/%3E%3Ccircle cx='9' cy='22' r='6' fill='%234cc9f0'/%3E%3Ccircle cx='23' cy='22' r='6' fill='%2354d68c'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]})"></script>
+<link rel="stylesheet" href="styles.css">
+<script defer src="app.js"></script>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="brand" href="#top"><span class="dot t"></span><span class="dot h"></span><span class="dot m"></span>&nbsp;THM&middot;Lab</a>
+  <div class="navlinks">
+    <a href="#porous-media">Basics</a>
+    <a href="#thermal">Thermal</a>
+    <a href="#hydraulic">Hydraulic</a>
+    <a href="#mechanical">Mechanical</a>
+    <a href="#coupling">Coupling</a>
+    <a href="#equations">Equations</a>
+    <a href="#applications">Applications</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-content">
+    <p class="eyebrow">An interactive primer</p>
+    <h1>Thermo&middot;Hydro&middot;Mechanical<br>Processes in Porous Media</h1>
+    <p class="lede">How heat, water and stress talk to each other inside soils and rocks —
+      the physics behind geothermal energy, nuclear waste disposal, CO&#8322; storage and landslides.
+      With live simulations you can play with.</p>
+    <div class="hero-badges">
+      <span class="badge bt">T &middot; Heat</span>
+      <span class="badge bh">H &middot; Fluid</span>
+      <span class="badge bm">M &middot; Stress</span>
+    </div>
+    <a class="cta" href="#porous-media">Start exploring ↓</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================ BASICS ============================ -->
+<section id="porous-media" style="--accent:#c9b27c">
+  <div class="section-head reveal">
+    <p class="eyebrow">01 · The stage</p>
+    <h2>What is a porous medium?</h2>
+    <p class="intro">Zoom into any soil or rock and you find a <strong>solid skeleton</strong> of grains or
+    crystals threaded by an interconnected network of <strong>pores</strong>, usually filled with water
+    (sometimes air, oil, gas or ice). Three physical worlds share this one space — a temperature field,
+    a fluid pressure field, and a stress field — and they cannot help interacting.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card reveal">
+      <h3>One material, three fields</h3>
+      <svg viewBox="0 0 720 310" class="figure" role="img" aria-label="A block of porous medium with heat entering from the left, water flowing through, and mechanical load pressing from the top">
+        <defs>
+          <linearGradient id="ov-heat" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#ff9e64" stop-opacity="0.55"/>
+            <stop offset="1" stop-color="#ff9e64" stop-opacity="0"/>
+          </linearGradient>
+          <marker id="ov-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#ff9e64"/></marker>
+          <marker id="ov-aw" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4cc9f0"/></marker>
+          <marker id="ov-am" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#54d68c"/></marker>
+        </defs>
+        <!-- block of porous medium -->
+        <rect x="195" y="48" width="335" height="212" rx="14" fill="#13203c" stroke="rgba(255,255,255,0.12)"/>
+        <rect x="195" y="48" width="120" height="212" rx="14" fill="url(#ov-heat)"/>
+        <!-- grains -->
+        <g fill="#a98e62" stroke="rgba(0,0,0,0.3)">
+          <circle cx="228" cy="86" r="16"/><circle cx="266" cy="122" r="18"/><circle cx="229" cy="166" r="15"/>
+          <circle cx="270" cy="206" r="17"/><circle cx="316" cy="82" r="20"/><circle cx="321" cy="152" r="16"/>
+          <circle cx="312" cy="226" r="14"/><circle cx="362" cy="112" r="22"/><circle cx="366" cy="186" r="15"/>
+          <circle cx="411" cy="76" r="15"/><circle cx="416" cy="146" r="19"/><circle cx="406" cy="216" r="16"/>
+          <circle cx="456" cy="102" r="17"/><circle cx="461" cy="172" r="14"/><circle cx="501" cy="76" r="14"/>
+          <circle cx="496" cy="140" r="17"/><circle cx="498" cy="212" r="18"/><circle cx="426" cy="240" r="11"/>
+        </g>
+        <!-- water paths -->
+        <path d="M200,135 C250,95 290,180 350,140 C405,105 440,190 522,150" fill="none" stroke="#4cc9f0" stroke-width="2.4" stroke-dasharray="7 6" marker-end="url(#ov-aw)" opacity="0.9"/>
+        <path d="M200,200 C260,235 320,180 380,225 C440,262 470,205 522,232" fill="none" stroke="#4cc9f0" stroke-width="2.4" stroke-dasharray="7 6" marker-end="url(#ov-aw)" opacity="0.7"/>
+        <!-- heat arrows -->
+        <g stroke="#ff9e64" stroke-width="4" stroke-linecap="round">
+          <line x1="112" y1="95" x2="180" y2="95" marker-end="url(#ov-ah)"/>
+          <line x1="112" y1="154" x2="180" y2="154" marker-end="url(#ov-ah)"/>
+          <line x1="112" y1="213" x2="180" y2="213" marker-end="url(#ov-ah)"/>
+        </g>
+        <!-- load arrows -->
+        <g stroke="#54d68c" stroke-width="4" stroke-linecap="round">
+          <line x1="245" y1="8" x2="245" y2="38" marker-end="url(#ov-am)"/>
+          <line x1="330" y1="8" x2="330" y2="38" marker-end="url(#ov-am)"/>
+          <line x1="415" y1="8" x2="415" y2="38" marker-end="url(#ov-am)"/>
+          <line x1="500" y1="8" x2="500" y2="38" marker-end="url(#ov-am)"/>
+        </g>
+        <!-- labels -->
+        <text x="108" y="68" fill="#ff9e64" font-size="15" font-weight="600" text-anchor="end">Heat (T)</text>
+        <text x="588" y="146" fill="#4cc9f0" font-size="15" font-weight="600" text-anchor="middle">Flow (H)</text>
+        <text x="586" y="24" fill="#54d68c" font-size="15" font-weight="600" text-anchor="middle">Load (M)</text>
+        <text x="362" y="292" fill="#93a1b8" font-size="13" text-anchor="middle">solid grains + connected pore water = a porous medium</text>
+      </svg>
+      <p>Continuum theories of porous media don't track individual grains. They average over a
+      <strong>representative elementary volume (REV)</strong> — a patch large enough to contain many pores,
+      small enough to act like a "point" of the large-scale problem. The key averaged quantity is the
+      <strong>porosity</strong></p>
+      <p class="eq">$$ n \;=\; \frac{V_{\text{pores}}}{V_{\text{total}}}, \qquad
+        e \;=\; \frac{n}{1-n} \;\; \text{(void ratio)} $$</p>
+      <p>Typical values: dense sand \(n \approx 0.3\), soft clay \(n \approx 0.5{-}0.7\), granite
+      \(n \approx 0.01\). If water fills only part of the pore space we also track the
+      <strong>degree of saturation</strong> \(S_w\); this primer mostly assumes full saturation
+      (\(S_w = 1\)).</p>
+    </div>
+
+    <div class="card demo reveal">
+      <div class="demo-head">
+        <h3><span class="live">live</span> Porosity playground</h3>
+        <p>Grow or shrink the grains of an idealised grain pack and watch porosity — and, far more
+        dramatically, permeability — respond. Permeability follows the Kozeny–Carman scaling
+        \(k \propto \frac{n^3}{(1-n)^2}\,d^2\): a modest porosity change moves permeability by orders of magnitude.</p>
+      </div>
+      <canvas id="poro-canvas" class="demo-canvas h280" aria-label="Interactive grain pack"></canvas>
+      <div class="controls">
+        <label>Grain size <input type="range" id="poro-f" min="60" max="99" value="88"></label>
+      </div>
+      <div class="phasebar">
+        <div class="pb-solid" id="poro-bar-solid"><span>solid</span></div>
+        <div class="pb-pore" id="poro-bar-pore"><span>pores</span></div>
+      </div>
+      <div class="readouts">
+        <div class="readout"><span class="ro-label">porosity n</span><span class="ro-value" id="poro-n">–</span></div>
+        <div class="readout"><span class="ro-label">relative permeability k/k&#8320;</span><span class="ro-value" id="poro-k">–</span></div>
+      </div>
+      <p class="caption">Idealised 2-D packing — real soils sit between \(n\approx0.25\) and \(0.7\). The
+      reference \(k_0\) is taken at \(n=0.4\).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ THERMAL ============================ -->
+<section id="thermal" style="--accent:#ff9e64">
+  <div class="section-head reveal">
+    <p class="eyebrow">02 · T — Thermal</p>
+    <h2>Heat in the ground</h2>
+    <p class="intro">Temperature in a porous medium changes by <strong>conduction</strong> through grains and
+    pore water, and by <strong>advection</strong> — heat hitching a ride on moving groundwater. Radiation is
+    negligible underground. The competition between the two transport modes shapes everything from
+    geothermal reservoirs to the frost depth under a road.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card reveal">
+      <h3>Conduction: Fourier's law</h3>
+      <p>Heat flows down the temperature gradient,</p>
+      <p class="eq">$$ \mathbf{q}_T \;=\; -\,\lambda_{\mathrm{eff}}\,\nabla T $$</p>
+      <p>where \(\lambda_{\mathrm{eff}}\) is an <em>effective</em> conductivity of the grain–water composite
+      (quartz ≈ 7, water ≈ 0.6, dry air ≈ 0.025 W·m⁻¹·K⁻¹ — which is why moisture content matters so much).
+      Energy conservation gives the heat equation, extended with an advective term when pore water moves
+      with Darcy flux \(\mathbf{q}\):</p>
+      <p class="eq">$$ (\rho c)_{\mathrm{eff}}\,\frac{\partial T}{\partial t}
+        \;=\; \nabla\!\cdot\!\big(\lambda_{\mathrm{eff}}\nabla T\big)
+        \;-\; \rho_f c_f\,\mathbf{q}\cdot\nabla T \;+\; Q_T $$</p>
+      <p>with the volume-averaged heat capacity
+      \((\rho c)_{\mathrm{eff}} = n\,\rho_f c_f + (1-n)\,\rho_s c_s\).</p>
+      <h3>Who wins — conduction or advection?</h3>
+      <p>The <strong>Péclet number</strong> compares the two over a length \(L\):</p>
+      <p class="eq">$$ \mathrm{Pe} \;=\; \frac{\rho_f c_f\, q\, L}{\lambda_{\mathrm{eff}}} $$</p>
+      <p>\(\mathrm{Pe}\ll 1\): temperature spreads as a smooth diffusive halo.
+      \(\mathrm{Pe}\gg 1\): a sharp thermal front marches with the flow. Rock thermal diffusivity is tiny
+      (\(\kappa \sim 10^{-6}\,\mathrm{m^2/s}\)): the annual surface temperature wave dies out a few metres
+      down, and a heat pulse needs <em>decades</em> to conduct 30 m — but flowing groundwater can carry it
+      there in months.</p>
+    </div>
+
+    <div class="card demo reveal">
+      <div class="demo-head">
+        <h3><span class="live">live</span> Conduction vs. advection</h3>
+        <p>A 1-D column is held hot at the left end. Increase seepage velocity and watch the gentle
+        diffusive halo turn into a sharp advancing thermal front. The simulation solves
+        \(\partial_t T + v\,\partial_x T = \alpha\,\partial_x^2 T\) live.</p>
+      </div>
+      <canvas id="heat-canvas" class="demo-canvas h330" aria-label="Live heat transport simulation"></canvas>
+      <div class="controls">
+        <label>Thermal diffusivity α <input type="range" id="heat-alpha" min="0.05" max="1.5" step="0.05" value="0.4"></label>
+        <label>Seepage velocity v <input type="range" id="heat-vel" min="0" max="4" step="0.1" value="0"></label>
+        <button class="btn" id="heat-reset">Reset</button>
+      </div>
+      <div class="readouts">
+        <div class="readout"><span class="ro-label">Péclet number</span><span class="ro-value" id="heat-pe">–</span></div>
+        <div class="readout"><span class="ro-label">regime</span><span class="ro-value small" id="heat-regime">–</span></div>
+        <div class="readout"><span class="ro-label">time (–)</span><span class="ro-value" id="heat-time">0</span></div>
+      </div>
+      <p class="caption">Dimensionless units: domain length = 1, boundary temperature = 1.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HYDRAULIC ============================ -->
+<section id="hydraulic" style="--accent:#4cc9f0">
+  <div class="section-head reveal">
+    <p class="eyebrow">03 · H — Hydraulic</p>
+    <h2>Water through the labyrinth</h2>
+    <p class="intro">In 1856 Henry Darcy, designing the fountains of Dijon, discovered that flow through sand
+    is simply proportional to the head difference driving it. That single linear law still underpins all of
+    groundwater hydrology and reservoir engineering.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card reveal">
+      <h3>Darcy's law</h3>
+      <p class="eq">$$ \mathbf{q} \;=\; -\,\frac{k}{\mu}\,\big(\nabla p \;-\; \rho_f\,\mathbf{g}\big) $$</p>
+      <p>\(\mathbf{q}\) is the <em>Darcy flux</em> (discharge per unit cross-section, m/s); the actual water
+      particles move faster, at the seepage velocity \(v_s = q/n\). The material property is the
+      <strong>intrinsic permeability</strong> \(k\) (m²), a pure geometry of the pore network; dividing by
+      viscosity \(\mu\) brings in the fluid. Hydrogeologists often lump them into the hydraulic
+      conductivity \(K = k\rho_f g/\mu\) (m/s) and write \(q = -K\nabla h\) with head \(h\).</p>
+      <p>Permeability is the most variable material property in all of geoscience —
+      <strong>13 orders of magnitude</strong> separate clean gravel (\(K\sim10^{-1}\) m/s) from intact
+      clay (\(K\sim10^{-13}\) m/s). That contrast is exactly why clay is used as a barrier around
+      nuclear waste and beneath landfills.</p>
+      <h3>Mass balance &amp; storage</h3>
+      <p>Conservation of fluid mass turns Darcy's law into a diffusion equation for pressure:</p>
+      <p class="eq">$$ S_s\,\frac{\partial h}{\partial t} \;=\; \nabla\!\cdot\!\big(K\,\nabla h\big) + Q $$</p>
+      <p>The specific storage \(S_s\) measures how much water a unit volume releases per unit head drop — by
+      decompressing the water <em>and</em> by squeezing the skeleton. Storage is where hydraulics first
+      shakes hands with mechanics.</p>
+    </div>
+
+    <div class="card demo reveal">
+      <div class="demo-head">
+        <h3><span class="live">live</span> Darcy's experiment</h3>
+        <p>Two reservoirs, a soil column, a head difference Δh. Choose a material and tilt the hydraulic
+        grade line. The travel-time readout is honest — the dot speeds are log-compressed so clay doesn't
+        appear frozen.</p>
+      </div>
+      <canvas id="darcy-canvas" class="demo-canvas h330" aria-label="Interactive Darcy flow experiment"></canvas>
+      <div class="controls">
+        <label>Head difference Δh <input type="range" id="darcy-dh" min="0" max="1.2" step="0.05" value="0.6"></label>
+        <div class="chips" id="darcy-mats">
+          <button class="chip" data-k="gravel">Gravel</button>
+          <button class="chip active" data-k="sand">Sand</button>
+          <button class="chip" data-k="silt">Silt</button>
+          <button class="chip" data-k="clay">Clay</button>
+        </div>
+      </div>
+      <div class="readouts">
+        <div class="readout"><span class="ro-label">K</span><span class="ro-value" id="darcy-K">–</span></div>
+        <div class="readout"><span class="ro-label">gradient i = Δh/L</span><span class="ro-value" id="darcy-i">–</span></div>
+        <div class="readout"><span class="ro-label">Darcy flux q</span><span class="ro-value" id="darcy-q">–</span></div>
+        <div class="readout"><span class="ro-label">time to cross 1 m</span><span class="ro-value" id="darcy-t">–</span></div>
+      </div>
+      <p class="caption">Column length L = 1 m. Seepage velocity \(v_s = Ki/n\).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ MECHANICAL ============================ -->
+<section id="mechanical" style="--accent:#54d68c">
+  <div class="section-head reveal">
+    <p class="eyebrow">04 · M — Mechanical</p>
+    <h2>Stress, strain and the magic of effective stress</h2>
+    <p class="intro">The single most important idea in geomechanics fits in one line. Terzaghi (1925) and
+    later Biot realised that a saturated medium feels not the total stress applied to it, but the part
+    left over after pore water pressure has pushed back.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card reveal">
+      <h3>The effective stress principle</h3>
+      <p class="eq">$$ \boldsymbol{\sigma}' \;=\; \boldsymbol{\sigma} \;-\; \alpha\,p\,\mathbf{I} $$</p>
+      <p>Deformation and strength are governed by the <strong>effective stress</strong> \(\boldsymbol{\sigma}'\)
+      carried by the grain skeleton — not by the total stress \(\boldsymbol{\sigma}\). The Biot coefficient
+      \(\alpha\) (= 1 for soils, 0.5–0.9 for rocks) measures how efficiently pore pressure unloads the
+      skeleton. Shear strength follows Mohr–Coulomb,</p>
+      <p class="eq">$$ \tau_f \;=\; c' \;+\; \sigma'_n \tan\varphi' $$</p>
+      <p>so <em>raising pore pressure weakens the ground without touching the load</em>. That one sentence
+      explains rainfall-triggered landslides, injection-induced earthquakes and quicksand.</p>
+      <h3>Equilibrium and constitutive law</h3>
+      <p>Quasi-static equilibrium and small-strain kinematics close the mechanical problem:</p>
+      <p class="eq">$$ \nabla\!\cdot\!\boldsymbol{\sigma} + \rho\,\mathbf{g} = \mathbf{0}, \qquad
+        \boldsymbol{\varepsilon} = \tfrac{1}{2}\big(\nabla\mathbf{u} + \nabla\mathbf{u}^{\mathsf T}\big), \qquad
+        \boldsymbol{\sigma}' = \mathbb{C} : \boldsymbol{\varepsilon} $$</p>
+      <p>\(\mathbb{C}\) may be linear elasticity for small perturbations, or an elasto-plastic / critical-state
+      model (Cam-Clay, Mohr–Coulomb) when soils yield. Density here is the bulk value
+      \(\rho = n\rho_f + (1-n)\rho_s\).</p>
+    </div>
+
+    <div class="card demo reveal">
+      <div class="demo-head">
+        <h3><span class="live">live</span> Stress in a soil column</h3>
+        <p>Drag the water table up and down in a 10 m soil profile and watch total stress \(\sigma_v\),
+        pore pressure \(u\) and effective stress \(\sigma_v' = \sigma_v - u\) rearrange. Lowering the water
+        table (pumping!) <em>increases</em> effective stress — which is why Venice, Mexico City and Jakarta
+        sank when their aquifers were drained.</p>
+      </div>
+      <canvas id="es-canvas" class="demo-canvas h380" aria-label="Effective stress profile in a soil column"></canvas>
+      <div class="controls">
+        <label>Water table depth <input type="range" id="es-wt" min="0" max="10" step="0.1" value="2"></label>
+      </div>
+      <div class="readouts">
+        <div class="readout"><span class="ro-label">σ&#8341; at 10 m</span><span class="ro-value" id="es-sig">–</span></div>
+        <div class="readout"><span class="ro-label">u at 10 m</span><span class="ro-value" id="es-u">–</span></div>
+        <div class="readout"><span class="ro-label">σ′&#8341; at 10 m</span><span class="ro-value" id="es-eff">–</span></div>
+      </div>
+      <p class="caption">Unit weights: 18 kN/m³ above, 20 kN/m³ below the water table; capillarity ignored.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ COUPLING ============================ -->
+<section id="coupling" style="--accent:#b78bff">
+  <div class="section-head reveal">
+    <p class="eyebrow">05 · T ⇄ H ⇄ M</p>
+    <h2>The coupling triangle</h2>
+    <p class="intro">None of the three fields lives alone. Heat moves water, water carries heat; pressure
+    unloads the skeleton, deformation squeezes water out; heating stresses the rock, shearing makes heat.
+    Six arrows — and the loops they form are where the most dramatic geomechanics happens.</p>
+  </div>
+
+  <div class="grid2 align-start">
+    <div class="card reveal">
+      <div id="coupling-svg" class="coupling-wrap" aria-label="Interactive THM coupling diagram"></div>
+      <p class="caption center">Click an arrow or a vertex.</p>
+    </div>
+    <div>
+      <div class="card info-card reveal" id="coupling-info">
+        <h3 id="coupling-title">The THM triangle</h3>
+        <p id="coupling-body">Each vertex is a physical field; each arrow is a family of coupling
+        mechanisms. Click an arrow to see how one field drives another — and notice the loops:
+        T→H→M and back again. Feedback loops are what make these systems rich, and occasionally dangerous.</p>
+        <p id="coupling-ex" class="examples"></p>
+      </div>
+      <div class="card loop-card reveal">
+        <h4>A feedback loop in the wild</h4>
+        <p>During earthquake slip: shearing (<b class="cm">M</b>) generates frictional heat
+        (<b class="ct">T</b>); heat pressurises trapped pore water (<b class="ch">H</b>); pressure drops the
+        effective normal stress and hence friction (<b class="cm">M</b>) — the fault self-lubricates and
+        slip runs away. The same T→H→M loop, run slowly, governs clay barriers around nuclear waste.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terzaghi consolidation -->
+  <div class="grid2 align-start mt">
+    <div class="card reveal">
+      <h3>H ⇄ M archetype: consolidation</h3>
+      <p>Load a saturated clay layer and, at the first instant, the <em>water</em> takes the entire load as
+      excess pore pressure — water is nearly incompressible and has nowhere to go. Then it slowly drains,
+      handing the load over to the skeleton, which compresses: the building settles for years.
+      Terzaghi's 1925 theory reduces this to a pressure diffusion problem:</p>
+      <p class="eq">$$ \frac{\partial u_e}{\partial t} \;=\; c_v\,\frac{\partial^2 u_e}{\partial z^2},
+        \qquad c_v = \frac{k}{\gamma_w\, m_v}, \qquad T_v = \frac{c_v\,t}{H^2} $$</p>
+      <p>The spring analogy says it all:</p>
+      <svg viewBox="0 0 340 270" class="figure narrow" role="img" aria-label="Spring and piston analogy for consolidation">
+        <defs>
+          <marker id="sp-a" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#54d68c"/></marker>
+          <marker id="sp-w" markerWidth="8" markerHeight="8" refX="5.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#4cc9f0"/></marker>
+        </defs>
+        <line x1="160" y1="10" x2="160" y2="44" stroke="#54d68c" stroke-width="5" stroke-linecap="round" marker-end="url(#sp-a)"/>
+        <text x="178" y="26" fill="#54d68c" font-size="13" font-weight="600">load Δσ</text>
+        <!-- cylinder -->
+        <path d="M92,70 L92,222 L228,222 L228,70" fill="rgba(76,201,240,0.16)" stroke="#8ea2c0" stroke-width="3"/>
+        <!-- piston with valve hole -->
+        <rect x="88" y="52" width="60" height="15" fill="#5c6b85"/><rect x="172" y="52" width="60" height="15" fill="#5c6b85"/>
+        <rect x="148" y="52" width="24" height="15" fill="none" stroke="#5c6b85" stroke-width="2" stroke-dasharray="3 3"/>
+        <line x1="160" y1="50" x2="160" y2="30" stroke="#4cc9f0" stroke-width="2.4" marker-end="url(#sp-w)" transform="translate(0,0)"/>
+        <!-- spring -->
+        <polyline points="160,68 160,76 180,86 140,100 180,114 140,128 180,142 140,156 180,170 140,184 180,198 160,208 160,220"
+          fill="none" stroke="#54d68c" stroke-width="3.5" stroke-linejoin="round"/>
+        <text x="240" y="120" fill="#4cc9f0" font-size="13">water = pore pressure u</text>
+        <text x="240" y="160" fill="#54d68c" font-size="13">spring = skeleton σ′</text>
+        <text x="240" y="74" fill="#8ea2c0" font-size="13">valve = permeability</text>
+        <line x1="236" y1="70" x2="176" y2="59" stroke="#8ea2c0" stroke-width="1" opacity="0.6"/>
+        <text x="160" y="252" fill="#93a1b8" font-size="13" text-anchor="middle">tight valve (clay) → slow hand-over from u to σ′</text>
+      </svg>
+    </div>
+
+    <div class="card demo reveal">
+      <div class="demo-head">
+        <h3><span class="live">live</span> Terzaghi consolidation</h3>
+        <p>Left: excess-pressure <em>isochrones</em> in a clay layer drained at the top, sealed at the base
+        (thin curves: \(T_v\) = 0.05–0.7). Right: degree of consolidation — i.e. settlement so far — versus
+        log time. Press play and watch the pressure drain from the top down.</p>
+      </div>
+      <canvas id="terz-canvas" class="demo-canvas h360" aria-label="Terzaghi consolidation isochrones and settlement curve"></canvas>
+      <div class="controls">
+        <label>Time factor T&#8342; <input type="range" id="terz-tv" min="-2.3" max="0.48" step="0.01" value="-1.3"></label>
+        <button class="btn" id="terz-play">▶ Play</button>
+      </div>
+      <div class="readouts">
+        <div class="readout"><span class="ro-label">T&#8342;</span><span class="ro-value" id="terz-tvv">–</span></div>
+        <div class="readout"><span class="ro-label">consolidation U</span><span class="ro-value" id="terz-u">–</span></div>
+      </div>
+      <p class="caption">Exact series solution. Rule of thumb: U = 50% at \(T_v \approx 0.197\), 90% at 0.848.</p>
+    </div>
+  </div>
+
+  <!-- Thermal pressurization -->
+  <div class="grid2 align-start mt">
+    <div class="card reveal">
+      <h3>T → H → M archetype: thermal pressurisation</h3>
+      <p>Heat saturated clay and the pore water wants to expand about <strong>ten times more</strong> than
+      the pore space holding it. If the water can drain, nothing much happens. If it cannot — low
+      permeability, fast heating — pressure must rise, by up to
+      \(\Lambda \sim 0.1{-}1\ \mathrm{MPa/^\circ C}\). The rising pressure then eats into effective stress:
+      heat has reached all the way to mechanics without anyone applying a load.</p>
+      <p class="eq">$$ \frac{\partial p}{\partial t} \;=\; c\,\nabla^2 p \;+\; \Lambda\,\frac{\partial T}{\partial t} $$</p>
+      <p>The race is between the hydraulic diffusivity \(c\) (drainage) and the thermal diffusivity
+      \(\kappa\) (heating). For clays \(c/\kappa \lesssim 1\): pressurisation wins. This is a first-order
+      design question for nuclear-waste repositories — and the engine of the earthquake feedback loop above.</p>
+      <p>In the demo, the dashed curve is the <em>undrained limit</em> \(p = \Lambda\,T\): with a tight
+      medium the live pressure curve hugs it; open the permeability and pressure drains away mid-flight.</p>
+    </div>
+
+    <div class="card demo reveal">
+      <div class="demo-head">
+        <h3><span class="live">live</span> Heating a clay barrier</h3>
+        <p>A hot canister sits at the left wall (x = 0, sealed); the far boundary is drained. Two coupled
+        diffusion equations are solved live: temperature (orange) and the pore pressure it generates (blue).</p>
+      </div>
+      <canvas id="tp-canvas" class="demo-canvas h340" aria-label="Thermal pressurization simulation"></canvas>
+      <div class="controls">
+        <label>Drainage c/κ <input type="range" id="tp-c" min="-2" max="2" step="0.1" value="-1"></label>
+        <label>Pressurisation Λ <input type="range" id="tp-lam" min="0.1" max="1" step="0.05" value="0.6"></label>
+        <button class="btn" id="tp-reset">Restart heating</button>
+      </div>
+      <div class="readouts">
+        <div class="readout"><span class="ro-label">c/κ</span><span class="ro-value" id="tp-ratio">–</span></div>
+        <div class="readout"><span class="ro-label">peak p vs undrained limit</span><span class="ro-value" id="tp-peak">–</span></div>
+        <div class="readout"><span class="ro-label">regime</span><span class="ro-value small" id="tp-regime">–</span></div>
+      </div>
+      <p class="caption">Dimensionless: κ = 1, T&#8320; = 1. Changing a slider restarts the heating episode.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ EQUATIONS ============================ -->
+<section id="equations" style="--accent:#e8edf6">
+  <div class="section-head reveal">
+    <p class="eyebrow">06 · The full system</p>
+    <h2>Three balance laws, one coupled system</h2>
+    <p class="intro">Linear momentum, fluid mass, and energy — each balance law "owns" one field, and the
+    coloured terms are the couplings sneaking the other two fields in. This is Biot's poroelasticity
+    extended with heat: the standard model behind every modern THM simulator.</p>
+  </div>
+
+  <div class="card eq-card reveal">
+    <h3>Momentum balance <span class="owner cm">→ solves for displacement u</span></h3>
+    $$ \nabla\!\cdot\!\Big(\, \boldsymbol{\sigma}'(\mathbf{u})
+       \;\textcolor{#4cc9f0}{-\;\alpha\, p\,\mathbf{I}}
+       \;\textcolor{#ff9e64}{-\;3K\alpha_T\,\Delta T\,\mathbf{I}} \,\Big) \;+\; \rho\,\mathbf{g} \;=\; \mathbf{0} $$
+    <h3>Fluid mass balance <span class="owner ch">→ solves for pressure p</span></h3>
+    $$ \frac{1}{M_b}\frac{\partial p}{\partial t}
+       \;\textcolor{#54d68c}{+\;\alpha\,\frac{\partial \varepsilon_v}{\partial t}}
+       \;\textcolor{#ff9e64}{-\;\beta_m\,\frac{\partial T}{\partial t}}
+       \;=\; \nabla\!\cdot\!\Big[ \frac{k}{\,\textcolor{#ff9e64}{\mu(T)}\,}\big(\nabla p - \rho_f\,\mathbf{g}\big) \Big] \;+\; Q_f $$
+    <h3>Energy balance <span class="owner ct">→ solves for temperature T</span></h3>
+    $$ (\rho c)_{\mathrm{eff}}\,\frac{\partial T}{\partial t}
+       \;\textcolor{#4cc9f0}{+\;\rho_f c_f\,\mathbf{q}\cdot\nabla T}
+       \;=\; \nabla\!\cdot\!\big(\lambda_{\mathrm{eff}}\,\nabla T\big) \;+\; Q_T $$
+    <div class="legend-chips">
+      <span><i class="sw" style="background:#ff9e64"></i> thermal coupling term</span>
+      <span><i class="sw" style="background:#4cc9f0"></i> hydraulic coupling term</span>
+      <span><i class="sw" style="background:#54d68c"></i> mechanical coupling term</span>
+    </div>
+  </div>
+
+  <div class="grid2 mt">
+    <div class="card reveal">
+      <h3>Symbols</h3>
+      <div class="symgrid">
+        <div>\(\boldsymbol{\sigma}',\ \varepsilon_v\)</div><div>effective stress; volumetric strain of the skeleton</div>
+        <div>\(\alpha,\ M_b\)</div><div>Biot coefficient and Biot (storage) modulus</div>
+        <div>\(K,\ \alpha_T\)</div><div>drained bulk modulus; linear thermal expansion coefficient</div>
+        <div>\(\beta_m\)</div><div>differential thermal expansivity of fluid + pore space, \(n\beta_f+(\alpha-n)\beta_s\)</div>
+        <div>\(k,\ \mu(T)\)</div><div>intrinsic permeability; fluid viscosity (drops ~3× from 10 to 90 °C)</div>
+        <div>\(\rho_f c_f,\ (\rho c)_{\mathrm{eff}}\)</div><div>fluid and bulk volumetric heat capacities</div>
+        <div>\(\lambda_{\mathrm{eff}},\ \mathbf{q}\)</div><div>effective thermal conductivity; Darcy flux</div>
+        <div>\(Q_f,\ Q_T\)</div><div>fluid source; heat source</div>
+      </div>
+    </div>
+    <div class="card reveal">
+      <h3>How they're solved</h3>
+      <p>Eleven scalar unknowns (3 displacements, pressure, temperature + stresses via the constitutive law),
+      three mutually coupled PDEs, material nonlinearity, and time scales from seconds to millennia: THM
+      problems are solved numerically, almost always with finite elements or finite volumes, either
+      <em>monolithically</em> (one big Newton solve per step) or <em>staggered</em> (fields exchanged
+      iteratively).</p>
+      <p>Research and industry codes include <strong>OpenGeoSys</strong>, <strong>CODE_BRIGHT</strong>,
+      <strong>TOUGH–FLAC</strong>, <strong>COMSOL</strong> and <strong>MOOSE/FALCON</strong>; the international
+      <strong>DECOVALEX</strong> project has benchmarked them against field heater tests since 1992.</p>
+      <p>Extensions you'll meet in practice: partial saturation (Richards flow, suction), phase change
+      (freezing, boiling), chemistry (THMC), and large-strain or dynamic formulations.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ APPLICATIONS ============================ -->
+<section id="applications" style="--accent:#ffd84d">
+  <div class="section-head reveal">
+    <p class="eyebrow">07 · Why it matters</p>
+    <h2>THM in the wild</h2>
+  </div>
+
+  <div class="apps-grid">
+    <div class="card app reveal">
+      <svg viewBox="0 0 300 170" class="appfig" role="img" aria-label="Nuclear waste repository schematic">
+        <defs>
+          <radialGradient id="nw-glow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#ff9e64" stop-opacity="0.8"/><stop offset="1" stop-color="#ff9e64" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect x="0" y="0" width="300" height="40" fill="#1d2a45"/>
+        <rect x="0" y="40" width="300" height="130" fill="#241f33"/>
+        <rect x="60" y="8" width="16" height="100" fill="#0d1426" stroke="#3b4a68"/>
+        <rect x="60" y="100" width="150" height="16" fill="#0d1426" stroke="#3b4a68"/>
+        <circle cx="208" cy="108" r="42" fill="url(#nw-glow)"/>
+        <circle cx="208" cy="108" r="26" fill="none" stroke="#4cc9f0" stroke-width="1.6" stroke-dasharray="4 4" opacity="0.8"/>
+        <rect x="196" y="96" width="24" height="24" rx="4" fill="#ff9e64"/>
+        <text x="150" y="28" fill="#93a1b8" font-size="11">surface</text>
+        <text x="240" y="150" fill="#93a1b8" font-size="11" text-anchor="middle">bentonite + host rock</text>
+      </svg>
+      <h3>Nuclear waste disposal</h3>
+      <p>Canisters heat the clay buffer for thousands of years: T drives pore-pressure spikes and
+      resaturation (H), swelling and stress changes (M). Safety cases — for 100 000+ years — stand or fall
+      on coupled THM predictions.</p>
+    </div>
+
+    <div class="card app reveal">
+      <svg viewBox="0 0 300 170" class="appfig" role="img" aria-label="Geothermal doublet schematic">
+        <defs>
+          <linearGradient id="gt-res" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#5b2a2a"/><stop offset="1" stop-color="#7a3322"/>
+          </linearGradient>
+          <marker id="gt-d" markerWidth="8" markerHeight="8" refX="5.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#4cc9f0"/></marker>
+          <marker id="gt-u" markerWidth="8" markerHeight="8" refX="5.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#ff6b5e"/></marker>
+        </defs>
+        <rect x="0" y="30" width="300" height="80" fill="#1d2a45"/>
+        <rect x="0" y="110" width="300" height="60" fill="url(#gt-res)"/>
+        <path d="M70,112 l18,22 M95,110 l-12,26 M120,114 l15,20 M150,110 l-10,26 M180,113 l14,22 M210,110 l-12,25 M236,113 l13,21" stroke="#caa96f" stroke-width="1.6" opacity="0.7"/>
+        <rect x="86" y="14" width="10" height="120" fill="#0d1426" stroke="#3b4a68"/>
+        <rect x="204" y="14" width="10" height="120" fill="#0d1426" stroke="#3b4a68"/>
+        <line x1="91" y1="48" x2="91" y2="74" stroke="#4cc9f0" stroke-width="3" marker-end="url(#gt-d)"/>
+        <line x1="209" y1="80" x2="209" y2="52" stroke="#ff6b5e" stroke-width="3" marker-end="url(#gt-u)"/>
+        <path d="M100,140 C130,150 170,150 200,140" stroke="#ff6b5e" stroke-width="2.4" fill="none" stroke-dasharray="5 4"/>
+        <rect x="130" y="4" width="40" height="24" rx="3" fill="#22304f" stroke="#3b4a68"/>
+        <text x="150" y="20" fill="#ffd84d" font-size="12" text-anchor="middle">⚡</text>
+      </svg>
+      <h3>Geothermal energy</h3>
+      <p>Cold injection water contracts hot rock (T→M), opening fractures and changing permeability (M→H) —
+      boosting output but risking induced seismicity. Enhanced geothermal systems are THM engineering by
+      definition.</p>
+    </div>
+
+    <div class="card app reveal">
+      <svg viewBox="0 0 300 170" class="appfig" role="img" aria-label="CO2 storage schematic">
+        <defs>
+          <radialGradient id="co-pl" cx="0.35" cy="0.85" r="0.8">
+            <stop offset="0" stop-color="#bfe8ff" stop-opacity="0.85"/><stop offset="1" stop-color="#bfe8ff" stop-opacity="0.05"/>
+          </radialGradient>
+        </defs>
+        <rect x="0" y="20" width="300" height="55" fill="#1d2a45"/>
+        <rect x="0" y="75" width="300" height="22" fill="#171326"/>
+        <rect x="0" y="97" width="300" height="73" fill="#27405e"/>
+        <text x="288" y="91" fill="#93a1b8" font-size="11" text-anchor="end">caprock</text>
+        <rect x="96" y="6" width="9" height="115" fill="#0d1426" stroke="#3b4a68"/>
+        <ellipse cx="135" cy="126" rx="85" ry="26" fill="url(#co-pl)"/>
+        <path d="M101,40 v60" stroke="#bfe8ff" stroke-width="2.2" stroke-dasharray="4 4"/>
+        <text x="150" y="160" fill="#93a1b8" font-size="11" text-anchor="middle">buoyant CO₂ plume</text>
+      </svg>
+      <h3>CO&#8322; storage</h3>
+      <p>Injection raises pore pressure across kilometres (H), dropping effective stress on faults and the
+      caprock (M); cold CO₂ adds thermal stresses near the well (T). Containment is a THM question asked at
+      the megatonne scale.</p>
+    </div>
+
+    <div class="card app reveal">
+      <svg viewBox="0 0 300 170" class="appfig" role="img" aria-label="Permafrost thaw schematic">
+        <rect x="0" y="60" width="300" height="34" fill="#3a3147"/>
+        <rect x="0" y="94" width="300" height="76" fill="#2b3f5c"/>
+        <g fill="#cfe6f5" opacity="0.85">
+          <ellipse cx="60" cy="116" rx="22" ry="5"/><ellipse cx="140" cy="132" rx="30" ry="6"/>
+          <ellipse cx="225" cy="114" rx="24" ry="5"/><ellipse cx="105" cy="152" rx="18" ry="4"/>
+          <ellipse cx="205" cy="150" rx="20" ry="4"/>
+        </g>
+        <path d="M40,94 C90,124 210,124 260,94" stroke="#ff9e64" stroke-width="2" fill="none" stroke-dasharray="5 4"/>
+        <circle cx="258" cy="26" r="14" fill="#ffd84d"/>
+        <g stroke="#ffd84d" stroke-width="2"><line x1="258" y1="4" x2="258" y2="10"/><line x1="240" y1="12" x2="244" y2="16"/><line x1="276" y1="12" x2="272" y2="16"/><line x1="236" y1="26" x2="242" y2="26"/></g>
+        <rect x="120" y="28" width="14" height="40" fill="#5c6b85" transform="rotate(8 127 48)"/>
+        <text x="20" y="80" fill="#93a1b8" font-size="11">active layer</text>
+        <text x="20" y="110" fill="#cfe6f5" font-size="11">ice-rich permafrost</text>
+      </svg>
+      <h3>Permafrost &amp; frozen ground</h3>
+      <p>Warming turns ice to water (T→H) and dissolves the cement holding the soil together (→M):
+      foundations tilt, slopes fail, coastlines retreat. Freezing runs the loop backwards — frost heave
+      lifts roads every winter.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <h3>Going deeper</h3>
+    <ul class="refs">
+      <li>Terzaghi, K. (1925). <em>Erdbaumechanik auf bodenphysikalischer Grundlage.</em> — the birth of consolidation theory.</li>
+      <li>Biot, M. A. (1941). General theory of three-dimensional consolidation. <em>J. Appl. Phys.</em> 12, 155–164.</li>
+      <li>Coussy, O. (2004). <em>Poromechanics.</em> Wiley.</li>
+      <li>Wang, H. F. (2000). <em>Theory of Linear Poroelasticity.</em> Princeton University Press.</li>
+      <li>Lewis, R. W. &amp; Schrefler, B. A. (1998). <em>The Finite Element Method in the Static and Dynamic Deformation and Consolidation of Porous Media.</em> Wiley.</li>
+      <li>Cheng, A. H.-D. (2016). <em>Poroelasticity.</em> Springer.</li>
+      <li>Rutqvist, J. et al. (2001). Thermohydromechanics of partially saturated geological media. <em>Int. J. Rock Mech. Min. Sci.</em> 38, 105–127 (DECOVALEX).</li>
+    </ul>
+    <p class="fineprint">All simulations on this page run live in your browser: finite differences for the
+    transport demos, exact series solutions for consolidation. Built as an interactive teaching resource.</p>
+  </div>
+</footer>
+
+</body>
+</html>

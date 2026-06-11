@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive exploration of Thermo-Hydro-Mechanical (THM) processes in porous media.">
+    <title>THM Processes in Porous Media</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for beautiful math -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71PT0KIL/8" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9GzTzKpdE/sMaZEXdWp" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbOxyj0O1rxVqTGbT01OVphb" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1 class="hero-title">
+                The Dynamics of<br>
+                <span class="text-gradient-heat">Thermo</span> - 
+                <span class="text-gradient-fluid">Hydro</span> - 
+                <span class="text-gradient-mech">Mechanical</span><br>
+                Processes
+            </h1>
+            <p class="hero-subtitle">
+                An interactive journey into the coupled physical processes governing the behavior of porous media, from deep geothermal reservoirs to shallow soils.
+            </p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </header>
+
+    <section id="porous-media">
+        <div class="container">
+            <h2 class="section-title">What is a Porous Medium?</h2>
+            <p class="section-subtitle">A framework of solid grains with interconnected voids.</p>
+            
+            <div class="glass-card">
+                <p>
+                    Before diving into the complex couplings, we must understand the environment. A porous medium consists of a solid matrix (like rock or soil grains) and a connected pore space filled with fluids (liquid or gas). 
+                    The key parameter is <strong>Porosity (\( \phi \))</strong>, the fraction of the total volume that is void space.
+                </p>
+                <div class="math-block">
+                    $$ \phi = \frac{V_{pores}}{V_{total}} $$
+                </div>
+                
+                <div class="visualizer-container">
+                    <canvas id="porosityCanvas" class="visualizer-canvas"></canvas>
+                </div>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="porositySlider">Porosity (\( \phi \)): <span id="porosityValue">0.30</span></label>
+                        <input type="range" id="porositySlider" min="0.1" max="0.6" step="0.01" value="0.30">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="the-three-pillars">
+        <div class="container">
+            <h2 class="section-title">The Three Pillars</h2>
+            <p class="section-subtitle">Understanding the individual processes before they couple.</p>
+
+            <div class="process-grid">
+                <!-- Thermal -->
+                <div class="glass-card process-card" style="border-top: 4px solid var(--accent-heat-start);">
+                    <div class="process-icon">🔥</div>
+                    <h3 class="text-gradient-heat">Thermal (T)</h3>
+                    <p>Heat transfer occurs through conduction in the solid matrix and fluids, and convection driven by fluid flow.</p>
+                    <div class="math-block">
+                        <!-- Fourier's Law -->
+                        $$ \mathbf{q}_T = -\lambda_{eff} \nabla T + (\rho c)_f \mathbf{q} T $$
+                    </div>
+                    <p><small>Where \( \lambda_{eff} \) is effective thermal conductivity, \( T \) is temperature, and \( \mathbf{q} \) is fluid flux.</small></p>
+                </div>
+
+                <!-- Hydrological -->
+                <div class="glass-card process-card" style="border-top: 4px solid var(--accent-fluid-start);">
+                    <div class="process-icon">💧</div>
+                    <h3 class="text-gradient-fluid">Hydrological (H)</h3>
+                    <p>Fluid flow is driven by pressure gradients. The primary relationship is Darcy's Law.</p>
+                    <div class="math-block">
+                        $$ \mathbf{q} = -\frac{\mathbf{k}}{\mu} (\nabla p - \rho_f \mathbf{g}) $$
+                    </div>
+                    <p><small>Where \( \mathbf{k} \) is intrinsic permeability, \( \mu \) is viscosity, and \( p \) is pore pressure.</small></p>
+                    <div class="visualizer-container" style="height: 150px; margin-top: 1rem;">
+                        <canvas id="darcyCanvas" class="visualizer-canvas"></canvas>
+                    </div>
+                    <div class="control-group" style="margin-top:0.5rem">
+                        <label>Pressure Gradient</label>
+                        <input type="range" id="darcySlider" min="1" max="10" value="3">
+                    </div>
+                </div>
+
+                <!-- Mechanical -->
+                <div class="glass-card process-card" style="border-top: 4px solid var(--accent-mech-start);">
+                    <div class="process-icon">⚙️</div>
+                    <h3 class="text-gradient-mech">Mechanical (M)</h3>
+                    <p>The deformation of the solid skeleton. It's governed by the balance of momentum and the principle of effective stress.</p>
+                    <div class="math-block">
+                        $$ \boldsymbol{\sigma}' = \boldsymbol{\sigma} - \alpha p \mathbf{I} $$
+                    </div>
+                    <p><small>Where \( \boldsymbol{\sigma}' \) is effective stress, \( \boldsymbol{\sigma} \) is total stress, and \( \alpha \) is the Biot-Willis coefficient.</small></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="couplings">
+        <div class="container">
+            <h2 class="section-title">The Couplings</h2>
+            <p class="section-subtitle">How changes in one process drive changes in another.</p>
+
+            <div class="glass-card" style="overflow: hidden;">
+                <p style="text-align: center; margin-bottom: 2rem;">Hover over the connections to explore the physical phenomena linking these processes.</p>
+                
+                <div class="couplings-diagram">
+                    <svg class="coupling-svg">
+                        <!-- T to H -->
+                        <path class="coupling-path" id="path-th" d="M 400 100 Q 250 250 150 400" />
+                        <!-- H to M -->
+                        <path class="coupling-path" id="path-hm" d="M 150 450 Q 400 500 650 450" />
+                        <!-- M to T -->
+                        <path class="coupling-path" id="path-mt" d="M 650 400 Q 550 250 400 100" />
+                    </svg>
+
+                    <div class="coupling-node" id="node-t">Thermal</div>
+                    <div class="coupling-node" id="node-h">Hydro</div>
+                    <div class="coupling-node" id="node-m">Mech</div>
+
+                    <!-- Info Boxes -->
+                    <div class="glass-card coupling-info" id="info-th">
+                        <h4 class="text-gradient-heat">T ⇄ H Coupling</h4>
+                        <p><strong>Convection & Buoyancy:</strong> Fluid flow transports heat. Changes in temperature alter fluid density (creating buoyancy forces) and viscosity.</p>
+                    </div>
+
+                    <div class="glass-card coupling-info" id="info-hm">
+                        <h4 class="text-gradient-fluid">H ⇄ M Coupling</h4>
+                        <p><strong>Poroelasticity:</strong> Changes in pore pressure (\(p\)) alter the effective stress, causing deformation. Conversely, volumetric strain changes porosity and pore pressure.</p>
+                    </div>
+
+                    <div class="glass-card coupling-info" id="info-mt">
+                        <h4 class="text-gradient-mech">M ⇄ T Coupling</h4>
+                        <p><strong>Thermal Expansion:</strong> Heating causes the solid matrix and the fluid to expand, changing porosity and inducing thermal stresses.</p>
+                    </div>
+                    
+                    <div class="glass-card coupling-info active" id="info-default" style="pointer-events: none;">
+                        <h4>Interactive THM Triangle</h4>
+                        <p>Hover over the dashed lines to learn about the specific physical couplings between the processes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Developed with pure HTML, CSS, and JS. Illustrating the beauty of porous media physics.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false},
+                  {left: '\\[', right: '\\]', display: true}
+              ],
+              throwOnError : false
+            });
+        });
+    </script>
+</body>
+</html>
