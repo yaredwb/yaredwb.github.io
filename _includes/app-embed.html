@@ -9,7 +9,7 @@ button and the bar button both open the lightbox.
 {%- assign embed_src = include.src | relative_url -%}
 <div class="app-embed" data-base-w="{{ include.base_w | default: 1180 }}" data-base-h="{{ include.base_h | default: 720 }}">
   <div class="app-embed__bar">
-    <span class="app-embed__hint">{{ include.hint | default: "Interactive tool — open for the full view" }}</span>
+    <span class="app-embed__hint">{{ include.hint | default: "Interactive tool: open for the full view" }}</span>
     <button type="button" class="app-embed__btn" data-embed-expand data-embed-src="{{ embed_src }}" data-embed-title="{{ include.title | escape }}">
       Expand
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3v6h2V6.41l4.3 4.3 1.41-1.42L6.41 5H9V3zm12 12h-2v2.59l-4.3-4.3-1.41 1.42L17.59 19H15v2h6v-6z"/></svg>

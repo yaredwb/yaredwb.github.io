@@ -259,7 +259,7 @@
 
         const [r, g, b] = accent;
 
-        // mesh lines — uniform and faint; the radial CSS mask fades the edges
+        // mesh lines: uniform and faint; the radial CSS mask fades the edges
         ctx.lineWidth = 1;
         ctx.strokeStyle = 'rgba(' + r + ',' + g + ',' + b + ',0.042)';
         ctx.beginPath();
@@ -272,7 +272,7 @@
         }
         ctx.stroke();
 
-        // nodes — brighter on the crest of the passing wave
+        // nodes: brighter on the crest of the passing wave
         for (let j = 0; j <= rows; j++) {
           for (let i = 0; i <= cols; i++) {
             const k = i + j * nc;

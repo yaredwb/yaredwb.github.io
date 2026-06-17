@@ -8,7 +8,7 @@ show_title: false
 <header class="page-intro">
   <p class="eyebrow">Writing</p>
   <h1>Writing &amp; field notes</h1>
-  <p class="lead">Essays, retrospectives, and notes that connect computational research with practice &mdash; technical walkthroughs, commentary, and the occasional detour.</p>
+  <p class="lead">Essays, retrospectives, and notes that connect computational research with practice: technical walkthroughs, commentary, and the occasional detour.</p>
 </header>
 
 {% assign posts = site.posts | sort: 'date' | reverse %}
@@ -34,6 +34,6 @@ show_title: false
 {% else %}
 <div class="empty-state">
   <h3>No posts yet</h3>
-  <p>Fresh writing is in the works &mdash; follow along on <a href="https://x.com/yaredwb">X</a>.</p>
+  <p>Fresh writing is in the works; follow along on <a href="https://x.com/yaredwb">X</a>.</p>
 </div>
 {% endif %}

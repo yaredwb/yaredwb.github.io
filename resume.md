@@ -16,7 +16,7 @@ show_title: false
       Computational geomechanics specialist integrating numerical modelling, applied AI, and field knowledge to deliver resilient geotechnical solutions.
     </p>
     <blockquote class="cv-quote">
-      "It is a good morning exercise for a research scientist to discard a pet hypothesis every day before breakfast. It keeps him young." &mdash; Konrad Lorenz
+      "It is a good morning exercise for a research scientist to discard a pet hypothesis every day before breakfast. It keeps him young." (Konrad Lorenz)
     </blockquote>
   </div>
   <div class="cv-hero__sidebar">
@@ -183,9 +183,9 @@ show_title: false
 
 <div class="cv-certifications">
   <ul>
-    <li><strong>2018:</strong> <a href="https://coursera.org/share/15b7b93a960a6edf58d774f4a09aa056">Deep Learning Specialization</a> &mdash; Neural networks, hyperparameter tuning, convolutional and sequence models</li>
-    <li><strong>2022:</strong> <a href="https://coursera.org/share/52f9a94af8205dc14259720a83119f51">Data Engineering Foundations Specialization</a> &mdash; Relational databases, Python for data engineering, SQL, and production workflows</li>
-    <li><strong>2023:</strong> <a href="https://coursera.org/share/dd0fe079c6378283fd74ee65e8ea2af5">Unsupervised Learning, Recommenders, Reinforcement Learning</a> &mdash; Advanced machine learning techniques</li>
+    <li><strong>2018:</strong> <a href="https://coursera.org/share/15b7b93a960a6edf58d774f4a09aa056">Deep Learning Specialization</a>: Neural networks, hyperparameter tuning, convolutional and sequence models</li>
+    <li><strong>2022:</strong> <a href="https://coursera.org/share/52f9a94af8205dc14259720a83119f51">Data Engineering Foundations Specialization</a>: Relational databases, Python for data engineering, SQL, and production workflows</li>
+    <li><strong>2023:</strong> <a href="https://coursera.org/share/dd0fe079c6378283fd74ee65e8ea2af5">Unsupervised Learning, Recommenders, Reinforcement Learning</a>: Advanced machine learning techniques</li>
   </ul>
 </div>
 
@@ -222,9 +222,9 @@ show_title: false
 
 <div class="cv-card cv-card--compact">
   <ul class="cv-card-list cv-card-list--inline">
-    <li><strong>Amharic</strong> &mdash; Native</li>
-    <li><strong>English</strong> &mdash; Full Professional Proficiency</li>
-    <li><strong>Norwegian</strong> &mdash; Full Professional Proficiency</li>
+    <li><strong>Amharic</strong>: Native</li>
+    <li><strong>English</strong>: Full Professional Proficiency</li>
+    <li><strong>Norwegian</strong>: Full Professional Proficiency</li>
   </ul>
 </div>
 

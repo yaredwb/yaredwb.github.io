@@ -2,7 +2,7 @@
 layout: default
 permalink: /
 page_class: home
-description: Research scientist working on computational geomechanics and applied AI — numerical modelling, physics-informed machine learning, and software tools for ground engineering.
+description: Research scientist working on computational geomechanics and applied AI: numerical modelling, physics-informed machine learning, and software tools for ground engineering.
 ---
 
 <section class="hero">
@@ -10,7 +10,7 @@ description: Research scientist working on computational geomechanics and applie
   <p class="hero-eyebrow">Research Scientist &middot; SINTEF &middot; Trondheim</p>
   <h1 class="hero-title">Modelling the ground, with physics and AI.</h1>
   <p class="hero-summary">
-    I build numerical models and AI-assisted tools for ground engineering &mdash; from coupled simulations of soil and rock to physics-informed machine learning and digital workflows for geohazard management.
+    I build numerical models and AI-assisted tools for ground engineering: from coupled simulations of soil and rock to physics-informed machine learning and digital workflows for geohazard management.
   </p>
   <div class="hero-actions">
     <a class="button" href="{{ '/research/' | relative_url }}">Explore research</a>

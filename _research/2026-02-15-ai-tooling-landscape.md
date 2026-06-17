@@ -3,7 +3,7 @@ layout: post
 title: "The Rapid Evolution of AI Tooling: From Function Calling to MCP Apps"
 date: 2026-02-15
 tags: [AI, Software Engineering, MCP, LLM, Geotechnical Engineering]
-excerpt: "A reflection on the rapid evolution of AI tool development—from manual function calling to the Model Context Protocol (MCP) and Agent Skills—and why staying ahead means building for adaptability, not just the latest standard."
+excerpt: "A reflection on the rapid evolution of AI tool development, from manual function calling to the Model Context Protocol (MCP) and Agent Skills, and why staying ahead means building for adaptability, not just the latest standard."
 image: /assets/figs/ai_geotech_evolution.png
 ---
 
@@ -54,7 +54,7 @@ The significance of MCP wasn't just technical; it was structural. It decoupled t
 
 While MCP was still gaining broad adoption, Anthropic launched [**Agent Skills**](https://docs.anthropic.com/en/docs/agents-and-tools/agent-skills) in October 2025 to solve the logic problem. If MCP represents the tools in a workshop, Agent Skills represent the *craft*. Similar concepts have since been adopted by platforms like GitHub Copilot and VS Code.
 
-The realization here is that standard *workflows*—linear steps like "Step A -> Step B -> Step C"—are too rigid for true intelligence. Geotechnical engineering problems rarely follow a straight line. By defining "Skills" (modular capabilities like "perform slope stability analysis" or "interpret soil test data"), we moved from *imperative* programming to *declarative* intent. We give the agent a toolbox and a goal, and let *it* orchestrate the steps. This shift from "scripting" to "enabling" is perhaps the most profound change in how we build AI applications.
+The realization here is that standard *workflows*, linear steps like "Step A -> Step B -> Step C", are too rigid for true intelligence. Geotechnical engineering problems rarely follow a straight line. By defining "Skills" (modular capabilities like "perform slope stability analysis" or "interpret soil test data"), we moved from *imperative* programming to *declarative* intent. We give the agent a toolbox and a goal, and let *it* orchestrate the steps. This shift from "scripting" to "enabling" is perhaps the most profound change in how we build AI applications.
 
 ### MCP Apps
 

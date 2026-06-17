@@ -8,7 +8,7 @@ show_title: false
 <header class="page-intro">
   <p class="eyebrow">Research</p>
   <h1>Research notes</h1>
-  <p class="lead">Computational geomechanics, numerical modelling, and AI-enabled engineering workflows &mdash; published work, prototypes, and in-progress thinking.</p>
+  <p class="lead">Computational geomechanics, numerical modelling, and AI-enabled engineering workflows: published work, prototypes, and in-progress thinking.</p>
 </header>
 
 {% assign research_posts = site.research | sort: 'date' | reverse %}
@@ -34,6 +34,6 @@ show_title: false
 {% else %}
 <div class="empty-state">
   <h3>No research posts yet</h3>
-  <p>Case studies and technical notes are in preparation &mdash; check back soon.</p>
+  <p>Case studies and technical notes are in preparation; check back soon.</p>
 </div>
 {% endif %}

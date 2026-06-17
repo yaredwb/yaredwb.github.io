@@ -25,7 +25,7 @@ Most impressively, it grasped the physical and mathematical nuances of the model
 
 Here is the embedded result. Click **Open interactive view** for the full dashboard, then drag the 3D canvas and play with the parameters:
 
-{% include app-embed.html src="/assets/geotech-3d.html" title="3D Soil Constitutive Models" hint="Interactive — open for the full dashboard" %}
+{% include app-embed.html src="/assets/geotech-3d.html" title="3D Soil Constitutive Models" hint="Interactive: open for the full dashboard" %}
 
 ## Reflections on AI-Assisted Engineering Visualizations
 
