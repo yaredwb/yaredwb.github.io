@@ -59,6 +59,7 @@ paginate_path: "/page:num/"
 
 exclude:
   - archive
+  - scripts
   - migrate_wordpress.py
   - yaredwbekelephd.WordPress.2025-06-04.xml
   - README.md
