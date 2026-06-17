@@ -158,6 +158,16 @@ show_title: false
   </article>
 </div>
 
+## Academic Service
+
+<div class="cv-certifications">
+  <ul>
+    <li><strong>External examiner</strong> for 20+ MSc theses since 2017</li>
+    <li><strong>Mid-term examiner</strong> for two PhD candidates</li>
+    <li><strong>Peer reviewer</strong> for <em>Computers and Geotechnics</em></li>
+  </ul>
+</div>
+
 ## Technical Skills
 
 <div class="cv-grid cv-grid--skills">
