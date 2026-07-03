@@ -29,7 +29,7 @@ show_title: false
         <ol class="course__topics">
           <li>Geotechnical analysis: analysis and design requirements, theoretical considerations, idealised computational domains, analysis methods</li>
           <li>Mathematical preliminaries: vectors, matrices, and linear systems of equations</li>
-          <li>The finite difference method: steady-state groundwater flow and one-dimensional consolidation in 1D and 2D</li>
+          <li>The finite difference method: one-dimensional consolidation and two-dimensional steady-state groundwater flow</li>
           <li>The finite element method: discretisation, shape functions, element formulation and assembly; constitutive models (linear elasticity, Mohr&ndash;Coulomb, Modified Cam-Clay); numerical simulations</li>
           <li>Introduction to hybrid methods: boundary element, discrete element, and coupled methods</li>
         </ol>
