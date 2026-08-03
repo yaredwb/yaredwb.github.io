@@ -2,7 +2,7 @@
 layout: default
 permalink: /
 page_class: home
-description: Research scientist working on computational geomechanics and applied AI: numerical modelling, physics-informed machine learning, and software tools for ground engineering.
+description: "Research scientist working on computational geomechanics and applied AI: numerical modelling, physics-informed machine learning, and software tools for ground engineering."
 ---
 
 <section class="hero">
@@ -103,7 +103,7 @@ description: Research scientist working on computational geomechanics and applie
   </div>
   <ul class="project-grid">
     <li>
-      <a class="project-card" href="https://geosim.ai/">
+      <a class="project-card" href="https://geosim-ai.yaredwb.com/">
         <h3>GeoSim.AI</h3>
         <p>AI assistants for numerical simulations in geomechanics, demonstrating productivity gains in slope stability assessments.</p>
       </a>

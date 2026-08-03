@@ -203,7 +203,7 @@ show_title: false
 
 <div class="cv-grid cv-grid--projects">
   <article class="cv-grid-card">
-    <h3><a href="https://geosim.ai/">GeoSim.AI</a></h3>
+    <h3><a href="https://geosim-ai.yaredwb.com/">GeoSim.AI</a></h3>
     <p>AI assistants for numerical simulations in geomechanics that demonstrate productivity gains in slope stability assessments.</p>
   </article>
   <article class="cv-grid-card">
