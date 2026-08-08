@@ -109,6 +109,12 @@ description: "Research scientist working on computational geomechanics and appli
       </a>
     </li>
     <li>
+      <a class="project-card" href="https://thm-interactive.yaredwb.com/">
+        <h3>THM Processes in Porous Media</h3>
+        <p>An interactive primer on coupled thermo&ndash;hydro&ndash;mechanical behaviour, with every figure computed live in the browser.</p>
+      </a>
+    </li>
+    <li>
       <a class="project-card" href="https://3d-terrain-generator.streamlit.app/">
         <h3>3D Terrain Generator</h3>
         <p>Generates 3D terrain plots from XYZ point clouds or geographic bounds, including slope profiles for risk analysis.</p>
