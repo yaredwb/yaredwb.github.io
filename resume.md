@@ -207,12 +207,8 @@ show_title: false
     <p>AI assistants for numerical simulations in geomechanics that demonstrate productivity gains in slope stability assessments.</p>
   </article>
   <article class="cv-grid-card">
-    <h3><a href="https://3d-terrain-generator.streamlit.app/">3D Terrain Generator</a></h3>
-    <p>Web app that generates 3D terrain plots from XYZ point clouds or geographic bounds, including slope profiles for risk analysis.</p>
-  </article>
-  <article class="cv-grid-card">
-    <h3><a href="https://disfrac.streamlit.app/">DISFRAC</a></h3>
-    <p>Invitation-only tool for estimating in-situ rock stresses from hydraulic fracturing test data.</p>
+    <h3><a href="https://yaredwb.com/3DTerrain/">3D Terrain Generator</a></h3>
+    <p>Browser-based app that generates 3D terrain surfaces from XYZ point clouds or geographic bounds, with elevation profiles for slope and risk analysis.</p>
   </article>
   <article class="cv-grid-card">
     <h3><a href="https://yaredwb.github.io/PINN-Consolidation1D-Paper/">Deep Learning for 1D Consolidation</a></h3>

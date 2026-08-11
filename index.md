@@ -115,9 +115,9 @@ description: "Research scientist working on computational geomechanics and appli
       </a>
     </li>
     <li>
-      <a class="project-card" href="https://3d-terrain-generator.streamlit.app/">
+      <a class="project-card" href="https://yaredwb.com/3DTerrain/">
         <h3>3D Terrain Generator</h3>
-        <p>Generates 3D terrain plots from XYZ point clouds or geographic bounds, including slope profiles for risk analysis.</p>
+        <p>Generates 3D terrain surfaces from XYZ point clouds or geographic bounds, with elevation profiles computed live in the browser.</p>
       </a>
     </li>
     <li>
@@ -136,12 +136,6 @@ description: "Research scientist working on computational geomechanics and appli
       <a class="project-card" href="https://yaredwb.github.io/FDM2D/">
         <h3>FDM2D</h3>
         <p>Finite difference solver for steady-state groundwater flow in 2D, turning research models into accessible tools.</p>
-      </a>
-    </li>
-    <li>
-      <a class="project-card" href="https://disfrac.streamlit.app/">
-        <h3>DISFRAC</h3>
-        <p>Tool for estimating in-situ rock stresses from hydraulic fracturing test data.</p>
       </a>
     </li>
   </ul>
