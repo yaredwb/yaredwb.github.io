@@ -115,7 +115,7 @@ description: "Research scientist working on computational geomechanics and appli
       </a>
     </li>
     <li>
-      <a class="project-card" href="https://yaredwb.com/3DTerrain/">
+      <a class="project-card" href="https://yaredwb.com/3DTerrain/" target="_blank" rel="noopener noreferrer">
         <h3>3D Terrain Generator</h3>
         <p>Generates 3D terrain surfaces from XYZ point clouds or geographic bounds, with elevation profiles computed live in the browser.</p>
       </a>
