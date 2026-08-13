@@ -207,7 +207,11 @@ show_title: false
     <p>AI assistants for numerical simulations in geomechanics that demonstrate productivity gains in slope stability assessments.</p>
   </article>
   <article class="cv-grid-card">
-    <h3><a href="https://yaredwb.com/3DTerrain/">3D Terrain Generator</a></h3>
+    <h3><a href="https://thm-interactive.yaredwb.com/">THM Processes in Porous Media</a></h3>
+    <p>Interactive primer on coupled thermo&ndash;hydro&ndash;mechanical behaviour, with every figure computed live in the browser.</p>
+  </article>
+  <article class="cv-grid-card">
+    <h3><a href="https://yaredwb.com/3DTerrain/" target="_blank" rel="noopener noreferrer">3D Terrain Generator</a></h3>
     <p>Browser-based app that generates 3D terrain surfaces from XYZ point clouds or geographic bounds, with elevation profiles for slope and risk analysis.</p>
   </article>
   <article class="cv-grid-card">
