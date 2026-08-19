@@ -1,0 +1,31 @@
+---
+layout: post
+title: "Pre-Training Neural Physics Simulators, Read as a Slide Deck: Notes for Geomechanics"
+date: 2026-08-19
+tags: [AI, LLM, PINNs, Scientific Machine Learning, Physics Simulation, Geotechnical Engineering, Workflow]
+excerpt: "A recent paper on pre-training neural physics simulators with synthetic dynamics caught my interest, since labeled simulation data is exactly the bottleneck I keep running into with PINNs for computational geomechanics. I digested it the way I now digest most papers: as an AI-generated slide deck. Here are the slides, the idea, and what it could mean for our field."
+image: /assets/figs/geopt-slides/slide-1.png
+---
+
+I work a lot on physics-informed neural networks (PINNs) and neural surrogates for computational geomechanics, and the hardest constraint in that work has never been the network architecture: it is the training data, because every labeled sample is itself an expensive numerical solve. So when a recent paper came along proposing a way to pre-train neural physics simulators *without* solver labels, [Wu et al. (2026), arXiv:2602.20399](https://arxiv.org/pdf/2602.20399), on scaling physics simulation via lifted geometric pre-training with a model named GeoPT, it immediately attracted my interest.
+
+I digested it the way I now digest most long papers: by asking ChatGPT's image generation skill (GPT Image 2) to turn it into a slide deck. I used to do this kind of first pass in NotebookLM (now Gemini Notebook); the generated decks have quietly replaced it. The workflow is straightforward: give ChatGPT the arXiv link, ask for a deck that explains the paper intuitively, and the image skill generates the slides one by one, with no template or art direction from me. Unlike a text summary, a slide has to commit: a title, a layout, limited space. That forces the same compression a human presenter performs, and the result sticks with me in a way prose summaries never did. I [posted about this on X](https://x.com/yaredwb/status/2090157854938280429) recently; this note is the longer version, with the full deck and some thoughts on what the paper could mean for geomechanics.
+
+## The paper, in seven slides
+
+Below is the seven-slide deck exactly as generated; use the arrows (or arrow keys, or a swipe) to move through it, with my notes on each slide underneath.
+
+{% capture geopt_captions %}The title slide carries the thesis: use abundant 3D geometry and synthetic motion to pre-train neural simulators before touching scarce real simulation data.||The problem framing. Neural surrogates are fast at inference, but training them needs labeled physics data, and every label is a full numerical solve; the slide quotes a single DrivAerML sample costing on the order of 60,000 CPU-hours. Raw 3D geometry, by contrast, is abundant and free.||The paper's negative result, which a cursory summary would skip: pre-training on geometry alone (occupancy, signed distance fields) can fail to help and even hurt, because it teaches the network what a shape is while the downstream task is predicting how a system behaves under driving conditions.||The solution: lift the pre-training task from geometry space into a joint geometry-dynamics space. Sample random synthetic velocity fields around a shape, transport points along geometry-bounded paths, and train the network to predict feature trajectories. No solver is ever called, but the pre-training task now lives in the same kind of space as the downstream physics.||The end-to-end recipe: a large geometry repository (over a million pre-training samples), solver-free geometric-walk data, pre-training on a Transolver backbone, then fine-tuning on the scarce labeled simulations.||The results: 20-60% less labeled simulation data needed, up to 2x faster convergence, consistent gains across five tasks in fluid and solid mechanics. The fine print made it onto the slide too: gains are larger where geometry diversity is large (DTC Hull) and more moderate where it is limited (NASA-CRM).||The closing intuition: good pre-training should match what the downstream task depends on, and physics depends on geometry and dynamics, not geometry alone.{% endcapture %}
+{% include slide-deck.html dir="/assets/figs/geopt-slides" count=7 title="GeoPT paper slide deck" captions=geopt_captions %}
+
+After going through the deck, I skimmed the paper to check it. I did not find a claim on the slides that the paper does not make, and reading the paper afterwards took a fraction of the usual effort because I already had the skeleton.
+
+## Relevance to simulations in geomechanics
+
+The problem this paper attacks describes computational geomechanics well. A coupled hydro-mechanical or thermo-hydro-mechanical analysis is exactly the kind of expensive label the paper talks about: a single well-resolved 3D analysis can take hours to days, and we rarely run enough of them to assemble a training set of any size.
+
+We also have our own version of abundant unlabeled geometry. There is no CAD repository of the subsurface, but national databases hold vast numbers of ground investigations and interpreted stratigraphy, terrain models are freely available, and design offices sit on decades of ground models, none of it with a physics solve attached.
+
+The lifting step suggests a geomechanical analogue: take a ground model, impose random seepage fields, loading paths, or pore-pressure boundary histories without solving them, and pre-train a network to predict how features evolve, before fine-tuning on a small set of real coupled simulations. The paper's negative result carries a warning for our field too: pre-training a subsurface model on stratigraphy alone, learning "what the ground looks like," is the direct analogue of the geometry-only pre-training that Wu et al. show can fail. Geomaterial behaviour depends on loading and drainage history, not on the geometry of the deposit alone.
+
+The transfer would not be easy: our geometry diversity is arguably lower than a CAD repository's, and the paper is explicit that gains shrink when geometry variation is limited. But the structural lesson, that data-efficient surrogates come from pre-training in a space that resembles the coupled problem rather than from hoarding expensive solves, seems directly relevant to where geotechnical machine learning should go next.
