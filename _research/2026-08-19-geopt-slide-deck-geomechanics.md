@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Pre-Training Neural Physics Simulators, Read as a Slide Deck: Notes for Geomechanics"
+title: "Pre-Training Neural Physics Simulators: Notes for Geomechanics"
 date: 2026-08-19
 tags: [AI, LLM, PINNs, Scientific Machine Learning, Physics Simulation, Geotechnical Engineering, Workflow]
 excerpt: "A recent paper on pre-training neural physics simulators with synthetic dynamics caught my interest, since labeled simulation data is exactly the bottleneck I keep running into with PINNs for computational geomechanics. I digested it the way I now digest most papers: as an AI-generated slide deck. Here are the slides, the idea, and what it could mean for our field."
