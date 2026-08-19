@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "Pre-Training Neural Physics Simulators: Notes for Geomechanics"
+title: "What Geometric Pre-Training Could Mean for Neural Simulators in Geomechanics"
 date: 2026-08-19
 tags: [AI, LLM, PINNs, Scientific Machine Learning, Physics Simulation, Geotechnical Engineering, Workflow]
 excerpt: "A recent paper on pre-training neural physics simulators with synthetic dynamics caught my interest, since labeled simulation data is exactly the bottleneck I keep running into with PINNs for computational geomechanics. I digested it the way I now digest most papers: as an AI-generated slide deck. Here are the slides, the idea, and what it could mean for our field."
 image: /assets/figs/geopt-slides/slide-1.png
 ---
 
-I work a lot on physics-informed neural networks (PINNs) and neural surrogates for computational geomechanics, and the hardest constraint in that work has never been the network architecture: it is the training data, because every labeled sample is itself an expensive numerical solve. So when a recent paper came along proposing a way to pre-train neural physics simulators *without* solver labels, [Wu et al. (2026), arXiv:2602.20399](https://arxiv.org/pdf/2602.20399), on scaling physics simulation via lifted geometric pre-training with a model named GeoPT, it immediately attracted my interest.
+I work a lot on physics-informed neural networks (PINNs) and neural surrogates for computational geomechanics, and the hardest constraint in that work has never been the network architecture: it is the training data, because every labeled sample is itself an expensive numerical solve. So when a recent paper came along proposing a way to *reduce* how much labeled simulation data neural physics simulators need, by first pre-training on abundant raw geometry with synthetic dynamics and only then fine-tuning on real simulation data, [Wu et al. (2026), arXiv:2602.20399](https://arxiv.org/pdf/2602.20399), on scaling physics simulation via lifted geometric pre-training with a model named GeoPT, it immediately attracted my interest.
 
 I digested it the way I now digest most long papers: by asking ChatGPT's image generation skill (GPT Image 2) to turn it into a slide deck. I used to do this kind of first pass in NotebookLM (now Gemini Notebook); the generated decks have quietly replaced it. The workflow is straightforward: give ChatGPT the arXiv link, ask for a deck that explains the paper intuitively, and the image skill generates the slides one by one, with no template or art direction from me. Unlike a text summary, a slide has to commit: a title, a layout, limited space. That forces the same compression a human presenter performs, and the result sticks with me in a way prose summaries never did. I [posted about this on X](https://x.com/yaredwb/status/2090157854938280429) recently; this note is the longer version, with the full deck and some thoughts on what the paper could mean for geomechanics.
 
