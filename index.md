@@ -75,29 +75,6 @@ description: "Research scientist working on computational geomechanics and appli
 
 <section class="home-section">
   <div class="section-head">
-    <h2>Recent writing</h2>
-    <a class="more-link" href="{{ '/blog/' | relative_url }}">All writing</a>
-  </div>
-  {% assign recent_posts = site.posts | sort: 'date' | reverse %}
-  <ol class="entry-list">
-    {% for post in recent_posts limit: 3 %}
-    <li>
-      <article class="entry">
-        <time class="entry-date" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %Y' }}</time>
-        <div class="entry-body">
-          <h3 class="entry-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-          {% if post.excerpt %}
-          <p>{{ post.excerpt | strip_html | truncatewords: 28 }}</p>
-          {% endif %}
-        </div>
-      </article>
-    </li>
-    {% endfor %}
-  </ol>
-</section>
-
-<section class="home-section">
-  <div class="section-head">
     <h2>Projects &amp; tools</h2>
     <a class="more-link" href="{{ '/resume/' | relative_url }}">Full CV</a>
   </div>

@@ -571,7 +571,7 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
   transform: translateX(3px);
 }
 
-/* ---------- Entry lists (research / writing / teaching) ---------- */
+/* ---------- Entry lists (research / archive / teaching) ---------- */
 
 .entry-list {
   list-style: none;

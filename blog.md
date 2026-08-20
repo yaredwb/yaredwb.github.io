@@ -1,14 +1,14 @@
 ---
 layout: default
-title: Writing
+title: Archive
 permalink: /blog/
 show_title: false
 ---
 
 <header class="page-intro">
-  <p class="eyebrow">Writing</p>
-  <h1>Writing &amp; field notes</h1>
-  <p class="lead">Essays, retrospectives, and notes that connect computational research with practice: technical walkthroughs, commentary, and the occasional detour.</p>
+  <p class="eyebrow">Archive</p>
+  <h1>Archive</h1>
+  <p class="lead">Older essays and notes from 2014&ndash;2015, kept here for the record: books, travel, puzzles, and other detours. For current work, see <a href="{{ '/research/' | relative_url }}">Research</a> and <a href="{{ '/teaching/' | relative_url }}">Teaching</a>.</p>
 </header>
 
 {% assign posts = site.posts | sort: 'date' | reverse %}
@@ -33,7 +33,7 @@ show_title: false
 </ol>
 {% else %}
 <div class="empty-state">
-  <h3>No posts yet</h3>
-  <p>Fresh writing is in the works; follow along on <a href="https://x.com/yaredwb">X</a>.</p>
+  <h3>Nothing here yet</h3>
+  <p>The archive is empty.</p>
 </div>
 {% endif %}
