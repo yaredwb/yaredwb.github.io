@@ -906,6 +906,44 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
   margin-top: var(--spacing-sm);
 }
 
+/* Book cover grid (e.g. "Some of My Favorite Books") */
+.post-content .book-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+}
+
+.post-content .book-grid a {
+  display: block;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-raised);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-content .book-grid a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 15, 15, 0.12);
+}
+
+.post-content .book-grid img {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+@media (max-width: 520px) {
+  .post-content .book-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-sm);
+  }
+}
+
 .post-content blockquote {
   margin: var(--spacing-md) 0;
   padding: var(--spacing-2xs) var(--spacing-lg);
