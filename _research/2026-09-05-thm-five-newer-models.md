@@ -10,7 +10,7 @@ In June I gave five frontier models the same one-sentence brief, to build a webs
 
 ## The prompt
 
-The same sentence as in June, typo included:
+The same sentence as in June:
 
 > Build a website that illustrates the physical and mathematical principles behind thermo-hydo-mechanical processes in porous media, including beautiful and interactive illustrations.
 
