@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06 · Solving it — THM</title>
+<meta name="description" content="Discretising the coupled THM system: block structure, inf-sup stability, pressure oscillations, and monolithic versus sequential solution schemes.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10' r='6' fill='%23d95926'/%3E%3Ccircle cx='9.5' cy='21' r='6' fill='%233987e5'/%3E%3Ccircle cx='22.5' cy='21' r='6' fill='%23199e70'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/vendor/katex/katex.inline.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="numerics">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell">
+  <nav class="rail" aria-label="Chapters"></nav>
+
+  <main class="content prose" id="main">
+
+    <header class="page-head">
+      <p class="eyebrow">Chapter 06</p>
+      <h1>Solving it</h1>
+      <p class="lede">
+        The coupled system has two properties that make it awkward: it is a saddle-point problem in
+        space, and it is stiff in time. Both have well-understood consequences, and both punish
+        the obvious implementation. This chapter is about the two traps and the standard ways out.
+      </p>
+    </header>
+
+    <h2 id="discretise" data-nav="Discretisation">Discretisation</h2>
+
+    <p>
+      Almost every production THM code discretises displacement with continuous finite elements,
+      because the momentum balance is naturally variational and the boundary conditions are
+      tractions. For pressure and temperature the field splits: finite elements are common in
+      geotechnics, finite volumes in reservoir simulation, because they conserve mass locally on
+      each cell and handle strong heterogeneity in $k$ more gracefully.
+    </p>
+
+    <p>
+      After discretising in space and applying backward Euler in time, one step of the coupled
+      system reads:
+    </p>
+
+    <div class="eq eq--boxed" data-display data-math="
+      \begin{bmatrix} \ten{K} &amp; -\ten{Q} \\[2pt] \ten{Q}^{\mathsf T} &amp; \ten{S}+\Delta t\,\ten{H}\end{bmatrix}
+      \begin{Bmatrix}\vec U^{n+1}\\ \vec P^{n+1}\end{Bmatrix}
+      = \begin{Bmatrix}\vec F^{n+1}\\ \ten{Q}^{\mathsf T}\vec U^{n} + \ten{S}\vec P^{n}\end{Bmatrix}"></div>
+
+    <p>
+      This matrix is symmetric but <em>indefinite</em>. That single fact drives most of what
+      follows: it forbids naive iterative solvers such as conjugate gradients without a
+      block preconditioner, and — more insidiously — it means that not every combination of
+      displacement and pressure interpolation is admissible.
+    </p>
+
+    <h2 id="lbb" data-nav="Pressure oscillations">Trap 1 — spurious pressure oscillations</h2>
+
+    <p>
+      In the incompressible, undrained limit — small $\Delta t$, small permeability, small
+      storage — the bottom-right block $\ten{S}+\Delta t\,\ten{H}$ nearly vanishes and the system
+      becomes a pure saddle-point problem, structurally identical to Stokes flow. It then inherits
+      the <strong>inf–sup (LBB) condition</strong>: equal-order interpolation of displacement and
+      pressure is <em>not stable</em>, and the pressure field decorates itself with
+      checkerboard oscillations near drained boundaries.
+    </p>
+
+    <p>
+      This is not a bug you can refine away. Halving the element size while holding $\Delta t$
+      makes it worse, because the offending dimensionless group is
+      $\Delta t\,c/h^2$: the oscillations appear when the time step is <em>too small</em> for the
+      mesh. The figure below assembles the actual 1-D finite-element system and solves the first
+      time step, so the oscillation you see is the real discrete solution, not an illustration
+      of one.
+    </p>
+
+    <div class="fig full" id="oscFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 6.1</span>
+        <h4 class="fig__title">Equal-order elements, and what stabilisation does</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        Linear displacement and linear pressure on the same mesh, one backward-Euler step from a
+        sudden surface load. The dashed line is the Terzaghi analytic solution at the same instant.
+        Reduce the time step and the numerical pressure develops a saw-tooth near the drained
+        surface; switch on the fluid-pressure-Laplacian stabilisation and it disappears without
+        moving the physical answer.
+      </p>
+    </div>
+
+    <div class="callout callout--key">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.4"/></svg>
+        Three ways out
+      </div>
+      <ul style="margin:.3rem 0 0">
+        <li><strong>Satisfy inf–sup.</strong> Use Taylor–Hood elements: quadratic displacement,
+        linear pressure. Correct, robust, and the most expensive per node.</li>
+        <li><strong>Stabilise.</strong> Add a consistent pressure-Laplacian or polynomial-pressure-projection
+        term scaled by $h^2/(4G)$. Cheap, keeps equal order, and is what most codes actually do.</li>
+        <li><strong>Respect the time-step limit.</strong> Vermeer and Verruijt’s criterion
+        $\Delta t \ge h^2/(6c)$ keeps an unstabilised equal-order scheme clean. Simple, but it
+        forbids resolving the early transient — which is often exactly what you wanted.</li>
+      </ul>
+    </div>
+
+    <h2 id="splitting" data-nav="Splitting schemes">Trap 2 — solving the blocks separately</h2>
+
+    <p>
+      Solving the full block system at once — <strong>monolithic</strong> coupling — is the
+      unconditionally stable choice, but it means writing one solver that owns all the physics.
+      In practice people very often want to reuse an existing flow simulator and an existing
+      geomechanics code, exchanging fields between them. That is a <strong>sequential</strong>
+      scheme, and whether it converges depends entirely on <em>which quantity you hold fixed</em>
+      while solving each sub-problem.
+    </p>
+
+    <p>
+      The four classical choices, in a scalar model problem where the coupling strength is
+      $\tau = \alpha^2 M/K_{od}$:
+    </p>
+
+    <div class="tbl-wrap full">
+      <table>
+        <thead><tr><th>Scheme</th><th>Flow solved at fixed…</th><th>Stability</th><th>Contraction factor</th></tr></thead>
+        <tbody>
+          <tr><td>Drained split</td><td>displacement (mechanics first)</td><td>conditional</td><td class="num">τ</td></tr>
+          <tr><td>Undrained split</td><td>fluid mass (mechanics uses <span data-math="K_u"></span>)</td><td>unconditional, slow</td><td class="num">→ 1 for large τ</td></tr>
+          <tr><td>Fixed-strain split</td><td>strain (flow first)</td><td>conditional</td><td class="num">τ</td></tr>
+          <tr><td><strong>Fixed-stress split</strong></td><td>total stress (flow first, with a stress-corrected storage)</td><td><strong>unconditional</strong></td><td class="num">τ /(1+τ)</td></tr>
+        </tbody>
+        <caption>Contraction factors for the scalar analogue; the finite-element results of Kim,
+        Tchelepi &amp; Juanes (2011) have the same structure. A factor below 1 means the iteration
+        converges; the smaller, the faster.</caption>
+      </table>
+    </div>
+
+    <div class="fig full" id="splitFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 6.2</span>
+        <h4 class="fig__title">Convergence of the four splitting schemes</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        The iteration is run for real on the scalar model problem
+        $K_{od}\varepsilon - \alpha p = \sigma$, $\;p/M + \alpha\varepsilon = \zeta$, starting from
+        a unit error. Raise the coupling strength past $\tau = 1$ and the drained and fixed-strain
+        splits diverge outright; the fixed-stress split keeps converging no matter how strongly
+        coupled the problem is, which is why it has become the default.
+      </p>
+    </div>
+
+    <h3>Why fixed-stress works</h3>
+
+    <p>
+      The trick is to solve the flow problem with a storage coefficient that already anticipates the
+      mechanical response. Instead of $S_\varepsilon$, use $S_\varepsilon + \alpha^2/K_{od}$ — the
+      storage you would measure at constant total stress rather than constant strain — and add the
+      corresponding stress-rate term to the right-hand side:
+    </p>
+
+    <div class="eq" data-display data-math="\left(S_\varepsilon + \frac{\alpha^2}{K_{od}}\right)\pd{p}{t} \;-\; \nabla\!\cdot\!\left(\frac{k}{\mu}\nabla p\right) \;=\; q \;-\; \frac{\alpha}{K_{od}}\pd{\sigma_{v}}{t}"></div>
+
+    <p>
+      The extra storage is precisely the mechanical stiffness the flow solver would otherwise
+      ignore, so the first iterate is already nearly right. It costs one line in the flow assembly
+      and converts a conditionally-stable scheme into an unconditionally stable one.
+    </p>
+
+    <h2 id="time" data-nav="Time &amp; nonlinearity">Time stepping and nonlinearity</h2>
+
+    <div class="grid grid--2 full">
+      <div class="card">
+        <h4>Start small, then grow</h4>
+        <p>Every THM problem has an initial transient — undrained loading, a heater switch-on —
+        over which the pressure changes by orders of magnitude. Geometric time-step growth from a
+        small first step, with a target on the Newton iteration count, is standard and effective.
+        But respect the equal-order lower bound if you are not stabilised.</p>
+      </div>
+      <div class="card">
+        <h4>Upwind the advection, or pay</h4>
+        <p>The $(\rho c)_f\vec q\cdot\nabla T$ term is hyperbolic. Central differencing it on a grid
+        with cell Péclet number above 2 produces oscillations that look exactly like a physical
+        instability. Upwinding, SUPG, or a flux-limited scheme is not optional in
+        advection-dominated problems.</p>
+      </div>
+      <div class="card">
+        <h4>Lag the weak couplings</h4>
+        <p>Temperature feeds back on the others weakly enough that a T→H→M sequential order,
+        with one pass per step, is usually accurate. Verify it by running one case monolithically —
+        not by assuming.</p>
+      </div>
+      <div class="card">
+        <h4>Nonlinear coefficients need iteration</h4>
+        <p>$k(\phi)$, $\mu(T)$, $k_r(S)$ and any plasticity make the system genuinely nonlinear.
+        Newton with a consistent tangent converges quadratically; a fixed-point update of the
+        coefficients converges linearly and can stall when the retention curve is steep.</p>
+      </div>
+    </div>
+
+    <h2 id="checks" data-nav="Verification">Verifying a coupled code</h2>
+
+    <p>
+      A checklist that catches most implementation errors, in the order that isolates them fastest:
+    </p>
+
+    <ol>
+      <li><strong>Patch tests</strong> on each physics separately — uniform stress, uniform flux,
+      uniform temperature gradient — must be exact to machine precision.</li>
+      <li><strong>Terzaghi.</strong> One-dimensional, analytic, exercises the $\ten{Q}$ blocks and
+      the time integration. If the early-time pressure is not $\sigma_0$ everywhere, the undrained
+      limit is wrong.</li>
+      <li><strong>Mandel.</strong> Two-dimensional, analytic, and the only common benchmark whose
+      answer is non-monotonic. It catches a lagged or transposed coupling block that Terzaghi
+      passes happily.</li>
+      <li><strong>Booker &amp; Savvidou</strong> — a point or spherical heat source in a
+      poroelastic half-space, analytic — brings the thermal blocks in.</li>
+      <li><strong>A convergence study</strong> in both $h$ and $\Delta t$, checking that the
+      observed orders match the scheme. A coupled code that is first-order accurate where it
+      should be second-order usually has a term evaluated at the wrong time level.</li>
+      <li><strong>Energy and mass audits</strong> over the whole domain, every step. Cheap, and
+      they catch boundary-condition sign errors that convergence studies miss.</li>
+    </ol>
+
+  </main>
+</div>
+
+<script src="assets/vendor/katex/katex.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/plot.js" defer></script>
+<script src="assets/js/viz-numerics.js" defer></script>
+</body>
+</html>

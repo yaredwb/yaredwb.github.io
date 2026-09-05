@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 · Poromechanics — THM</title>
+<meta name="description" content="Effective stress, Biot poroelasticity, Skempton's coefficient, drained and undrained response, and Mohr–Coulomb failure with pore pressure.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10' r='6' fill='%23d95926'/%3E%3Ccircle cx='9.5' cy='21' r='6' fill='%233987e5'/%3E%3Ccircle cx='22.5' cy='21' r='6' fill='%23199e70'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/vendor/katex/katex.inline.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="mechanics">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell">
+  <nav class="rail" aria-label="Chapters"></nav>
+
+  <main class="content prose" id="main">
+
+    <header class="page-head">
+      <p class="eyebrow">Chapter 04 &nbsp;·&nbsp; <span class="hl-m">M</span></p>
+      <h1>Poromechanics</h1>
+      <p class="lede">
+        A saturated soil or rock has two ways to carry a load, and only one of them can fail. Working out
+        how the load is shared — and what happens when the sharing changes — is the whole of
+        poromechanics, and it is the reason a change in water pressure can move a mountainside.
+      </p>
+    </header>
+
+    <h2 id="effstress" data-nav="Effective stress">Effective stress</h2>
+
+    <p>
+      Terzaghi’s insight, in 1923, was that the deformation and strength of a saturated soil depend
+      not on the total stress but on the part carried by the grain skeleton. Water fills the pores
+      and pushes outward equally in all directions; it can carry pressure but not shear, so it
+      supports the grains against the applied load without contributing any strength of its own.
+    </p>
+
+    <div class="eq eq--boxed" data-display data-math="\boldsymbol{\sigma}' \;=\; \boldsymbol{\sigma} \;+\; \alpha\,p\,\boldsymbol{I} \qquad\text{(tension positive)}, \qquad \alpha \;=\; 1 - \frac{K}{K_s}"></div>
+
+    <p>
+      Terzaghi used $\alpha = 1$, which is right for soils: the grains are thousands of times
+      stiffer than the skeleton, so compressing the pore fluid does nothing to the grains
+      themselves. Biot generalised it. In a cemented rock the frame stiffness $K$ is an appreciable
+      fraction of the grain stiffness $K_s$, and the pore pressure also compresses the solid
+      material; only the difference does mechanical work on the frame. Hence
+      $\alpha = 1 - K/K_s$, which runs from about 1 in soil and weak sandstone down to 0.2–0.4 in
+      dense granite.
+    </p>
+
+    <div class="callout callout--care">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8.5v5M12 16.6v.1"/><path d="M10.3 4.2 2.6 17.6A2 2 0 0 0 4.3 20.6h15.4a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0z"/></svg>
+        Two different $\alpha$’s
+      </div>
+      <p style="margin:0">
+        The Biot coefficient that appears in the <em>deformation</em> law is $1-K/K_s$. The
+        coefficient that appears in a <em>failure</em> criterion need not be the same number — for
+        frictional strength it is close to 1 even in stiff rock, because failure is governed by
+        grain-contact forces rather than bulk strain. Many codes use one $\alpha$ for both. It is
+        usually a small error, and occasionally not.
+      </p>
+    </div>
+
+    <h2 id="biot" data-nav="Biot constants">The Biot constants and how they connect</h2>
+
+    <p>
+      Linear poroelasticity needs four independent constants; everything else is derived. A
+      convenient set is the drained bulk modulus $K$, the shear modulus $G$, the Biot coefficient
+      $\alpha$, and the Biot modulus $M$. The constitutive pair is then
+    </p>
+
+    <div class="eqx" id="eqxBiot">
+      <p class="eqx__hint">Hover or tap a highlighted group.</p>
+      <div class="eq eq--boxed" data-display data-math="
+        \begin{aligned}
+        \tk{sig}{\boldsymbol{\sigma}} &amp;= 2G\,\boldsymbol{\varepsilon} + \left(K-\tfrac{2}{3}G\right)\varepsilon_v\boldsymbol{I} \;-\; \tk{ap}{\alpha\,p\,\boldsymbol{I}}\\[3pt]
+        \tk{zeta}{\zeta} &amp;= \tk{aev}{\alpha\,\varepsilon_v} \;+\; \tk{mp}{\frac{p}{M}}
+        \end{aligned}"></div>
+      <ul class="terms">
+        <li data-term="sig"><span class="t-sym">$\ten{\sigma}$</span>
+          <span class="t-name">Total stress</span>
+          <span class="t-desc">What a load cell measures. Elastic response of the frame, minus the part the fluid is carrying.</span></li>
+        <li data-term="ap"><span class="t-sym">$\alpha p\ten{I}$</span>
+          <span class="t-name">Pressure contribution</span>
+          <span class="t-desc">Isotropic, because a fluid cannot sustain shear. This is why pore pressure moves a Mohr circle sideways but never changes its radius.</span></li>
+        <li data-term="zeta"><span class="t-sym">$\zeta$</span>
+          <span class="t-name">Increment of fluid content</span>
+          <span class="t-desc">Volume of fluid added per unit bulk volume — the variable whose divergence appears in the mass balance.</span></li>
+        <li data-term="aev"><span class="t-sym">$\alpha\varepsilon_v$</span>
+          <span class="t-name">Squeezed out by straining</span>
+          <span class="t-desc">The <span class="hl-m">M</span>→<span class="hl-h">H</span> coupling: compress the frame and the fluid must go somewhere.</span></li>
+        <li data-term="mp"><span class="t-sym">$p/M$</span>
+          <span class="t-name">Stored by compression</span>
+          <span class="t-desc">$1/M = \phi/K_f + (\alpha-\phi)/K_s$ — the compressibility of the fluid plus that of the pore space at fixed frame volume.</span></li>
+      </ul>
+    </div>
+
+    <p>
+      Two further constants do most of the intuitive work. The <strong>undrained bulk modulus</strong>
+      $K_u = K + \alpha^2 M$ is the stiffness you feel when the fluid has no time to escape — always
+      larger than $K$, because the trapped fluid resists. And <strong>Skempton’s coefficient</strong>
+      $B = \alpha M/K_u$ is the fraction of an applied confining stress that immediately appears as
+      pore pressure. In a soft saturated clay $B \to 1$: load it and every pascal goes straight into
+      the water.
+    </p>
+
+    <div class="fig full" id="biotFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 4.1</span>
+        <h4 class="fig__title">Poroelastic constants explorer</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        All derived constants are recomputed from $K$, $G$, $K_s$, $K_f$ and $\phi$ using the
+        standard Biot relations. The curves show how $\alpha$ and $B$ move as the frame stiffens
+        relative to the grains — the single most useful chart for deciding whether a material will
+        behave like Terzaghi’s soil or like a stiff, weakly coupled solid.
+      </p>
+    </div>
+
+    <h2 id="drained" data-nav="Drained vs undrained">Drained, undrained, and the time in between</h2>
+
+    <p>
+      Poroelastic materials have two elastic responses and a diffusion process connecting them. Load
+      quickly and the fluid is trapped: the response is undrained, stiff, and generates pore
+      pressure. Wait, and the pressure dissipates by Darcy flow; the material relaxes onto its
+      drained stiffness while the deformation grows. Nothing is viscous, yet the material creeps —
+      the time dependence is entirely borrowed from the fluid.
+    </p>
+
+    <div class="fig full" id="drainedFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 4.2</span>
+        <h4 class="fig__title">The same material, two stiffnesses</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        Isotropic loading of a saturated sample. The undrained path is steeper by exactly
+        $\alpha^2 M$, and the pressure generated along it is $B\,\Delta\sigma$. Release the drainage
+        and the sample walks horizontally from the undrained line to the drained one at constant
+        total stress — that horizontal walk is consolidation.
+      </p>
+    </div>
+
+    <h2 id="mohr" data-nav="Failure">Failure, and the arithmetic of triggering it</h2>
+
+    <p>
+      Soil and rock alike fail in shear when the stress on some plane exceeds the frictional resistance,
+      which is proportional to the <em>effective</em> normal stress on that plane. In Mohr–Coulomb
+      form, $\tau = c' + \sigma'_n\tan\varphi'$. Because pore pressure enters only through
+      $\sigma'_n = \sigma_n - \alpha p$, raising it translates the entire Mohr circle towards the
+      failure envelope without changing its size. The deviatoric loading stays the same; only the
+      resistance falls.
+    </p>
+
+    <div class="fig full" id="mohrFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 4.3</span>
+        <h4 class="fig__title">Mohr circle, pore pressure and fault reactivation</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        The circle is drawn in effective stress, compression positive. Raise the pore pressure and
+        it slides left until it touches the envelope; the readout gives the remaining margin in
+        megapascals. The inset shows the critically oriented plane at
+        $\theta = 45^\circ + \varphi'/2$ to the minor principal stress — and, if a fault is present
+        at a different angle, whether that fault reaches failure earlier or later.
+      </p>
+    </div>
+
+    <div class="callout callout--key">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.4"/></svg>
+        Coulomb failure stress
+      </div>
+      <p style="margin:0">
+        Induced-seismicity work uses the change form directly:
+        $\Delta\mathrm{CFS} = \Delta\tau - \mu\,(\Delta\sigma_n - \Delta p)$, positive meaning
+        “closer to failure”. Note that all three terms are live in a THM problem: injection raises
+        $\Delta p$, poroelastic expansion changes $\Delta\sigma_n$ even where the pressure has not
+        arrived, and cooling adds a thermal contribution that can dominate near an injector after
+        a few years.
+      </p>
+    </div>
+
+    <h2 id="beyond" data-nav="Beyond elasticity">What linear poroelasticity leaves out</h2>
+
+    <p>
+      Everything above is linear and reversible. Real geomaterials are neither. Three departures
+      matter most in practice.
+    </p>
+
+    <div class="grid grid--3 full">
+      <div class="card">
+        <h4>Plasticity and dilatancy</h4>
+        <p>Shearing a dense sand or a well-cemented rock makes it try to expand. In undrained
+        conditions that generates <em>negative</em> pore pressure and apparent strengthening; in a
+        loose material the opposite happens and it can liquefy. The volumetric plastic strain feeds
+        straight back into the fluid mass balance.</p>
+      </div>
+      <div class="card">
+        <h4>Damage and permeability</h4>
+        <p>Microcracking increases permeability by orders of magnitude, and it is directional.
+        A damage variable that only softens the stiffness, without updating $k$, misses the
+        <span class="hl-m">M</span>→<span class="hl-h">H</span> feedback that matters most around
+        excavations and along faults.</p>
+      </div>
+      <div class="card">
+        <h4>Fractures</h4>
+        <p>An open fracture has its own normal and shear stiffness, its own aperture-dependent
+        permeability ($k \propto b^2$, transmissivity $\propto b^3$), and it slips before the
+        matrix yields. Below a critical spacing, no continuum description is defensible.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="assets/vendor/katex/katex.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/plot.js" defer></script>
+<script src="assets/js/viz-mech.js" defer></script>
+</body>
+</html>

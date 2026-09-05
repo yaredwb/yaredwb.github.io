@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 · Hydraulics — THM</title>
+<meta name="description" content="Darcy's law, permeability, storage and pressure diffusion, capillarity and Richards' equation for unsaturated flow in porous media.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10' r='6' fill='%23d95926'/%3E%3Ccircle cx='9.5' cy='21' r='6' fill='%233987e5'/%3E%3Ccircle cx='22.5' cy='21' r='6' fill='%23199e70'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/vendor/katex/katex.inline.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="flow">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell">
+  <nav class="rail" aria-label="Chapters"></nav>
+
+  <main class="content prose" id="main">
+
+    <header class="page-head">
+      <p class="eyebrow">Chapter 02 &nbsp;·&nbsp; <span class="hl-h">H</span></p>
+      <h1>Hydraulics</h1>
+      <p class="lede">
+        The fluid half of the problem is a conservation statement and a constitutive law: water is
+        neither created nor destroyed, and it moves down its energy gradient at a rate set by the
+        pore geometry. Everything else — storage, diffusion, capillarity — follows from combining
+        the two.
+      </p>
+    </header>
+
+    <h2 id="darcy" data-nav="Darcy’s law">Darcy’s law</h2>
+
+    <p>
+      In 1856 Henry Darcy, tasked with supplying Dijon with clean water, measured the discharge
+      through sand filters and found it proportional to the head loss and inversely proportional to
+      the filter length. That empirical result survives essentially unchanged, because it is
+      derivable: average the Stokes equations over a periodic pore geometry and the interfacial drag
+      term collapses to a linear resistance.
+    </p>
+
+    <div class="eqx" id="eqxDarcy">
+      <p class="eqx__hint">Hover or tap a highlighted group.</p>
+      <div class="eq eq--boxed" data-display data-math="
+        \tk{q}{\vec q} \;=\; -\,\tk{k}{\frac{\ten{k}}{\mu}}\left(\tk{gp}{\nabla p} \;-\; \tk{grav}{\rho_f\,\vec g}\right)"></div>
+      <ul class="terms">
+        <li data-term="q"><span class="t-sym">$\vec q$</span>
+          <span class="t-name">Darcy flux <span class="unit">m s⁻¹</span></span>
+          <span class="t-desc">Volume of fluid crossing unit <em>bulk</em> area per second — not the speed of a water molecule. Divide by porosity to get the pore (seepage) velocity that a tracer actually experiences.</span></li>
+        <li data-term="k"><span class="t-sym">$\ten{k}/\mu$</span>
+          <span class="t-name">Mobility <span class="unit">m² Pa⁻¹ s⁻¹</span></span>
+          <span class="t-desc">Intrinsic permeability — a property of the porous medium alone — divided by the fluid viscosity. Splitting them this way is what lets a single material property serve water, brine, oil and CO₂ — and it is where temperature enters the hydraulics.</span></li>
+        <li data-term="gp"><span class="t-sym">$\nabla p$</span>
+          <span class="t-name">Pressure gradient <span class="unit">Pa m⁻¹</span></span>
+          <span class="t-desc">The driving force. In groundwater practice it is folded together with gravity into the hydraulic head $h = z + p/(\rho_f g)$.</span></li>
+        <li data-term="grav"><span class="t-sym">$\rho_f\vec g$</span>
+          <span class="t-name">Buoyancy term</span>
+          <span class="t-desc">Subtracting the hydrostatic gradient leaves only the part of the pressure field that drives flow. When density varies — with temperature or salinity — this term no longer cancels, and free convection becomes possible.</span></li>
+      </ul>
+    </div>
+
+    <p>
+      Two vocabularies coexist. Hydrogeology prefers <strong>hydraulic conductivity</strong>
+      $K = k\rho_f g/\mu$ in metres per second, which bundles the fluid in; reservoir engineering and
+      poromechanics prefer <strong>intrinsic permeability</strong> $k$ in square metres (or darcy,
+      $1\ \mathrm{D} \approx 10^{-12}\ \mathrm{m^2}$). Any THM model must use the intrinsic form,
+      because the fluid properties are unknowns.
+    </p>
+
+    <div class="fig full" id="darcyFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 2.1</span>
+        <h4 class="fig__title">Darcy’s experiment, and where his law stops working</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        The column is solved with the Forchheimer extension
+        $i = \tfrac{\mu}{\rho g k}q + \tfrac{\beta}{g}q^2$ using $\beta = 0.55/\sqrt{k}$, so the
+        departure from linearity is computed rather than sketched. Darcy’s law is the tangent at the
+        origin; it holds while the pore Reynolds number stays below about 1–10. Coarse gravel near a
+        pumping well is the usual place it fails.
+      </p>
+    </div>
+
+    <h2 id="perm" data-nav="Permeability">What sets the permeability</h2>
+
+    <p>
+      Permeability has units of area, and the area in question is roughly the cross-section of a
+      typical pore throat. That is why it scales with the square of the grain size and why it spans
+      fifteen orders of magnitude between gravel and intact granite — a wider range than any other
+      material property in engineering.
+    </p>
+
+    <div class="eq eq--boxed" data-display data-math="k \;=\; \frac{\phi^3}{(1-\phi)^2}\,\frac{d_{50}^{\,2}}{180} \qquad\text{(Kozeny–Carman)}"></div>
+
+    <p>
+      The Kozeny–Carman relation is a semi-empirical closure of exactly the interfacial integral
+      that averaging left behind: $\phi^3/(1-\phi)^2$ stands in for connectivity and specific
+      surface, and the factor 180 absorbs tortuosity. It works well for uniform sands and badly for
+      clays, fractured rock, and anything with a bimodal pore-size distribution — but it captures
+      the two dependences that matter, and it is the reason a small change in porosity produces a
+      large change in permeability.
+    </p>
+
+    <div class="fig full" id="permFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 2.2</span>
+        <h4 class="fig__title">Permeability: grain size, porosity, and the range of real materials</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        <b>Left:</b> Kozeny–Carman at four porosities. <b>Right:</b> the observed range for common
+        geological materials, with your current $(d_{50},\phi)$ marked. The cube dependence on
+        porosity is the quiet villain of coupled modelling — a few per cent of compaction can halve
+        the permeability, which is a <span class="hl-m">M</span>→<span class="hl-h">H</span>
+        coupling hiding inside a coefficient.
+      </p>
+    </div>
+
+    <h2 id="storage" data-nav="Storage &amp; diffusion">Storage, and why pressure diffuses</h2>
+
+    <p>
+      Mass conservation for the fluid in a deforming skeleton says that the rate of change of fluid
+      content equals minus the divergence of the flux. Fluid content changes for three reasons: the
+      fluid compresses, the pore space compresses, and the skeleton strains. Collecting the first
+      two into a storage coefficient and substituting Darcy’s law gives a diffusion equation.
+    </p>
+
+    <div class="eq" data-display data-math="\underbrace{S_\varepsilon\,\pd{p}{t}}_{\text{storage}} \;+\; \underbrace{\alpha\,\pd{\varepsilon_v}{t}}_{\text{skeleton}} \;=\; \nabla\!\cdot\!\left(\frac{k}{\mu}\nabla p\right) + q_s, \qquad S_\varepsilon = \frac{\phi}{K_f} + \frac{\alpha-\phi}{K_s}"></div>
+
+    <p>
+      Hold the skeleton still — $\varepsilon_v$ constant — and what remains is the classical
+      groundwater equation with hydraulic diffusivity $c = k/(\mu S_\varepsilon)$. It is a genuine
+      diffusion coefficient in m² s⁻¹, and it means pressure signals spread as $\sqrt{ct}$ rather
+      than travelling at a speed. That single square root explains most of the timescales in the
+      subject.
+    </p>
+
+    <div class="fig full" id="diffFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 2.3</span>
+        <h4 class="fig__title">Pressure diffusion from a step change at the boundary</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        Analytic solution $p(x,t) = \Delta p\;\mathrm{erfc}\!\big(x/2\sqrt{ct}\big)$ for a
+        half-space. The marker tracks the penetration depth $2\sqrt{ct}$, where the pressure has
+        risen to about 5&nbsp;% of the applied step. Quadrupling the time only doubles the depth —
+        which is why injection pressure fronts stall, and why deep repositories stay dry for a
+        very long time.
+      </p>
+    </div>
+
+    <div class="callout callout--maths">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14M9 4v6.5L4.5 20h15L15 10.5V4"/></svg>
+        The same equation, three names
+      </div>
+      <p style="margin:0">
+        Pressure diffusion, heat conduction and Terzaghi consolidation are the same partial
+        differential equation with different coefficients. Any solution you know for one — the
+        $\mathrm{erfc}$ half-space, the Theis well function $W(u) = E_1(u)$, the Fourier series in a
+        finite layer — transfers directly to the others. That is worth a great deal when checking a
+        coupled code.
+      </p>
+    </div>
+
+    <h2 id="unsat" data-nav="Unsaturated flow">When the pores are only partly wet</h2>
+
+    <p>
+      Above the water table, air and water share the pore space and the water is held under
+      <em>suction</em>: its pressure is below atmospheric because curved menisci pull it into the
+      narrow throats. The capillary pressure $p_c = p_g - p_w = 2\sigma\cos\theta/r$ is larger in
+      smaller pores, so as a soil dries the water retreats into progressively finer pores and the
+      suction rises — steeply.
+    </p>
+
+    <p>
+      Two constitutive curves close the problem. The <strong>retention curve</strong> relates
+      saturation to capillary pressure; the <strong>relative permeability</strong> says how much of
+      the saturated conductivity survives when only part of the network is water-filled. Van
+      Genuchten’s retention model and Mualem’s conductivity model, used together, are the standard
+      pairing:
+    </p>
+
+    <div class="eq" data-display data-math="S_e = \Big[1 + (\alpha\,|\psi|)^{\,n}\Big]^{-m},\quad m = 1-\tfrac{1}{n}; \qquad k_r = S_e^{\,1/2}\Big[1-\big(1-S_e^{1/m}\big)^{m}\Big]^{2}"></div>
+
+    <div class="fig full" id="vgFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 2.4</span>
+        <h4 class="fig__title">Retention and relative permeability</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        Parameters after Carsel &amp; Parrish (1988). Note the vertical scale on the right: at
+        70&nbsp;% saturation a sand has already lost more than 90&nbsp;% of its conductivity. This
+        nonlinearity — four orders of magnitude of $k_r$ over the wetting range — is what makes
+        Richards’ equation hard, and it is why unsaturated solvers need adaptive time stepping.
+      </p>
+    </div>
+
+    <p>
+      Substituting the two curves into mass conservation gives <strong>Richards’ equation</strong>,
+      a nonlinear diffusion–advection equation in which both the diffusivity and the storage
+      coefficient depend on the unknown:
+    </p>
+
+    <div class="eq eq--boxed" data-display data-math="C(\psi)\,\pd{\psi}{t} \;=\; \pd{}{z}\!\left[K_s\,k_r(\psi)\left(\pd{\psi}{z} - 1\right)\right], \qquad C(\psi) = \pd{\theta}{\psi}"></div>
+
+    <div class="fig full" id="richardsFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 2.5</span>
+        <h4 class="fig__title">Infiltration into a dry column — Richards’ equation, solved live</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        Solved with the mass-conservative modified Picard scheme of Celia, Bouloutas &amp; Zarba
+        (1990): backward Euler in time, central differences in space, the storage term written in
+        mixed form so that mass is conserved to machine precision, and a tridiagonal solve at each
+        iteration. The front is sharp because $k_r$ collapses ahead of it; cumulative infiltration
+        follows Philip’s $\sqrt{t}$ law early on and becomes linear once gravity takes over.
+      </p>
+    </div>
+
+    <div class="callout callout--care">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8.5v5M12 16.6v.1"/><path d="M10.3 4.2 2.6 17.6A2 2 0 0 0 4.3 20.6h15.4a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0z"/></svg>
+        What the standard model leaves out
+      </div>
+      <p style="margin:0">
+        Retention curves are <strong>hysteretic</strong>: a soil holds more water while draining
+        than while wetting at the same suction, because of ink-bottle pore geometry and contact-angle
+        differences. Most engineering models ignore it, which is defensible for monotonic
+        processes and indefensible for wetting–drying cycles. In THM problems suction is also
+        temperature-dependent, since surface tension falls with heat — a
+        <span class="hl-t">T</span>→<span class="hl-h">H</span> coupling that matters in
+        near-field repository analysis.
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script src="assets/vendor/katex/katex.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/plot.js" defer></script>
+<script src="assets/js/viz-flow.js" defer></script>
+</body>
+</html>

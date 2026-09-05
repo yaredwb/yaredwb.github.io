@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THM in Porous Media — an interactive primer</title>
+<meta name="description" content="The physics and mathematics of coupled thermo–hydro–mechanical processes in porous media, told through live, computed illustrations.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10' r='6' fill='%23d95926'/%3E%3Ccircle cx='9.5' cy='21' r='6' fill='%233987e5'/%3E%3Ccircle cx='22.5' cy='21' r='6' fill='%23199e70'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/vendor/katex/katex.inline.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="index">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell">
+  <nav class="rail" aria-label="Chapters"></nav>
+
+  <main class="content prose" id="main">
+
+    <section class="hero">
+      <p class="eyebrow">An interactive primer</p>
+      <h1>Soil and rock are a <span class="gradient-word">three-body problem</span>.</h1>
+      <p class="lede">
+        Squeeze a saturated clay and the water carries the load. Heat a granite and the water
+        expands faster than the mineral cage holding it. Push water through either — through any
+        porous medium, geological or engineered — and the heat goes along for the ride, but
+        slower. <strong>Thermo–hydro–mechanical</strong> modelling is the arithmetic of those
+        arguments, and this is a guided tour of it, with every figure computed live in your browser.
+      </p>
+
+      <div class="hero__stage full" id="heroStage" aria-label="Animated pore-scale flow, heat transport and skeleton response">
+        <canvas></canvas>
+        <div class="hero__legend">
+          <span class="legend__item"><span class="legend__swatch legend__swatch--dot" style="background:#3987e5"></span>fluid tracers</span>
+          <span class="legend__item"><span style="width:64px;height:8px;border-radius:4px;display:inline-block;background:linear-gradient(90deg,#fdfcf8,#f5ad5c,#b0421f,#4a1a22)"></span>&nbsp;cooled&nbsp;→&nbsp;hot</span>
+          <span class="legend__item"><span class="legend__swatch legend__swatch--dot" style="background:transparent;border:1.5px solid rgba(255,255,255,.75)"></span>grain skeleton</span>
+        </div>
+      </div>
+      <p class="fig__caption full" style="padding-left:0">
+        <b>Live.</b> Pressure is solved on a masked Darcy grid (grains are near-impermeable), tracers
+        follow the resulting velocity field, and temperature is advected and diffused on the same grid —
+        so the thermal front you see genuinely lags the fluid front. The skeleton response is
+        illustrative; the quantitative version starts in
+        <a href="mechanics.html">chapter&nbsp;04</a>.
+      </p>
+    </section>
+
+    <h2 id="why" data-nav="Why one problem">Why it refuses to be three problems</h2>
+
+    <p class="dropcap">
+      A porous medium is two materials pretending to be one. There is a <em>skeleton</em> — a
+      connected cage of grains or a cemented mineral frame — and there is <em>fluid</em> filling the
+      space between. Every question you can ask about such a material is a question about how those
+      two share something: share the load, share the volume, share the heat.
+    </p>
+
+    <p>
+      That sharing is the coupling. It is not a modelling nicety bolted on at the end; it is what the
+      material <em>is</em>. Push on a saturated clay and, for a while, the water carries the load and
+      the clay does not deform at all. Only as water escapes does the skeleton take up the stress —
+      which is why a building settles for decades after it is finished. Inject cold water into hot
+      granite and the rock contracts, opening fractures and shifting stress far outside the cooled
+      volume, sometimes far enough to unclamp a fault kilometres away.
+    </p>
+
+    <div class="callout callout--key">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.4"/></svg>
+        The one-sentence version
+      </div>
+      <p style="margin:0">
+        THM modelling solves three balance laws — <span class="hl-m">momentum</span> for the skeleton,
+        <span class="hl-h">mass</span> for the fluid, <span class="hl-t">energy</span> for the mixture —
+        on the same body at the same time, because each one’s coefficients and source terms are
+        functions of the other two’s unknowns.
+      </p>
+    </div>
+
+    <h2 id="three" data-nav="Three balance laws">Three balance laws, one body</h2>
+
+    <p>
+      Every THM formulation, however elaborate, is a dressing of the same three statements applied to
+      a representative volume of the medium. The primary unknowns are the skeleton displacement
+      $\vec{u}$, the fluid pressure $p$, and the temperature $T$.
+    </p>
+
+    <div class="trio">
+      <div class="trio__card" style="--tone:var(--c-m)">
+        <span class="pill pill--m">M &nbsp;·&nbsp; momentum</span>
+        <h4>The skeleton must hold itself up</h4>
+        <p>$\nabla\!\cdot\!\boldsymbol{\sigma} + \rho\vec{g} = \vec{0}$ — quasi-static, because
+        inertia matters only for waves and earthquakes. Unknown: displacement $\vec{u}$.</p>
+      </div>
+      <div class="trio__card" style="--tone:var(--c-h)">
+        <span class="pill pill--h">H &nbsp;·&nbsp; fluid mass</span>
+        <h4>Water is neither created nor lost</h4>
+        <p>What accumulates in the pores equals what flows in. Flux from Darcy’s law.
+        Unknown: pressure $p$.</p>
+      </div>
+      <div class="trio__card" style="--tone:var(--c-t)">
+        <span class="pill pill--t">T &nbsp;·&nbsp; energy</span>
+        <h4>Heat is conducted, carried, and stored</h4>
+        <p>Conduction through everything, advection by the moving fluid, storage in both phases.
+        Unknown: temperature $T$.</p>
+      </div>
+    </div>
+
+    <p>
+      Written out for a fully saturated medium under small strains, and stripped to the terms that
+      matter most, the system looks like this. Hover any coloured group to see what it does.
+    </p>
+
+    <div class="eqx" id="eqxSystem">
+      <p class="eqx__hint">Hover or tap a highlighted group — or an entry in the list.</p>
+      <div class="eq eq--boxed" data-display data-math="
+        \begin{aligned}
+        &amp;\tk{mom}{\nabla\!\cdot\!\big(\ten{C}:\boldsymbol{\varepsilon}(\vec u)\big)}
+          \;-\;\tk{hm}{\alpha\,\nabla p}\;-\;\tk{tm}{3K\alpha_T\nabla T}\;+\;\rho\vec g \;=\; \vec 0\\[4pt]
+        &amp;\tk{sto}{S_\varepsilon\pd{p}{t}}\;+\;\tk{mh}{\alpha\,\pd{}{t}\!\left(\nabla\!\cdot\!\vec u\right)}
+          \;-\;\tk{th}{\beta_\phi\pd{T}{t}}\;-\;\tk{dar}{\nabla\!\cdot\!\left(\frac{k}{\mu}\nabla p\right)}\;=\;q\\[4pt]
+        &amp;\tk{cap}{(\rho c)_m\pd{T}{t}}\;+\;\tk{adv}{(\rho c)_f\,\vec v\!\cdot\!\nabla T}
+          \;-\;\tk{con}{\nabla\!\cdot\!\left(\lambda_m\nabla T\right)}\;=\;Q
+        \end{aligned}"></div>
+      <ul class="terms">
+        <li data-term="mom"><span class="t-sym">$\ten{C}\!:\!\boldsymbol{\varepsilon}$</span>
+          <span class="t-name">Skeleton stiffness</span>
+          <span class="t-desc">The elastic response of the grain frame to strain. Everything mechanical starts here.</span></li>
+        <li data-term="hm"><span class="t-sym">$\alpha\nabla p$</span>
+          <span class="t-name">H → M &nbsp;· effective stress</span>
+          <span class="t-desc">Pore pressure carries part of the load. Raise $p$ and the frame is unloaded — the single most consequential coupling in the set.</span></li>
+        <li data-term="tm"><span class="t-sym">$3K\alpha_T\nabla T$</span>
+          <span class="t-name">T → M &nbsp;· thermal stress</span>
+          <span class="t-desc">A skeleton that cannot expand answers a temperature change with stress instead — of order 0.5&nbsp;MPa per kelvin in granite, an order of magnitude less in soft soil.</span></li>
+        <li data-term="sto"><span class="t-sym">$S_\varepsilon\pd{p}{t}$</span>
+          <span class="t-name">Storage</span>
+          <span class="t-desc">Fluid and pore space are compressible, so a pressure change stores or releases mass without any flow.</span></li>
+        <li data-term="mh"><span class="t-sym">$\alpha\,\dot\varepsilon_v$</span>
+          <span class="t-name">M → H &nbsp;· pore-volume change</span>
+          <span class="t-desc">Squeezing the skeleton squeezes fluid out. This term is what makes consolidation a diffusion process rather than an instant settlement.</span></li>
+        <li data-term="th"><span class="t-sym">$\beta_\phi\pd{T}{t}$</span>
+          <span class="t-name">T → H &nbsp;· thermal pressurisation</span>
+          <span class="t-desc">Water expands roughly an order of magnitude more than the mineral frame. Heat a sealed sample and the pressure climbs — hard.</span></li>
+        <li data-term="dar"><span class="t-sym">$\tfrac{k}{\mu}\nabla p$</span>
+          <span class="t-name">Darcy flux</span>
+          <span class="t-desc">Mobility times pressure gradient. Both $k$ (via porosity, via strain) and $\mu$ (via temperature) are coupling channels in disguise.</span></li>
+        <li data-term="cap"><span class="t-sym">$(\rho c)_m$</span>
+          <span class="t-name">Mixture heat capacity</span>
+          <span class="t-desc">Volume-weighted over solid and fluid. The solid dominates, which is exactly why thermal fronts lag.</span></li>
+        <li data-term="adv"><span class="t-sym">$\vec v\!\cdot\!\nabla T$</span>
+          <span class="t-name">H → T &nbsp;· advection</span>
+          <span class="t-desc">Heat rides along with the water. The Péclet number measures whether this beats conduction.</span></li>
+        <li data-term="con"><span class="t-sym">$\lambda_m\nabla T$</span>
+          <span class="t-name">Conduction</span>
+          <span class="t-desc">Through solid and fluid together; in saturated ground the solid path carries most of it.</span></li>
+      </ul>
+    </div>
+
+    <p class="muted" style="font-size:var(--fs-sm)">
+      Two couplings are missing from the display above because they are almost always negligible:
+      mechanical dissipation heating the medium, and the thermoelastic cooling of a solid as it is
+      pulled apart. They reappear — with numbers — in the map below.
+    </p>
+
+    <h2 id="map" data-nav="The coupling map">The coupling map</h2>
+
+    <p>
+      Six arrows connect three physics. Some are strong enough to dominate an engineering answer,
+      others are the kind you can defensibly drop. Knowing which is which <em>is</em> the modelling
+      skill. Select an arrow.
+    </p>
+
+    <div class="fig full" id="couplingMap">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 0.1</span>
+        <h4 class="fig__title">Directed couplings between the three physics</h4>
+      </div>
+      <div class="fig__body"></div>
+    </div>
+
+    <h2 id="scales" data-nav="Which coupling wins?">Which coupling wins here?</h2>
+
+    <p>
+      Whether a coupling matters is never a property of the physics alone — it is a property of the
+      physics <em>at your length scale, at your time scale, in your material</em>. Four dimensionless
+      groups settle most arguments. Set a scenario and watch them move.
+    </p>
+
+    <div class="fig full" id="regimeCalc">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 0.2</span>
+        <h4 class="fig__title">Regime calculator</h4>
+      </div>
+      <div class="fig__body"></div>
+    </div>
+
+    <h2 id="road" data-nav="How to read this">How to read this</h2>
+
+    <p>
+      The chapters build the system one physics at a time and then put it back together. Every figure
+      is a live computation: sliders change parameters, and the solution is re-solved, not
+      re-scaled from a stored picture. Where a closed-form solution exists it is used; where it does
+      not, a small solver runs in your browser and the scheme is stated in the caption.
+    </p>
+
+    <div class="grid grid--2 full" id="roadmap"></div>
+
+    <div class="callout callout--maths">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14M9 4v6.5L4.5 20h15L15 10.5V4"/></svg>
+        Conventions used throughout
+      </div>
+      <p style="margin:0">
+        Continuum mechanics sign convention: <strong>tension positive</strong> for stress, so a
+        compressive vertical stress is negative and effective stress reads
+        $\sigma' = \sigma + \alpha p$. Where geotechnical practice is quoted (compression positive)
+        it is flagged explicitly. Strains are small, $\boldsymbol\varepsilon = \tfrac12(\nabla\vec u + \nabla\vec u^{\mathsf T})$,
+        and the fluid is a single wetting phase unless stated otherwise.
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script src="assets/vendor/katex/katex.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/plot.js" defer></script>
+<script src="assets/js/viz-index.js" defer></script>
+</body>
+</html>

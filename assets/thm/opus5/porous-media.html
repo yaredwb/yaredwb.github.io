@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 · The porous medium — THM</title>
+<meta name="description" content="Representative elementary volumes, porosity, saturation, volume averaging and effective properties of porous media.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10' r='6' fill='%23d95926'/%3E%3Ccircle cx='9.5' cy='21' r='6' fill='%233987e5'/%3E%3Ccircle cx='22.5' cy='21' r='6' fill='%23199e70'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/vendor/katex/katex.inline.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="porous-media">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell">
+  <nav class="rail" aria-label="Chapters"></nav>
+
+  <main class="content prose" id="main">
+
+    <header class="page-head">
+      <p class="eyebrow">Chapter 01</p>
+      <h1>The porous medium</h1>
+      <p class="lede">
+        Before any of the physics can be written down, a decision has to be made: we will stop
+        looking at grains and pores, and start pretending the material is a smooth continuum in
+        which solid and fluid coexist at every point. That pretence is called <em>homogenisation</em>,
+        and it is only legitimate under conditions worth stating carefully.
+      </p>
+    </header>
+
+    <h2 id="rev" data-nav="The REV">The representative elementary volume</h2>
+
+    <p>
+      Porosity at a point is a meaningless quantity: a point is either inside a grain or inside a
+      pore, so $\phi$ is either $0$ or $1$. What we actually mean by “the porosity here” is the void
+      fraction of a small volume centred here. That makes porosity a function of the averaging
+      volume, and the whole continuum description hinges on there being a range of volumes over
+      which the answer stops caring which volume you chose.
+    </p>
+
+    <div class="eq eq--boxed" data-display data-math="\phi(\vec x, L) \;=\; \frac{1}{|V_L|}\int_{V_L(\vec x)} \chi_{\text{void}}(\vec y)\,\mathrm{d}V, \qquad \chi_{\text{void}} = \begin{cases}1 &amp; \text{in a pore}\\ 0 &amp; \text{in a grain}\end{cases}"></div>
+
+    <p>
+      Drag the sampling window across the pack and widen it. Three regimes appear, and the middle
+      one is the only place a continuum model may live.
+    </p>
+
+    <div class="fig full" id="revFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 1.1</span>
+        <h4 class="fig__title">Porosity as a function of the averaging volume</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        <b>Left:</b> a synthetic pack whose grain size drifts across the sample, so the medium is
+        genuinely heterogeneous at the large scale. <b>Right:</b> the measured void fraction of the
+        square window, evaluated exactly from a summed-area table over the rasterised pack. Below
+        roughly one grain diameter the measurement is noise; above the sample’s correlation length
+        it starts tracking a real trend. Between them lies the plateau — the REV.
+      </p>
+    </div>
+
+    <div class="callout callout--care">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8.5v5M12 16.6v.1"/><path d="M10.3 4.2 2.6 17.6A2 2 0 0 0 4.3 20.6h15.4a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0z"/></svg>
+        The scale-separation condition
+      </div>
+      <p style="margin:0">
+        Homogenisation is valid only when $\ell \ll L_{\text{REV}} \ll L$, where $\ell$ is the pore
+        or grain size and $L$ the scale over which the macroscopic fields vary. Fractured rock is the
+        classic offender: a single metre-scale fracture in an otherwise tight matrix has no REV at
+        all, and the honest response is a discrete-fracture or dual-continuum model rather than a
+        larger averaging volume.
+      </p>
+    </div>
+
+    <h2 id="fractions" data-nav="Fractions &amp; saturation">Volume fractions and saturation</h2>
+
+    <p>
+      With an REV in hand, every phase gets a volume fraction. For a medium of porosity $\phi$
+      holding a wetting fluid at saturation $S_w$ and a gas at $S_g = 1 - S_w$:
+    </p>
+
+    <div class="eq" data-display data-math="\underbrace{(1-\phi)}_{\text{solid}} \;+\; \underbrace{\phi S_w}_{\text{water}} \;+\; \underbrace{\phi (1-S_w)}_{\text{gas}} \;=\; 1, \qquad \theta = \phi S_w"></div>
+
+    <p>
+      Three families of quantity follow, and confusing them is a standard source of factor-of-two
+      errors. <strong>Volumetric</strong> quantities such as bulk density $\rho = (1-\phi)\rho_s + \phi S_w \rho_w$
+      average over everything. <strong>Intrinsic</strong> quantities such as the fluid pressure belong to one
+      phase and are averaged only over that phase’s volume. <strong>Ratios</strong> such as the void ratio
+      $e = \phi/(1-\phi)$ and the gravimetric water content $w = m_w/m_s$ are what soil laboratories
+      actually report.
+    </p>
+
+    <div class="fig full" id="phaseFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 1.2</span>
+        <h4 class="fig__title">Phase composition of a unit volume</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        Every derived index is computed from the three volume fractions on the left. Note how
+        quickly bulk density moves: the difference between a dry and a saturated sand is several
+        hundred kilograms per cubic metre, which is why saturation matters for slope stability long
+        before any pore pressure is considered.
+      </p>
+    </div>
+
+    <h2 id="averaging" data-nav="Volume averaging">From pore scale to continuum</h2>
+
+    <p>
+      The continuum equations are not postulated — they are derived by averaging the pore-scale
+      equations over the REV. Two averages are needed for each phase $\beta$: the
+      <em>superficial</em> (or phase) average, taken over the whole REV, and the <em>intrinsic</em>
+      average, taken over the volume that phase actually occupies.
+    </p>
+
+    <div class="eq" data-display data-math="\langle \psi_\beta\rangle = \frac{1}{V}\int_{V_\beta}\psi_\beta\,\mathrm{d}V, \qquad \langle \psi_\beta\rangle^\beta = \frac{1}{V_\beta}\int_{V_\beta}\psi_\beta\,\mathrm{d}V, \qquad \langle \psi_\beta\rangle = \varepsilon_\beta\,\langle \psi_\beta\rangle^\beta"></div>
+
+    <p>
+      Averaging a divergence is where the physics enters. The spatial averaging theorem says that
+      the average of a gradient is not the gradient of the average — a surface integral over the
+      solid–fluid interface survives, and it is exactly that integral that becomes the drag term in
+      Darcy’s law and the interfacial heat-transfer term in a two-temperature energy balance:
+    </p>
+
+    <div class="eqx" id="eqxAvg">
+      <p class="eqx__hint">Hover or tap a highlighted group.</p>
+      <div class="eq eq--boxed" data-display data-math="
+        \tk{lhs}{\langle \nabla \psi_\beta\rangle} \;=\;
+        \tk{gradavg}{\nabla \langle \psi_\beta \rangle} \;+\;
+        \tk{surf}{\frac{1}{V}\int_{A_{\beta\sigma}} \psi_\beta\, \vec n_{\beta\sigma}\,\mathrm{d}A}"></div>
+      <ul class="terms">
+        <li data-term="lhs"><span class="t-sym">$\langle\nabla\psi\rangle$</span>
+          <span class="t-name">Average of the pore-scale gradient</span>
+          <span class="t-desc">What the microscopic physics actually contains.</span></li>
+        <li data-term="gradavg"><span class="t-sym">$\nabla\langle\psi\rangle$</span>
+          <span class="t-name">Gradient of the averaged field</span>
+          <span class="t-desc">What a continuum model can compute — the smooth field we want to solve for.</span></li>
+        <li data-term="surf"><span class="t-sym">$\int_{A}$</span>
+          <span class="t-name">Interfacial term</span>
+          <span class="t-desc">The mismatch between the two. It carries all the pore-geometry information and must be closed by a constitutive law: close it for momentum and you get Darcy’s law with a permeability; close it for energy and you get an effective conductivity, or a heat-exchange coefficient if the phases are not in equilibrium.</span></li>
+      </ul>
+    </div>
+
+    <p>
+      This is the <strong>closure problem</strong>, and it is the reason permeability is measured
+      rather than derived. Every macroscopic coefficient in a THM model — $k$, $\lambda_m$, $\alpha$,
+      the retention curve — is a stand-in for an interfacial integral nobody wants to evaluate.
+    </p>
+
+    <h2 id="effective" data-nav="Effective properties">Effective properties and their bounds</h2>
+
+    <p>
+      Some effective properties are exact averages. The volumetric heat capacity is one: heat is
+      stored additively, so $(\rho c)_m = (1-\phi)(\rho c)_s + \phi (\rho c)_f$ with no geometry
+      dependence at all. Others depend on how the phases are arranged, and can only be bounded.
+      Thermal conductivity is the canonical example.
+    </p>
+
+    <p>
+      Layers parallel to the flux conduct in parallel — arithmetic mean, the best any arrangement can
+      do. Layers perpendicular conduct in series — harmonic mean, the worst. These are the
+      <strong>Wiener bounds</strong>. If the medium is additionally known to be isotropic, the tighter
+      <strong>Hashin–Shtrikman bounds</strong> apply. Real granular materials sit inside the HS envelope,
+      and the geometric mean $\lambda_s^{1-\phi}\lambda_f^{\phi}$ is a serviceable engineering estimate.
+    </p>
+
+    <div class="fig full" id="lambdaFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 1.3</span>
+        <h4 class="fig__title">Effective thermal conductivity and its bounds</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        The spread between the bounds is small when the two phases have similar conductivities
+        (mineral and water differ by about a factor of five) and enormous when they do not — which is
+        exactly the situation in a dry or partially saturated soil, where air at
+        0.026&nbsp;W&nbsp;m⁻¹&nbsp;K⁻¹ sits beside mineral at 3. In that regime the geometry
+        genuinely controls the answer and no mixing rule is trustworthy.
+      </p>
+    </div>
+
+    <div class="callout callout--field">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5V6.2A2 2 0 0 1 6 4.2h12a2 2 0 0 1 2 2v13.3"/><path d="M4 19.5h16M8 9h8M8 13h5"/></svg>
+        In practice
+      </div>
+      <p style="margin:0">
+        For saturated soil or rock, take $\lambda_m$ as the geometric mean and accept a few per cent of
+        error. For unsaturated soil, measure it, or use a saturation-dependent model — the
+        conductivity of a silt can triple between air-dry and saturated, and that alone changes a
+        ground-source heat-pump design.
+      </p>
+    </div>
+
+    <h2 id="tortuosity" data-nav="Tortuosity">Tortuosity: geometry that survives averaging</h2>
+
+    <p>
+      Not all pore-geometry information is lost. Two numbers escape the averaging almost intact.
+      <strong>Connectivity</strong> decides whether porosity is even available for flow — a pumice
+      with 60&nbsp;% porosity can be effectively impermeable if the vesicles are isolated, so we
+      distinguish total from <em>effective</em> porosity. <strong>Tortuosity</strong> $\tau = (L_e/L)^2$
+      measures how much further a fluid particle must travel than the straight-line distance, and it
+      appears in every transport coefficient as a divisor.
+    </p>
+
+    <div class="eq" data-display data-math="D_{\text{eff}} = \frac{\phi}{\tau}\,D_0, \qquad \tau \approx \phi^{-1/3}\;\text{(Millington–Quirk)}, \qquad \tau \in [1.5, 8]\ \text{for most soils and rocks}"></div>
+
+    <p>
+      Permeability is where connectivity and tortuosity combine most consequentially, and it deserves
+      its own treatment — which is where the next chapter starts.
+    </p>
+
+  </main>
+</div>
+
+<script src="assets/vendor/katex/katex.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/plot.js" defer></script>
+<script src="assets/js/viz-porous.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 · The coupled system — THM</title>
+<meta name="description" content="The assembled thermo-hydro-mechanical equations, Terzaghi consolidation, the Mandel–Cryer effect and thermal pressurisation.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10' r='6' fill='%23d95926'/%3E%3Ccircle cx='9.5' cy='21' r='6' fill='%233987e5'/%3E%3Ccircle cx='22.5' cy='21' r='6' fill='%23199e70'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/vendor/katex/katex.inline.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="coupled">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell">
+  <nav class="rail" aria-label="Chapters"></nav>
+
+  <main class="content prose" id="main">
+
+    <header class="page-head">
+      <p class="eyebrow">Chapter 05</p>
+      <h1>The coupled system</h1>
+      <p class="lede">
+        Three balance laws, three primary unknowns, and a set of cross terms that refuse to be
+        ignored. This chapter assembles the system and then tests it against three problems whose
+        exact solutions are known — because a coupled code that cannot reproduce them is not
+        coupled, it is merely complicated.
+      </p>
+    </header>
+
+    <h2 id="assemble" data-nav="Assembling">Assembling the system</h2>
+
+    <p>
+      Take the momentum balance from chapter 04, the fluid mass balance from chapter 02 and the
+      energy balance from chapter 03, and write them in terms of the primary unknowns
+      $(\vec u, p, T)$. Nothing new is introduced; the couplings were already there, hiding in the
+      constitutive laws.
+    </p>
+
+    <div class="eqx" id="eqxFull">
+      <p class="eqx__hint">Hover or tap a highlighted group. Colours mark which physics the term belongs to.</p>
+      <div class="eq eq--boxed" data-display data-math="
+        \begin{aligned}
+        \nabla\!\cdot\!\Big[\ten{C}\!:\!\boldsymbol{\varepsilon}(\vec u)\Big]
+          \;-\;\tk{a}{\alpha\nabla p}\;-\;\tk{b}{3K\alpha_T\nabla T}\;+\;\rho\vec g &amp;= \vec 0\\[6pt]
+        \tk{c}{S_\varepsilon\pd{p}{t}}
+          \;+\;\tk{d}{\alpha\,\pd{\varepsilon_v}{t}}
+          \;-\;\tk{e}{\Gamma\pd{T}{t}}
+          \;-\;\nabla\!\cdot\!\Big[\tfrac{k(\phi)}{\mu(T)}\big(\nabla p-\rho_f\vec g\big)\Big] &amp;= q\\[6pt]
+        (\rho c)_m\pd{T}{t}
+          \;+\;\tk{f}{(\rho c)_f\,\vec q\!\cdot\!\nabla T}
+          \;-\;\nabla\!\cdot\!\big(\lambda_m\nabla T\big) &amp;= Q
+        \end{aligned}"></div>
+      <ul class="terms">
+        <li data-term="a"><span class="t-sym">$\alpha\nabla p$</span>
+          <span class="t-name"><span class="hl-h">H</span> → <span class="hl-m">M</span></span>
+          <span class="t-desc">Effective stress. Symmetric with term <b>d</b> below — the pair forms the classic Biot coupling and, in a discretised system, an exactly symmetric off-diagonal block.</span></li>
+        <li data-term="b"><span class="t-sym">$3K\alpha_T\nabla T$</span>
+          <span class="t-name"><span class="hl-t">T</span> → <span class="hl-m">M</span></span>
+          <span class="t-desc">Thermal stress. Note there is no matching term in the energy balance: the reverse coupling (thermoelastic heating) is real but negligible, so this coupling is essentially one-way.</span></li>
+        <li data-term="c"><span class="t-sym">$S_\varepsilon$</span>
+          <span class="t-name">Storage</span>
+          <span class="t-desc">$\phi/K_f + (\alpha-\phi)/K_s$. Small in stiff rock — which is exactly why pressure responds so sharply to a small volumetric strain.</span></li>
+        <li data-term="d"><span class="t-sym">$\alpha\,\dot\varepsilon_v$</span>
+          <span class="t-name"><span class="hl-m">M</span> → <span class="hl-h">H</span></span>
+          <span class="t-desc">Pore-volume change. Deleting this term (and only this term) turns a poroelastic model into an uncoupled flow model — and destroys the Mandel–Cryer effect entirely.</span></li>
+        <li data-term="e"><span class="t-sym">$\Gamma\,\dot T$</span>
+          <span class="t-name"><span class="hl-t">T</span> → <span class="hl-h">H</span></span>
+          <span class="t-desc">Thermal pressurisation. $\Gamma = \phi(\beta_f-\beta_s)$ to leading order: the fluid expands about ten times more than the pore space, and if it cannot escape the pressure climbs.</span></li>
+        <li data-term="f"><span class="t-sym">$\vec q\!\cdot\!\nabla T$</span>
+          <span class="t-name"><span class="hl-h">H</span> → <span class="hl-t">T</span></span>
+          <span class="t-desc">Advection. The only nonlinear coupling in the set that is not hidden in a coefficient, and the one that forces an upwinded or stabilised discretisation.</span></li>
+      </ul>
+    </div>
+
+    <p>
+      Two further couplings live inside the coefficients rather than as separate terms, and they are
+      easy to forget: permeability depends on porosity, which depends on volumetric strain
+      ($k(\phi(\varepsilon_v))$), and viscosity depends on temperature ($\mu(T)$). Both are
+      <em>nonlinear</em> couplings, and both can matter more than the explicit terms — a factor of
+      five drop in viscosity between 20 and 150 °C changes flow rates more than most pressure
+      changes do.
+    </p>
+
+    <h3>Block structure</h3>
+
+    <p>
+      Discretised, the system has a recognisable shape. Writing the unknown vector as
+      $(\vec U, \vec P, \vec\Theta)$ for displacement, pressure and temperature degrees of freedom:
+    </p>
+
+    <div class="eq" data-display data-math="
+      \begin{bmatrix} \ten{K} &amp; -\ten{Q} &amp; -\ten{L}\\[2pt]
+                      \ten{Q}^{\mathsf T}\tfrac{\dd}{\dd t} &amp; \ten{S}\tfrac{\dd}{\dd t}+\ten{H} &amp; -\ten{\Gamma}\tfrac{\dd}{\dd t}\\[2pt]
+                      \ten{0} &amp; \ten{A}(\vec q) &amp; \ten{C}\tfrac{\dd}{\dd t}+\ten{\Lambda} \end{bmatrix}
+      \begin{Bmatrix}\vec U\\ \vec P\\ \vec\Theta\end{Bmatrix}
+      = \begin{Bmatrix}\vec f_u\\ \vec f_p\\ \vec f_T\end{Bmatrix}"></div>
+
+    <p>
+      The $\ten{Q}$ / $\ten{Q}^{\mathsf T}$ pair is symmetric, so the mechanical–hydraulic block is
+      symmetric-indefinite — a saddle-point system, with all the discretisation and solver
+      consequences that implies. The thermal row is <em>not</em> symmetric with the others: the
+      $\ten{L}$ and $\ten{\Gamma}$ blocks have no transposes in the bottom row, because the
+      mechanical and hydraulic feedback on temperature is negligible. That asymmetry is not sloppy
+      modelling; it is a physical fact about the magnitudes, and it is what makes sequential
+      T→H→M solution strategies viable. More on that in <a href="numerics.html">chapter 06</a>.
+    </p>
+
+    <h2 id="terzaghi" data-nav="Terzaghi">Benchmark 1 — Terzaghi consolidation</h2>
+
+    <p>
+      A saturated layer of thickness $H$, drained at the top, loaded instantaneously with a surface
+      pressure $\sigma_0$. At $t=0^+$ the water carries everything: $p = \sigma_0$ throughout. Then
+      it drains, the effective stress rises, and the layer settles. Since the strain is uniaxial and
+      the total stress constant, the excess pressure obeys pure diffusion, and the solution is a
+      Fourier series:
+    </p>
+
+    <div class="eq eq--boxed" data-display data-math="\frac{p(z,t)}{\sigma_0} = \sum_{m=0}^{\infty}\frac{2}{M}\sin\!\big(M Z\big)\,e^{-M^2 T_v},\quad M=\tfrac{\pi}{2}(2m+1),\ Z=\tfrac{z}{H},\ T_v=\frac{c_v t}{H^2}"></div>
+
+    <div class="fig full" id="terzaghiFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 5.1</span>
+        <h4 class="fig__title">Terzaghi isochrones and the settlement curve</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        Series summed to 200 terms, so the $t\to0$ limit is resolved. <b>Left:</b> the excess-pressure
+        isochrones; each curve is a snapshot in dimensionless time. <b>Right:</b> the degree of
+        consolidation $U = 1-\sum(2/M^2)e^{-M^2T_v}$, the fraction of the final settlement achieved.
+        The useful rules of thumb — $U=50\%$ at $T_v=0.197$, $U=90\%$ at $T_v=0.848$ — are read
+        straight off it.
+      </p>
+    </div>
+
+    <h2 id="mandel" data-nav="Mandel–Cryer">Benchmark 2 — Mandel’s problem</h2>
+
+    <p>
+      Terzaghi’s solution is one-dimensional, and one-dimensionality hides the most interesting
+      thing poroelasticity does. Take a specimen between two rigid, impermeable, frictionless
+      plates, drained on its vertical sides, and load it vertically at $t=0$. The pressure jumps
+      everywhere to the Skempton value — and then, at the centre, it <em>rises further</em> before
+      it falls.
+    </p>
+
+    <p>
+      The reason is a genuine two-way coupling. Water escapes at the edges first, so the edges lose
+      their pore pressure and soften. The rigid plate cannot tilt, so the load transfers inward onto
+      the still-stiff, still-undrained core. That extra load squeezes the core, and by the
+      $\alpha\dot\varepsilon_v$ term it raises the pressure there. Only when drainage catches up
+      does the pressure finally decay.
+    </p>
+
+    <div class="callout callout--key">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.4"/></svg>
+        Why every poroelastic code is tested on this
+      </div>
+      <p style="margin:0">
+        The Mandel–Cryer overshoot cannot be produced by a diffusion equation for pressure alone. It
+        requires the mechanical response to feed back into the fluid mass balance. If a code shows a
+        monotonic decay here, its $\ten{Q}^{\mathsf T}$ block is wrong, missing, or lagged — and no
+        amount of mesh refinement will fix it.
+      </p>
+    </div>
+
+    <div class="fig full" id="mandelFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 5.2</span>
+        <h4 class="fig__title">The Mandel–Cryer effect</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        Analytic solution of Mandel (1953) in the form given by Abousleiman et al. (1996). The
+        eigenvalues $\alpha_n$ solve $\tan\alpha_n = \tfrac{1-\nu}{\nu_u-\nu}\,\alpha_n$ and are
+        found here by bisection; 60 terms are summed. The overshoot grows with the contrast between
+        drained and undrained Poisson’s ratios — set $\nu_u=\nu$ and it disappears completely,
+        which is the uncoupled limit.
+      </p>
+    </div>
+
+    <h2 id="thermal" data-nav="Thermal pressurisation">Benchmark 3 — heating a saturated column</h2>
+
+    <p>
+      Now add temperature. A saturated column, drained at the top, is heated at its base — the
+      canonical near-field problem for a waste repository. Three things happen in sequence, on
+      three different timescales, and the full THM system is needed to get any of them right.
+    </p>
+
+    <ol>
+      <li><strong>Pressurisation.</strong> Heat arrives faster than the water can escape, and
+      because the water expands roughly ten times more than the pore space, pressure climbs at
+      $\Gamma/S_\varepsilon \approx 0.1$–$1$ MPa per kelvin.</li>
+      <li><strong>Dissipation.</strong> The pressure drives flow and decays diffusively, on the
+      hydraulic timescale $H^2/c$.</li>
+      <li><strong>Expansion.</strong> The skeleton itself expands thermally, on the much longer
+      thermal timescale $H^2/\kappa$ — so the sample first heaves from pressure, then settles as
+      pressure dissipates, then heaves again as the skeleton itself warms through.</li>
+    </ol>
+
+    <div class="fig full" id="thermFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 5.3</span>
+        <h4 class="fig__title">Thermal pressurisation and thermal consolidation, solved live</h4>
+      </div>
+      <div class="fig__body"></div>
+      <p class="fig__caption">
+        A fully coupled 1-D THM solver under uniaxial strain: equilibrium is enforced exactly
+        ($\sigma_{zz}$ uniform), so the mechanics reduces to
+        $\varepsilon_v = (\sigma_0 + \alpha p + 3K\alpha_T\Delta T)/K_{od}$, and pressure and
+        temperature are advanced with backward-Euler tridiagonal solves. Watch the non-monotonic
+        surface displacement — heave, settle, heave — which no single-physics model reproduces.
+      </p>
+    </div>
+
+    <div class="callout callout--care">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8.5v5M12 16.6v.1"/><path d="M10.3 4.2 2.6 17.6A2 2 0 0 0 4.3 20.6h15.4a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0z"/></svg>
+        Permeability decides the whole story
+      </div>
+      <p style="margin:0">
+        Slide the permeability. Above about $10^{-16}\,\mathrm{m^2}$ the pressure escapes as fast as
+        it is generated and thermal pressurisation is invisible. Below about
+        $10^{-19}\,\mathrm{m^2}$ the response is effectively undrained and the pressure can approach
+        — or exceed — the minimum principal stress, hydraulically fracturing the rock. Repository
+        host rocks are chosen from that lower band, which is precisely why this coupling is a
+        licensing issue.
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script src="assets/vendor/katex/katex.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/plot.js" defer></script>
+<script src="assets/js/viz-coupled.js" defer></script>
+</body>
+</html>

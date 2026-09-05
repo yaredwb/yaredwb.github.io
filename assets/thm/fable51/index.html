@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heat, Water, Stress</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f1f2ee; --surface:#fafaf7; --sunk:#e6e8e2; --ink:#171c1a; --ink-2:#4b524f; --ink-3:#767e7a;
+  --line:#d3d7d0; --line-2:#b9bfb7; --grid:#e1e4dd;
+  --T:#eb6834; --T-ink:#b3441a; --T-soft:rgba(235,104,52,.13);
+  --H:#2a78d6; --H-ink:#1d5faf; --H-soft:rgba(42,120,214,.13);
+  --M:#1baf7a; --M-ink:#0f7f57; --M-soft:rgba(27,175,122,.14);
+  --warn:#d03b3b;
+  --stone:#cfd3c9; --stone-2:#b7bcb1;
+  --shadow:0 1px 2px rgba(23,28,26,.06),0 12px 32px -16px rgba(23,28,26,.18);
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"STIX Two Text","Times New Roman",Georgia,serif;
+  --f-mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#131615; --surface:#1b1f1e; --sunk:#232827; --ink:#edeee9; --ink-2:#b4b9b4; --ink-3:#848b87;
+    --line:#2d3331; --line-2:#3f4744; --grid:#252b29;
+    --T:#e0622d; --T-ink:#f2925f; --T-soft:rgba(224,98,45,.18);
+    --H:#3987e5; --H-ink:#83b5f2; --H-soft:rgba(57,135,229,.18);
+    --M:#1fa877; --M-ink:#63d3a6; --M-soft:rgba(31,168,119,.18);
+    --warn:#ef6b6b;
+    --stone:#3a403d; --stone-2:#4b524e;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -16px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#131615; --surface:#1b1f1e; --sunk:#232827; --ink:#edeee9; --ink-2:#b4b9b4; --ink-3:#848b87;
+  --line:#2d3331; --line-2:#3f4744; --grid:#252b29;
+  --T:#e0622d; --T-ink:#f2925f; --T-soft:rgba(224,98,45,.18);
+  --H:#3987e5; --H-ink:#83b5f2; --H-soft:rgba(57,135,229,.18);
+  --M:#1fa877; --M-ink:#63d3a6; --M-soft:rgba(31,168,119,.18);
+  --warn:#ef6b6b;
+  --stone:#3a403d; --stone-2:#4b524e;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -16px rgba(0,0,0,.6);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--H-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--ink)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:2px}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1;letter-spacing:-.015em;font-variation-settings:"opsz" 96}
+h2{font-size:2.3rem;font-weight:650}
+h3{font-size:1.45rem;font-weight:600;letter-spacing:-.01em}
+h4{font-size:1.05rem;font-weight:600;letter-spacing:0;font-variation-settings:"opsz" 14}
+p{margin:0 0 1.1em}
+strong{font-weight:600}
+code,kbd{font-family:var(--f-mono);font-size:.86em}
+mjx-container{color:inherit}
+mjx-container[display="true"]{margin:.8em 0 !important;overflow-x:auto;overflow-y:hidden;padding:2px 0;text-align:left !important}
+canvas{display:block;width:100%}
+.mono{font-family:var(--f-mono);font-size:.82rem;font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.small{font-size:.92rem;color:var(--ink-2)}
+.fT{color:var(--T-ink)} .fH{color:var(--H-ink)} .fM{color:var(--M-ink)}
+sup,sub{line-height:0}
+
+/* ---------- Layout ---------- */
+.site{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:100vh}
+.rail{position:sticky;top:0;height:100vh;padding:28px 22px 24px 26px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:26px;overflow:auto;background:var(--bg)}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.05rem;letter-spacing:-.01em;line-height:1.15}
+.brand small{display:block;font-weight:400;color:var(--ink-3);font-size:.78rem;letter-spacing:.02em;margin-top:5px}
+.rail nav{display:flex;flex-direction:column;gap:2px}
+.rail nav a{display:grid;grid-template-columns:30px 1fr;gap:6px;align-items:baseline;padding:6px 8px;margin-left:-8px;border-radius:4px;text-decoration:none;color:var(--ink-2);font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.9rem;font-weight:500}
+.rail nav a .n{font-family:var(--f-mono);font-size:.72rem;color:var(--ink-3)}
+.rail nav a:hover{color:var(--ink);background:var(--sunk)}
+.rail nav a.active{color:var(--ink);background:var(--sunk)}
+.rail nav a.active .n{color:var(--ink)}
+.railblock{display:flex;flex-direction:column;gap:8px}
+.railblock .eyebrow{font-size:.7rem}
+.legend{display:flex;flex-direction:column;gap:6px;font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.86rem;color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.dot.T{background:var(--T)} .dot.H{background:var(--H)} .dot.M{background:var(--M)}
+select,button{font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.9rem}
+select{width:100%;padding:7px 30px 7px 10px;border:1px solid var(--line-2);border-radius:5px;background:var(--surface);color:var(--ink);appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);background-position:calc(100% - 15px) 55%,calc(100% - 10px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+.matnote{font-size:.8rem;color:var(--ink-3);line-height:1.4;font-family:var(--f-display);font-variation-settings:"opsz" 14}
+.matnote b{color:var(--ink-2);font-weight:600}
+.railfoot{margin-top:auto;font-size:.76rem;color:var(--ink-3);font-family:var(--f-display);font-variation-settings:"opsz" 14;line-height:1.45}
+
+main{padding:0 clamp(20px,5vw,72px) 80px;max-width:1160px}
+.prose{max-width:none}
+.prose p,.prose h3{max-width:66ch}
+.prose p{text-wrap:pretty}
+section{padding-top:72px;scroll-margin-top:24px}
+.chap{display:flex;align-items:baseline;gap:14px;margin-bottom:10px}
+.chap .n{font-family:var(--f-mono);font-size:.85rem;color:var(--ink-3)}
+.chap .who{margin-left:auto;display:flex;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.74rem;font-weight:600;letter-spacing:.04em;color:var(--ink-2);background:var(--surface)}
+.chip.T{border-color:var(--T);color:var(--T-ink)} .chip.H{border-color:var(--H);color:var(--H-ink)} .chip.M{border-color:var(--M);color:var(--M-ink)}
+.lede{font-size:1.28rem;line-height:1.45;color:var(--ink-2);max-width:60ch}
+hr.sep{border:0;border-top:1px solid var(--line);margin:56px 0 0}
+
+/* ---------- Hero ---------- */
+.hero{padding-top:44px}
+.hero h1{font-size:clamp(3rem,7.2vw,5.6rem);font-weight:720;letter-spacing:-.035em;line-height:.95;margin:10px 0 22px}
+.hero h1 .w{display:inline-block}
+.hero h1 .w.T{color:var(--T-ink)} .hero h1 .w.H{color:var(--H-ink)} .hero h1 .w.M{color:var(--M-ink)}
+.hero .lede{margin-bottom:26px}
+.herofig{margin:32px 0 0;position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+.herofig canvas{display:block;width:100%;height:380px;cursor:crosshair}
+.herofig .hud{position:absolute;left:14px;top:12px;display:flex;gap:10px;align-items:center;pointer-events:none}
+.herofig .hud .mono{background:color-mix(in srgb,var(--surface) 82%,transparent);padding:4px 8px;border-radius:4px;border:1px solid var(--line)}
+.howto{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+.howto div{border-top:2px solid var(--line-2);padding-top:12px;font-size:.95rem;color:var(--ink-2)}
+.howto div b{display:block;font-family:var(--f-display);font-variation-settings:"opsz" 14;color:var(--ink);font-weight:600;margin-bottom:4px}
+.howto div.T{border-color:var(--T)} .howto div.H{border-color:var(--H)} .howto div.M{border-color:var(--M)}
+
+/* ---------- Figures & instruments ---------- */
+figure{margin:0}
+.fig{margin:28px 0 8px;background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.fig .fighead{display:flex;align-items:baseline;gap:12px;padding:14px 18px 0}
+.fig .fighead h4{font-size:1rem}
+.fig .fighead .eyebrow{margin-left:auto;font-size:.68rem}
+.fig .body{padding:14px 18px 16px}
+.fig canvas{display:block;width:100%}
+figcaption{font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.86rem;color:var(--ink-2);line-height:1.45;padding:0 2px;margin:10px 0 0}
+figcaption b{color:var(--ink);font-weight:600}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 22px;padding:12px 18px 14px;border-top:1px solid var(--line);background:color-mix(in srgb,var(--sunk) 55%,var(--surface))}
+.ctl{display:flex;flex-direction:column;gap:3px;font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.8rem;color:var(--ink-2)}
+.ctl .lab{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ctl .lab output{font-family:var(--f-mono);font-size:.78rem;color:var(--ink);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;margin:2px 0;accent-color:var(--ink);height:22px;background:transparent}
+.ctl.T input[type=range]{accent-color:var(--T)} .ctl.H input[type=range]{accent-color:var(--H)} .ctl.M input[type=range]{accent-color:var(--M)}
+.ctl select{padding:5px 26px 5px 8px;font-size:.82rem}
+.btn{padding:6px 12px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:5px;cursor:pointer;font-weight:600}
+.btn:hover{background:var(--sunk)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btnrow{display:flex;gap:8px;align-items:end}
+.ctl.btnrow{flex-direction:row;align-items:end}
+.readouts{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--f-mono);font-size:.8rem;color:var(--ink-2);padding:10px 18px 0;font-variant-numeric:tabular-nums}
+.readouts b{color:var(--ink);font-weight:500}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.chartwrap{position:relative}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--f-mono);font-size:.74rem;line-height:1.4;padding:6px 8px;border-radius:4px;white-space:nowrap;transform:translate(-50%,calc(-100% - 10px));opacity:0;transition:opacity .12s;z-index:5}
+.tip.on{opacity:1}
+.tip .k{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+
+/* field cards */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:26px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+.card .head{padding:16px 18px 10px;border-top:3px solid var(--line-2)}
+.card.T .head{border-top-color:var(--T)} .card.H .head{border-top-color:var(--H)} .card.M .head{border-top-color:var(--M)}
+.card .head .eyebrow{margin-bottom:6px}
+.card .head p{font-size:.98rem;color:var(--ink-2);margin:8px 0 0}
+.card .eq{padding:0 18px 8px;font-size:1.05rem;overflow-x:auto}
+.card canvas{height:230px}
+.card .controls{margin-top:auto}
+
+/* couplings */
+.couple{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:22px;align-items:start}
+#coupleSvg{width:100%;height:auto;display:block}
+.couple .arc{fill:none;stroke-width:3;cursor:pointer;transition:stroke-width .15s,opacity .15s}
+.couple .arc.hit{stroke:transparent;stroke-width:22;cursor:pointer}
+.couple .arc.on{stroke-width:5}
+.couple .dim .arc:not(.on){opacity:.25}
+.couple .node circle{stroke-width:2}
+.couple .node text{font-family:var(--f-display);font-weight:700;font-size:26px;fill:var(--ink)}
+.couple .node .sub{font-size:12px;font-weight:600;letter-spacing:.06em;fill:var(--ink-3)}
+.couple .lbl{font-family:var(--f-display);font-size:11.5px;font-weight:600;fill:var(--ink-2);pointer-events:none;letter-spacing:.02em}
+.detail{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px 20px;min-height:280px}
+.detail .eyebrow{margin-bottom:8px}
+.detail h4{font-size:1.25rem;margin-bottom:8px}
+.detail p{font-size:1rem;margin-bottom:.7em}
+.detail .term{font-size:1.05rem;padding:8px 12px;background:var(--sunk);border-radius:4px;margin:8px 0 12px;overflow-x:auto}
+.detail .meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.82rem;color:var(--ink-2)}
+.detail .meta b{color:var(--ink)}
+.strength{display:inline-flex;gap:3px;vertical-align:middle;margin-left:4px}
+.strength i{width:9px;height:9px;border-radius:2px;background:var(--line-2);display:inline-block}
+.strength i.f{background:var(--ink)}
+table.couptab{width:100%;border-collapse:collapse;font-size:.95rem;margin-top:26px}
+table.couptab th{text-align:left;font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding:8px 10px 8px 0;border-bottom:1px solid var(--line-2)}
+table.couptab td{padding:10px 10px 10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.couptab td:first-child{white-space:nowrap;font-family:var(--f-display);font-variation-settings:"opsz" 14;font-weight:600}
+.tabwrap{overflow-x:auto}
+
+/* equations */
+.eqblock{margin:22px 0 6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 20px 12px}
+.eqblock .eqname{font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px;display:flex;gap:10px;align-items:baseline}
+.eqrow{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;font-size:1.22rem;line-height:1.2;padding:6px 0}
+.term{padding:8px 8px;border-radius:5px;cursor:default;border:1px solid transparent;transition:background .12s,border-color .12s;position:relative}
+.term.op{padding:8px 2px}
+.term:hover,.term.on{background:var(--sunk);border-color:var(--line-2)}
+.term[data-c="T"]{color:var(--T-ink)} .term[data-c="H"]{color:var(--H-ink)} .term[data-c="M"]{color:var(--M-ink)}
+.term[data-c="TH"]{color:var(--T-ink);border-bottom:2px solid var(--H)} .term[data-c="MH"]{color:var(--M-ink);border-bottom:2px solid var(--H)}
+.term[data-c="HT"]{color:var(--H-ink);border-bottom:2px solid var(--T)} .term[data-c="HM"]{color:var(--H-ink);border-bottom:2px solid var(--M)}
+.term[data-c="TM"]{color:var(--T-ink);border-bottom:2px solid var(--M)}
+.term[data-c="X"]{color:var(--ink)}
+.eqexplain{border-top:1px solid var(--line);margin-top:8px;padding-top:10px;font-size:.98rem;color:var(--ink-2);min-height:3.2em}
+.eqexplain b{color:var(--ink)}
+.eqkey{display:flex;flex-wrap:wrap;gap:8px 16px;font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.8rem;color:var(--ink-2);margin:14px 0 0}
+.eqkey span{display:inline-flex;align-items:center;gap:6px}
+.eqkey i{width:22px;height:0;border-top:3px solid;display:inline-block}
+.symbols{columns:2;column-gap:30px;font-size:.92rem;margin-top:18px}
+.symbols div{break-inside:avoid;display:grid;grid-template-columns:minmax(76px,max-content) 1fr;gap:8px;padding:5px 0;border-bottom:1px solid var(--line)}
+.symbols div span:first-child{font-size:1rem}
+.symbols div span:last-child{color:var(--ink-2)}
+
+/* mini stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0 0}
+.stat{padding:10px 14px;background:var(--sunk);border-radius:5px}
+.stat .k{font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.stat .v{font-family:var(--f-mono);font-size:1.05rem;color:var(--ink);margin-top:2px;font-variant-numeric:tabular-nums}
+.stat .v small{font-size:.75rem;color:var(--ink-2)}
+
+/* lambda bars */
+.bars{display:grid;grid-template-columns:150px 1fr 90px;gap:6px 12px;align-items:center;font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.86rem;padding:6px 0}
+.bars .nm{color:var(--ink-2);white-space:nowrap}
+.bars .nm.on{color:var(--ink);font-weight:600}
+.bars .bar{height:14px;background:var(--sunk);border-radius:3px;overflow:hidden}
+.bars .bar i{display:block;height:100%;background:var(--H);border-radius:0 3px 3px 0;transition:width .25s}
+.bars .bar.on i{background:var(--T)}
+.bars .val{font-family:var(--f-mono);font-size:.78rem;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+
+/* simulation */
+.simgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px 18px 0}
+.simpanel{position:relative}
+.simpanel .ttl{font-family:var(--f-display);font-variation-settings:"opsz" 14;font-size:.82rem;font-weight:600;color:var(--ink-2);margin-bottom:6px;display:flex;justify-content:space-between}
+.simpanel canvas{width:100%;aspect-ratio:96/60;border-radius:4px;background:var(--sunk);cursor:crosshair}
+.cbar{display:grid;grid-template-columns:1fr;gap:3px;margin-top:6px;font-family:var(--f-mono);font-size:.7rem;color:var(--ink-2)}
+.cbar canvas{height:10px;aspect-ratio:auto;border-radius:2px;cursor:default}
+.cbar .tk{display:flex;justify-content:space-between}
+.simhist{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:12px 18px 0}
+.simhist canvas{height:150px}
+.simstatus{display:flex;flex-wrap:wrap;gap:8px 20px;padding:12px 18px 0;font-family:var(--f-mono);font-size:.8rem;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.simstatus b{color:var(--ink);font-weight:500}
+.simcv{position:relative}
+.probe{position:absolute;width:9px;height:9px;border:2px solid var(--ink);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 0 1.5px var(--surface)}
+
+/* applications */
+.apps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:24px}
+.app{border-top:1px solid var(--line-2);padding-top:14px}
+.app h4{font-size:1.1rem;margin-bottom:6px}
+.app p{font-size:.98rem;color:var(--ink-2);margin-bottom:8px}
+.app .who{display:flex;gap:6px;flex-wrap:wrap}
+
+footer{margin-top:72px;padding-top:28px;border-top:1px solid var(--line);font-size:.95rem;color:var(--ink-2)}
+footer h4{margin-bottom:10px}
+footer ol{padding-left:1.2em;margin:0 0 20px}
+footer li{margin-bottom:6px}
+.notes{font-size:.92rem;color:var(--ink-2);border-left:2px solid var(--line-2);padding-left:14px;margin:18px 0}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1080px){
+  .site{grid-template-columns:1fr}
+  .rail{position:sticky;top:0;height:auto;border-right:0;border-bottom:1px solid var(--line);flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px 22px;padding:12px clamp(20px,5vw,72px);z-index:20}
+  .rail nav{flex-direction:row;overflow-x:auto;gap:2px;flex:1 1 100%;order:3;scrollbar-width:none}
+  .rail nav a{white-space:nowrap;grid-template-columns:auto 1fr;padding:6px 10px;margin:0}
+  .railblock{flex-direction:row;align-items:center;gap:10px}
+  .railblock .eyebrow{white-space:nowrap}
+  .railfoot,.legend,.matnote{display:none}
+  select{width:auto}
+  .rail .brand small{display:none}
+}
+@media (max-width:860px){
+  .cards,.grid3{grid-template-columns:1fr}
+  .grid2,.couple,.simgrid,.simhist,.apps,.howto{grid-template-columns:1fr}
+  .symbols{columns:1}
+  .hero h1{font-size:clamp(2.6rem,11vw,4rem)}
+  .herofig canvas{height:300px}
+  .card canvas{height:220px}
+  .bars{grid-template-columns:110px 1fr 80px}
+  body{font-size:17px}
+}
+@media (prefers-reduced-motion: reduce){
+  .bars .bar i,.term,.tip{transition:none}
+}
+</style>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], packages: ['base','ams','newcommand'] },
+  svg: { fontCache: 'global' },
+  options: { enableMenu: false, skipHtmlTags: ['script','noscript','style','textarea','pre','code','canvas'] },
+  startup: { typeset: true }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="site">
+<aside class="rail">
+  <div class="brand">Heat, Water, Stress<small>Thermo-hydro-mechanical processes in porous media</small></div>
+  <nav aria-label="Chapters">
+    <a href="#medium"><span class="n">§1</span>The porous medium</a>
+    <a href="#fields"><span class="n">§2</span>Three fields</a>
+    <a href="#couplings"><span class="n">§3</span>Six couplings</a>
+    <a href="#equations"><span class="n">§4</span>Governing equations</a>
+    <a href="#consolidation"><span class="n">§5</span>Consolidation</a>
+    <a href="#pressurization"><span class="n">§6</span>Thermal pressurization</a>
+    <a href="#simulation"><span class="n">§7</span>Live simulation</a>
+    <a href="#scales"><span class="n">§8</span>Scales &amp; applications</a>
+  </nav>
+  <div class="railblock">
+    <label class="eyebrow" for="matSel">Reference material</label>
+    <select id="matSel" aria-label="Reference material used by every instrument on the page"></select>
+    <div class="matnote" id="matNote"></div>
+  </div>
+  <div class="legend" aria-label="Colour key">
+    <span><i class="dot T"></i>T · thermal</span>
+    <span><i class="dot H"></i>H · hydraulic</span>
+    <span><i class="dot M"></i>M · mechanical</span>
+  </div>
+  <div class="railfoot">Every instrument runs live in your browser. Parameter values are representative, not design values.</div>
+</aside>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">An illustrated primer</div>
+  <h1><span class="w T">Heat,</span> <span class="w H">Water,</span> <span class="w M">Stress.</span></h1>
+  <p class="lede">Soils and rocks are porous: a solid skeleton with fluid in the voids. Heat a saturated ground and the water expands faster than the grains, so pressure rises and the skeleton unloads. Squeeze it and water is driven out. Pump water in and the ground can slip. These are the thermo-hydro-mechanical couplings, and this page builds them up one instrument at a time.</p>
+  <figure class="herofig">
+    <canvas id="heroCanvas" role="img" aria-label="Animated pore-scale flow through a packing of grains. Moving the pointer heats the water locally and the flow speeds up."></canvas>
+    <div class="hud"><span class="mono" id="heroHud">20.0 °C · μ = 1.00 mPa·s · flow ×1.00</span></div>
+  </figure>
+  <figcaption>Water threading through a grain packing. <b>Move the pointer over the grains to heat the water.</b> Its viscosity falls, so for the same pressure gradient the flow accelerates: the simplest thermo-hydraulic coupling, and one you can feel.</figcaption>
+  <div class="howto">
+    <div class="T"><b>Thermal</b>Temperature <i>T</i>, moved by conduction and by flowing water, and stored in grains and pore fluid.</div>
+    <div class="H"><b>Hydraulic</b>Pore pressure <i>p</i>, driving Darcy flow and sharing the load with the skeleton.</div>
+    <div class="M"><b>Mechanical</b>Displacement <strong>u</strong>, strain and effective stress in the solid skeleton.</div>
+  </div>
+</header>
+
+<!-- ===================== §1 ===================== -->
+<section id="medium">
+  <div class="chap"><span class="n">§1</span><h2>The porous medium</h2></div>
+  <div class="prose">
+    <p>A soil or rock is two things at once: a skeleton of grains or crystals that carries load, and a connected network of voids that stores and transmits fluid. Continuum theories do not follow individual pores. They average over a <em>representative elementary volume</em>: a window large enough that the averaged property stops fluctuating with window size, yet small compared with the distance over which pressure, temperature and stress vary.</p>
+    <p>The first number that comes out of the averaging is the porosity, the void fraction of the volume. Almost everything else is built on it: the void ratio favoured in soil mechanics, and the mixture rules that give the medium a single heat capacity and thermal conductivity.</p>
+    \[ n = \frac{V_v}{V},\qquad e = \frac{n}{1-n},\qquad (\rho c)_{\mathrm{eff}} = n\,\rho_w c_w + (1-n)\,\rho_s c_s,\qquad \lambda_{\mathrm{eff}} \approx \lambda_w^{\,n}\,\lambda_s^{\,1-n} \]
+  </div>
+  <figure class="fig">
+    <div class="fighead"><h4>REV explorer</h4><span class="eyebrow">Drag the window</span></div>
+    <div class="body grid2">
+      <div><canvas id="revCanvas" height="360" role="img" aria-label="A two-dimensional packing of grains with a movable square sampling window."></canvas></div>
+      <div class="chartwrap"><canvas id="revChart" height="360" role="img" aria-label="Chart of measured porosity against sampling window size, showing the scatter collapsing at large windows."></canvas></div>
+    </div>
+    <div class="readouts"><span>window porosity <b id="revN">–</b></span><span>sample porosity <b id="revNall">–</b></span><span>window / mean grain diameter <b id="revRatio">–</b></span></div>
+    <div class="controls">
+      <div class="ctl"><div class="lab"><span>Window size</span><output id="revSizeOut">80 px</output></div><input type="range" id="revSize" min="8" max="300" value="80" step="1"></div>
+      <div class="ctl btnrow"><button class="btn" id="revNew" type="button">New packing</button></div>
+    </div>
+  </figure>
+  <figcaption>Small windows land on a grain or on a pore and report a porosity anywhere between 0 and 1. The band shows the spread over many random placements of the same window. Once the window spans roughly ten grain diameters the spread collapses onto the sample porosity: that window is a representative elementary volume, and its porosity is the <i>n</i> that appears in every equation below.</figcaption>
+</section>
+
+<!-- ===================== §2 ===================== -->
+<section id="fields">
+  <div class="chap"><span class="n">§2</span><h2>Three fields, three balance laws</h2></div>
+  <div class="prose">
+    <p>Each process has a conserved quantity, a state variable that measures it, and a flux law that says how it moves. Water mass is measured by pore pressure and moves by Darcy's law. Heat is measured by temperature and moves by Fourier conduction plus whatever the water carries. Momentum is measured by displacement and strain, and is balanced by stress. Taken alone, each is a textbook problem; the couplings in §3 are what make the ground interesting.</p>
+  </div>
+  <div class="cards">
+    <!-- H -->
+    <div class="card H">
+      <div class="head"><div class="eyebrow fH">H · Hydraulic</div><h3>Darcy flow</h3>
+        <p>Pressure in excess of hydrostatic drives water through the pore network. The specific discharge <b>q</b> is proportional to the head gradient and to the permeability <i>k</i> of the medium divided by the viscosity <i>μ</i> of the water.</p></div>
+      <div class="eq">\[ \mathbf q = -\frac{k}{\mu}\left(\nabla p - \rho_w \mathbf g\right),\qquad K = \frac{k\,\rho_w g}{\mu} \]</div>
+      <canvas id="darcyCanvas" role="img" aria-label="A horizontal soil column between two reservoirs with different water levels; tracer particles move through it at the seepage velocity."></canvas>
+      <div class="readouts"><span>K <b id="darcyK">–</b></span><span>q <b id="darcyQ">–</b></span><span>1 m takes <b id="darcyTime">–</b></span></div>
+      <div class="controls">
+        <div class="ctl H"><div class="lab"><span>Head difference Δh over 2 m</span><output id="darcyDhOut">1.0 m</output></div><input type="range" id="darcyDh" min="0" max="4" value="1" step="0.1"></div>
+        <div class="ctl H"><div class="lab"><span>Material</span></div><select id="darcyMat"></select></div>
+      </div>
+    </div>
+    <!-- T -->
+    <div class="card T">
+      <div class="head"><div class="eyebrow fT">T · Thermal</div><h3>Conduction and advection</h3>
+        <p>Heat diffuses through grains and water together, and is carried along by any water that flows. The Péclet number compares the two. In clays it is practically zero; in a gravel aquifer it can be large.</p></div>
+      <div class="eq">\[ (\rho c)_{\mathrm{eff}}\frac{\partial T}{\partial t} + \rho_w c_w\,\mathbf q\cdot\nabla T = \nabla\cdot\left(\lambda_{\mathrm{eff}}\nabla T\right),\qquad \mathrm{Pe} = \frac{\rho_w c_w\, q\, L}{\lambda_{\mathrm{eff}}} \]</div>
+      <div class="chartwrap"><canvas id="peCanvas" role="img" aria-label="Steady temperature profile between a hot and a cold boundary, bending as the Péclet number changes."></canvas></div>
+      <div class="readouts"><span>Pe <b id="peOut2">–</b></span><span>mid-point T* <b id="peMid">–</b></span></div>
+      <div class="controls">
+        <div class="ctl T"><div class="lab"><span>Péclet number (flow hot → cold)</span><output id="peOut">0</output></div><input type="range" id="pePe" min="-15" max="15" value="0" step="0.25"></div>
+      </div>
+    </div>
+    <!-- M -->
+    <div class="card M">
+      <div class="head"><div class="eyebrow fM">M · Mechanical</div><h3>Effective stress</h3>
+        <p>The skeleton only feels the part of the total stress that the pore water does not carry. Raise the pore pressure at constant total stress and the effective stress drops: the Mohr circle slides toward the failure envelope without changing size.</p></div>
+      <div class="eq">\[ \sigma' = \sigma - \alpha\,p,\qquad \tau_f = c' + \sigma'\tan\varphi' \]</div>
+      <div class="chartwrap"><canvas id="mohrCanvas" role="img" aria-label="Mohr circle of effective stress with a Mohr-Coulomb failure envelope; increasing pore pressure moves the circle toward the envelope."></canvas></div>
+      <div class="readouts"><span>σ′₁ <b id="mohrS1">–</b></span><span>σ′₃ <b id="mohrS3">–</b></span><span>mobilised φ <b id="mohrPhi">–</b></span></div>
+      <div class="controls">
+        <div class="ctl M"><div class="lab"><span>Pore pressure p (compression positive)</span><output id="mohrPOut">0 kPa</output></div><input type="range" id="mohrP" min="0" max="140" value="0" step="1"></div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Left: the column is 2 m long; the tracer speed is the seepage velocity <i>q</i>/<i>n</i>, compressed onto a logarithmic scale so that clay and sand can share one picture. Centre: the analytic steady profile <i>T*</i> = (e<sup>Pe</sup> − e<sup>Pe x*</sup>)/(e<sup>Pe</sup> − 1). Right: total stresses fixed at σ₁ = 300 kPa and σ₃ = 150 kPa, envelope φ′ = 30°, c′ = 0; at p = 75 kPa the circle touches the envelope.</figcaption>
+</section>
+
+<!-- ===================== §3 ===================== -->
+<section id="couplings">
+  <div class="chap"><span class="n">§3</span><h2>Six couplings</h2></div>
+  <div class="prose">
+    <p>Each field enters the other two balance equations somewhere. That gives six directed couplings, of very unequal strength. Two are so strong that no geotechnical calculation can ignore them (pore pressure on effective stress, and volume change on pore pressure). Two depend on the material and the time scale. One is almost always dropped.</p>
+    <p>Select an arrow to see the mechanism, the term it adds to the equations, and a feel for its size.</p>
+  </div>
+  <div class="couple">
+    <figure>
+      <svg id="coupleSvg" viewBox="0 0 600 470" role="img" aria-label="Triangle of the thermal, hydraulic and mechanical fields with six directed coupling arrows between them.">
+        <defs>
+          <marker id="mkT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--T)"/></marker>
+          <marker id="mkH" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--H)"/></marker>
+          <marker id="mkM" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--M)"/></marker>
+        </defs>
+        <g id="arcs"></g>
+        <g class="node"><circle cx="300" cy="78" r="44" fill="var(--T-soft)" stroke="var(--T)"/><text x="300" y="87" text-anchor="middle">T</text><text class="sub" x="300" y="140" text-anchor="middle">THERMAL</text></g>
+        <g class="node"><circle cx="96" cy="392" r="44" fill="var(--H-soft)" stroke="var(--H)"/><text x="96" y="401" text-anchor="middle">H</text><text class="sub" x="96" y="454" text-anchor="middle">HYDRAULIC</text></g>
+        <g class="node"><circle cx="504" cy="392" r="44" fill="var(--M-soft)" stroke="var(--M)"/><text x="504" y="401" text-anchor="middle">M</text><text class="sub" x="504" y="454" text-anchor="middle">MECHANICAL</text></g>
+      </svg>
+    </figure>
+    <div class="detail" id="coupleDetail" aria-live="polite"></div>
+  </div>
+  <div class="tabwrap">
+  <table class="couptab">
+    <thead><tr><th>Coupling</th><th>Mechanism</th><th>Enters through</th><th>Typical strength</th></tr></thead>
+    <tbody>
+      <tr><td><span class="fT">T</span> → <span class="fH">H</span></td><td>Thermal expansion of water versus skeleton; viscosity falls with temperature</td><td>β<sub>ζ</sub> ∂<sub>t</sub>T in the mass balance; μ(T) in Darcy's law</td><td>Strong in low-permeability media</td></tr>
+      <tr><td><span class="fH">H</span> → <span class="fT">T</span></td><td>Flowing water carries heat</td><td>ρ<sub>w</sub>c<sub>w</sub> <b>q</b>·∇T in the energy balance</td><td>Negligible in clay, dominant in aquifers</td></tr>
+      <tr><td><span class="fT">T</span> → <span class="fM">M</span></td><td>Thermal strain of the skeleton; thermal stress when restrained</td><td>α<sub>T</sub>ΔT <b>I</b> in the stress–strain law</td><td>Strong</td></tr>
+      <tr><td><span class="fM">M</span> → <span class="fT">T</span></td><td>Thermoelastic heating, frictional dissipation</td><td>Source term in the energy balance</td><td>Almost always neglected</td></tr>
+      <tr><td><span class="fH">H</span> → <span class="fM">M</span></td><td>Pore pressure carries part of the total stress</td><td>α p <b>I</b> in the effective stress</td><td>Strong, always</td></tr>
+      <tr><td><span class="fM">M</span> → <span class="fH">H</span></td><td>Volume change stores or expels water; strain alters permeability</td><td>α ∂<sub>t</sub>ε<sub>v</sub> in the mass balance; k(ε)</td><td>Strong in soft soils and fractured rock</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ===================== §4 ===================== -->
+<section id="equations">
+  <div class="chap"><span class="n">§4</span><h2>The governing equations</h2></div>
+  <div class="prose">
+    <p>Here is the full system for a saturated, linearly thermo-poroelastic medium at small strain, in the form used by Biot, McTigue and Coussy. Sign convention in this section: stress positive in tension and pore pressure positive in compression, the continuum-mechanics habit, so the total stress is σ = σ′ − α p <b>I</b>. §2 and §5 use the geotechnical convention, compression positive, where the same law reads σ′ = σ − α p. Hover or tap any term to see what it does and which coupling it carries.</p>
+  </div>
+
+  <div class="eqblock">
+    <div class="eqname"><span class="fH">Water mass balance</span><span>storage · skeleton volume change · thermal expansion · Darcy flux</span></div>
+    <div class="eqrow" id="eqMass">
+      <span class="term" data-c="H" data-x="<b>Storage.</b> Compressing the water and the grains stores fluid mass at fixed volume. The Biot modulus <i>M</i> collects both compressibilities: 1/<i>M</i> = (α − n)/K<sub>s</sub> + n/K<sub>w</sub>.">\(\dfrac{1}{M}\,\dfrac{\partial p}{\partial t}\)</span>
+      <span class="term op">\(+\)</span>
+      <span class="term" data-c="MH" data-x="<b>M → H. Skeleton volume change.</b> When the skeleton dilates it makes room for water; when it compresses it expels water. This is the term that makes consolidation happen (§5). α is Biot's coefficient, 1 − K<sub>d</sub>/K<sub>s</sub>, close to 1 in soils.">\(\alpha\,\dfrac{\partial \varepsilon_v}{\partial t}\)</span>
+      <span class="term op">\(-\)</span>
+      <span class="term" data-c="TH" data-x="<b>T → H. Thermal expansion mismatch.</b> Water expands more than the pore space that holds it. The coefficient β<sub>ζ</sub> = n(β<sub>w</sub> − β<sub>s</sub>) + αβ<sub>s</sub> acts like a fluid source on heating and drives thermal pressurization (§6).">\(\beta_\zeta\,\dfrac{\partial T}{\partial t}\)</span>
+      <span class="term op">\(-\)</span>
+      <span class="term" data-c="H" data-x="<b>Darcy flux divergence.</b> Net inflow of water into the element. Two couplings hide inside: the permeability <i>k</i> depends on strain (M → H), and the viscosity μ depends on temperature (T → H), roughly halving between 20 and 50 °C.">\(\nabla\cdot\left[\dfrac{k(\varepsilon)}{\mu(T)}\bigl(\nabla p - \rho_w\mathbf g\bigr)\right]\)</span>
+      <span class="term op">\(= 0\)</span>
+    </div>
+    <div class="eqname" style="margin-top:14px"><span class="fT">Energy balance</span><span>storage · advection · conduction · source</span></div>
+    <div class="eqrow" id="eqHeat">
+      <span class="term" data-c="T" data-x="<b>Heat storage.</b> The mixture heat capacity, n ρ<sub>w</sub>c<sub>w</sub> + (1 − n) ρ<sub>s</sub>c<sub>s</sub>, typically 2 to 3 MJ m⁻³ K⁻¹.">\((\rho c)_{\mathrm{eff}}\,\dfrac{\partial T}{\partial t}\)</span>
+      <span class="term op">\(+\)</span>
+      <span class="term" data-c="HT" data-x="<b>H → T. Advection.</b> Flowing water carries enthalpy with it. Compared with conduction its importance is the Péclet number (§2). In a clay host rock with q ~ 10⁻¹² m/s the term is negligible; in a gravel aquifer it controls the temperature field.">\(\rho_w c_w\,\mathbf q\cdot\nabla T\)</span>
+      <span class="term op">\(-\)</span>
+      <span class="term" data-c="T" data-x="<b>Conduction.</b> Fourier's law with the mixture conductivity λ<sub>eff</sub>, 1 to 3 W m⁻¹ K⁻¹ for saturated ground. Dividing by the storage term gives the thermal diffusivity κ ≈ 10⁻⁶ m² s⁻¹, remarkably similar for most rocks and soils.">\(\nabla\cdot\left(\lambda_{\mathrm{eff}}\nabla T\right)\)</span>
+      <span class="term op">\(=\)</span>
+      <span class="term" data-c="X" data-x="<b>Heat source.</b> Radioactive decay in a waste canister, a geothermal heat exchanger, an injected fluid. The M → T coupling (thermoelastic and frictional heating) would appear here too, and is almost always dropped: it is of order T β<sub>s</sub> K ∂<sub>t</sub>ε<sub>v</sub>, microkelvins per year in the ground.">\(Q_T\)</span>
+    </div>
+    <div class="eqname" style="margin-top:14px"><span class="fM">Momentum balance and constitutive law</span><span>equilibrium · effective stress · thermoelastic skeleton</span></div>
+    <div class="eqrow" id="eqMech">
+      <span class="term" data-c="M" data-x="<b>Equilibrium.</b> Inertia is negligible for the slow processes here, so the divergence of the total stress balances self-weight. ρ = n ρ<sub>w</sub> + (1 − n) ρ<sub>s</sub> is the bulk density.">\(\nabla\cdot\sigma + \rho\,\mathbf g = \mathbf 0\)</span>
+      <span class="term op">\(,\)</span>
+      <span class="term" data-c="HM" data-x="<b>H → M. Effective stress.</b> Terzaghi's principle, generalised by Biot: the pore pressure carries a share α of the isotropic stress, and only σ′ deforms the skeleton or causes it to fail.">\(\sigma = \sigma' - \alpha\,p\,\mathbf I\)</span>
+      <span class="term op">\(,\)</span>
+      <span class="term" data-c="TM" data-x="<b>T → M. Thermoelastic skeleton.</b> Only the part of the strain not explained by free thermal expansion generates effective stress. Restrain a rock with E = 5 GPa and α<sub>T</sub> = 10⁻⁵ K⁻¹ while heating it by 50 K and the thermal stress is Eα<sub>T</sub>ΔT/(1 − ν) ≈ 3.6 MPa.">\(\sigma' = \mathbb C : \left(\varepsilon - \alpha_T\,\Delta T\,\mathbf I\right)\)</span>
+      <span class="term op">\(,\)</span>
+      <span class="term" data-c="M" data-x="<b>Kinematics.</b> Small-strain tensor from the displacement field; the volumetric strain ε<sub>v</sub> = tr ε is what the mass balance sees.">\(\varepsilon = \tfrac12\left(\nabla\mathbf u + \nabla\mathbf u^{\mathsf T}\right)\)</span>
+    </div>
+    <div class="eqexplain" id="eqExplain">Hover or tap a term.</div>
+    <div class="eqkey"><span><i style="border-color:var(--T)"></i>thermal</span><span><i style="border-color:var(--H)"></i>hydraulic</span><span><i style="border-color:var(--M)"></i>mechanical</span><span>· underline colour = field the term couples to</span></div>
+  </div>
+
+  <div class="prose">
+    <p>Three diffusivities and one pressurization coefficient summarise how the system behaves. Their ratios, not their absolute values, decide which couplings matter.</p>
+    \[ \kappa = \frac{\lambda_{\mathrm{eff}}}{(\rho c)_{\mathrm{eff}}},\qquad c = \frac{k}{\mu\,S},\quad S = \frac{\alpha^2}{K_d} + \frac{\alpha - n}{K_s} + \frac{n}{K_w},\qquad \Lambda = \frac{n\,(\beta_w - \beta_s)}{S},\qquad \mathrm{Pe} = \frac{\rho_w c_w\, q\, L}{\lambda_{\mathrm{eff}}} \]
+  </div>
+  <div class="symbols">
+    <div><span>\(p,\;T,\;\mathbf u\)</span><span>pore pressure, temperature, skeleton displacement</span></div>
+    <div><span>\(\mathbf q\)</span><span>Darcy specific discharge, m s⁻¹ (volume flux per unit area)</span></div>
+    <div><span>\(k,\;\mu\)</span><span>intrinsic permeability (m²) and water viscosity (Pa s)</span></div>
+    <div><span>\(n,\;\alpha\)</span><span>porosity and Biot coefficient, α = 1 − K<sub>d</sub>/K<sub>s</sub></span></div>
+    <div><span>\(K_d,\;K_s,\;K_w\)</span><span>bulk moduli of drained skeleton, solid grains, water (K<sub>w</sub> ≈ 2.2 GPa)</span></div>
+    <div><span>\(\beta_w,\;\beta_s\)</span><span>volumetric thermal expansion of water (2–7 × 10⁻⁴ K⁻¹) and solid (≈ 3 × 10⁻⁵ K⁻¹); α<sub>T</sub> = β<sub>s</sub>/3</span></div>
+    <div><span>\(\lambda_{\mathrm{eff}},\;(\rho c)_{\mathrm{eff}}\)</span><span>mixture thermal conductivity and volumetric heat capacity</span></div>
+    <div><span>\(\kappa,\;c\)</span><span>thermal and hydraulic diffusivities, m² s⁻¹</span></div>
+    <div><span>\(\Lambda\)</span><span>undrained thermal pressurization coefficient, Pa K⁻¹</span></div>
+    <div><span>\(\mathbb C\)</span><span>drained elastic stiffness of the skeleton</span></div>
+  </div>
+</section>
+
+<!-- ===================== §5 ===================== -->
+<section id="consolidation">
+  <div class="chap"><span class="n">§5</span><h2>Consolidation</h2><div class="who"><span class="chip H">H</span><span class="chip M">M</span></div></div>
+  <div class="prose">
+    <p>The oldest coupled problem in geotechnics. Load a saturated clay layer and the water cannot leave at once, so at first it carries the load as excess pore pressure and the skeleton feels nothing. As water drains toward the free surface the load transfers to the skeleton, which compresses, and the surface settles. Terzaghi wrote this in 1923 as a diffusion equation for the excess pressure <i>u</i>; it is the M → H and H → M couplings acting together, with the mechanics eliminated.</p>
+    \[ \frac{\partial u}{\partial t} = c_v\,\frac{\partial^2 u}{\partial z^2},\qquad c_v = \frac{k\,E_{\mathrm{oed}}}{\mu},\qquad T_v = \frac{c_v\,t}{H^2} \]
+    <p>The solution for a layer of thickness <i>H</i> drained at the top and sealed at the bottom is a sine series in depth that decays exponentially in the dimensionless time <i>T<sub>v</sub></i>. The average degree of consolidation <i>U</i> is the fraction of the final settlement reached.</p>
+    \[ \frac{u}{u_0} = \sum_{m=0}^{\infty} \frac{2}{M_m}\,\sin\!\left(M_m \frac{z}{H}\right) e^{-M_m^2 T_v},\qquad U = 1 - \sum_{m=0}^{\infty}\frac{2}{M_m^2}\,e^{-M_m^2 T_v},\qquad M_m = \tfrac{\pi}{2}(2m+1) \]
+  </div>
+  <figure class="fig">
+    <div class="fighead"><h4>Terzaghi's isochrones</h4><span class="eyebrow">Analytic series, 400 terms</span></div>
+    <div class="body grid2">
+      <div class="chartwrap"><canvas id="terzCanvas" height="340" role="img" aria-label="Excess pore pressure isochrone through a clay layer drained at the top, at the selected time factor."></canvas></div>
+      <div class="chartwrap"><canvas id="terzChart" height="340" role="img" aria-label="Average degree of consolidation against time factor on a logarithmic axis, with the current state marked."></canvas></div>
+    </div>
+    <div class="readouts"><span>U <b id="terzU">–</b></span><span>real time for <b id="terzMatName">–</b> <b id="terzT">–</b></span><span>c<sub>v</sub> <b id="terzCv">–</b></span><span>t<sub>90</sub> <b id="terzT90">–</b></span></div>
+    <div class="controls">
+      <div class="ctl H"><div class="lab"><span>Time factor T<sub>v</sub> (log)</span><output id="terzTvOut">0.05</output></div><input type="range" id="terzTv" min="-3" max="0.7" value="-1.3" step="0.01"></div>
+      <div class="ctl M"><div class="lab"><span>Layer thickness H</span><output id="terzHOut">5 m</output></div><input type="range" id="terzH" min="1" max="30" value="5" step="0.5"></div>
+      <div class="ctl btnrow"><button class="btn primary" id="terzPlay" type="button">Play</button><button class="btn" id="terzReset" type="button">Reset</button></div>
+    </div>
+  </figure>
+  <figcaption>Left: the isochrone of excess pressure through the layer, drained at the top and sealed at the base; the shaded area is the load still carried by water. Right: the settlement curve. Real time is converted with the hydraulic diffusivity of the reference material, so switching to sand collapses years into seconds.</figcaption>
+  <div class="notes">In two and three dimensions the coupling runs both ways at once: draining the edge of a loaded sample stiffens it, transferring load inward and momentarily raising the pressure in the core above its initial value. This Mandel–Cryer effect has no one-dimensional counterpart, and is the classic test of a fully coupled H–M solver.</div>
+</section>
+
+<!-- ===================== §6 ===================== -->
+<section id="pressurization">
+  <div class="chap"><span class="n">§6</span><h2>Thermal pressurization</h2><div class="who"><span class="chip T">T</span><span class="chip H">H</span><span class="chip M">M</span></div></div>
+  <div class="prose">
+    <p>Heat a saturated element of clay and forbid it to drain. The water wants to expand by β<sub>w</sub>ΔT, but the pore space that holds it only grows by about β<sub>s</sub>ΔT, an order of magnitude less. The mismatch must be taken up by compressing the water and pushing the skeleton apart, and both cost pressure. Solving the mass balance of §4 for an undrained element at constant total stress gives the undrained pressurization coefficient Λ, the pressure rise per kelvin.</p>
+    \[ \Lambda = \left.\frac{\partial p}{\partial T}\right|_{\text{undrained},\,\sigma} = \frac{n\,(\beta_w - \beta_s)}{\dfrac{\alpha^2}{K_d} + \dfrac{\alpha-n}{K_s} + \dfrac{n}{K_w}} \]
+    <p>Stiff, low-porosity rock has the largest Λ because nothing yields to relieve the pressure. β<sub>w</sub> itself more than doubles between 20 and 60 °C, which is why heating tests pressurize faster as they go.</p>
+  </div>
+  <figure class="fig">
+    <div class="fighead"><h4>Undrained heating</h4><span class="eyebrow">Λ across materials</span></div>
+    <div class="body grid2">
+      <div>
+        <div class="bars" id="lamBars"></div>
+      </div>
+      <div>
+        <div class="stats">
+          <div class="stat"><div class="k">Λ, custom element</div><div class="v" id="lamVal">–</div></div>
+          <div class="stat"><div class="k">Biot α</div><div class="v" id="lamAlpha">–</div></div>
+          <div class="stat"><div class="k">β<sub>w</sub> at T</div><div class="v" id="lamBw">–</div></div>
+          <div class="stat"><div class="k">Δp for 40 K</div><div class="v" id="lamDp">–</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="ctl H"><div class="lab"><span>Porosity n</span><output id="lamNOut">0.12</output></div><input type="range" id="lamN" min="0.01" max="0.5" value="0.12" step="0.01"></div>
+      <div class="ctl M"><div class="lab"><span>Drained bulk modulus K<sub>d</sub> (log)</span><output id="lamKdOut">5 GPa</output></div><input type="range" id="lamKd" min="-1.3" max="1.4" value="0.7" step="0.02"></div>
+      <div class="ctl T"><div class="lab"><span>Temperature for β<sub>w</sub></span><output id="lamTOut">20 °C</output></div><input type="range" id="lamT" min="10" max="90" value="20" step="1"></div>
+    </div>
+  </figure>
+  <figcaption>Bars: Λ for the five reference materials at 20 °C with K<sub>w</sub> = 2.2 GPa and β<sub>s</sub> = 3 × 10⁻⁵ K⁻¹. Sliders: a custom element with K<sub>s</sub> = 30 GPa. Dense sand barely pressurizes even undrained, and drains before it could matter; a clay rock reaches megapascals for a few tens of kelvin.</figcaption>
+
+  <div class="prose" style="margin-top:36px">
+    <h3>Heating a point in the ground</h3>
+    <p>In the ground, drainage competes with heating. Heat spreads at the thermal diffusivity κ; excess pressure dissipates at the hydraulic diffusivity <i>c</i>. Booker and Savvidou solved the case of a constant point heat source of power <i>Q</i> in an infinite saturated medium in closed form. The temperature is the familiar continuous-source solution; the pressure is the difference of two such solutions, one spreading at κ and one at <i>c</i>.</p>
+    \[ \Delta T(r,t) = \frac{Q}{4\pi\lambda r}\,\operatorname{erfc}\!\frac{r}{2\sqrt{\kappa t}},\qquad p(r,t) = \frac{\Lambda\,Q}{4\pi\lambda r}\;\frac{\kappa}{\kappa - c}\left[\operatorname{erfc}\frac{r}{2\sqrt{\kappa t}} - \operatorname{erfc}\frac{r}{2\sqrt{c t}}\right] \]
+    <p>If <i>c</i> ≪ κ the pressure front lags the heat front: pressure rises almost undrained, peaks, then bleeds away over the hydraulic time scale. If <i>c</i> ≫ κ the bracket stays tiny and pressure never accumulates. The ratio <i>c</i>/κ is the single most useful number for judging whether a heated ground will pressurize.</p>
+  </div>
+  <figure class="fig">
+    <div class="fighead"><h4>Point heat source</h4><span class="eyebrow">Booker &amp; Savvidou, 1985</span></div>
+    <div class="body grid2">
+      <div><div class="chartwrap"><canvas id="bsProfT" height="196" role="img" aria-label="Radial profile of temperature rise around a point heat source at the selected time."></canvas></div>
+           <div class="chartwrap" style="margin-top:10px"><canvas id="bsProfP" height="196" role="img" aria-label="Radial profile of pore pressure around a point heat source at the selected time."></canvas></div></div>
+      <div><div class="chartwrap"><canvas id="bsHistT" height="196" role="img" aria-label="Time history of temperature rise at the selected radius, logarithmic time axis."></canvas></div>
+           <div class="chartwrap" style="margin-top:10px"><canvas id="bsHistP" height="196" role="img" aria-label="Time history of pore pressure at the selected radius, logarithmic time axis."></canvas></div></div>
+    </div>
+    <div class="readouts"><span>κ <b id="bsKap">–</b></span><span>c <b id="bsC">–</b></span><span>peak p at r <b id="bsPeak">–</b></span><span>reached after <b id="bsPeakT">–</b></span></div>
+    <div class="controls">
+      <div class="ctl T"><div class="lab"><span>Source power Q</span><output id="bsQOut">800 W</output></div><input type="range" id="bsQ" min="100" max="2000" value="800" step="50"></div>
+      <div class="ctl H"><div class="lab"><span>Diffusivity ratio c / κ (log)</span><output id="bsRatioOut">0.06</output></div><input type="range" id="bsRatio" min="-2" max="2" value="-1.2" step="0.02"></div>
+      <div class="ctl M"><div class="lab"><span>Λ</span><output id="bsLamOut">0.10 MPa/K</output></div><input type="range" id="bsLam" min="0.01" max="0.4" value="0.10" step="0.01"></div>
+      <div class="ctl T"><div class="lab"><span>Profile at time (log)</span><output id="bsTOut">1 yr</output></div><input type="range" id="bsT" min="0" max="4.56" value="2.5626" step="0.02"></div>
+      <div class="ctl H"><div class="lab"><span>History at radius r</span><output id="bsROut">1.0 m</output></div><input type="range" id="bsR" min="0.3" max="6" value="1" step="0.1"></div>
+    </div>
+  </figure>
+  <figcaption>Left: radial profiles at the chosen time. Right: histories at the chosen radius on a logarithmic time axis. Conductivity and κ come from the reference material, <i>c</i> and Λ start from its values and can be varied. The temperature climbs monotonically to its steady value <i>Q</i>/4πλ<i>r</i>; the pore pressure peaks at a finite time and then decays toward zero as the ground drains.</figcaption>
+</section>
+
+<!-- ===================== §7 ===================== -->
+<section id="simulation">
+  <div class="chap"><span class="n">§7</span><h2>Live simulation</h2><div class="who"><span class="chip T">T</span><span class="chip H">H</span></div></div>
+  <div class="prose">
+    <p>A horizontal heater, 4 m by 1 m in section, buried in a saturated ground 24 m wide and 15 m high with groundwater flowing left to right. Temperature obeys advection–diffusion with the heater as a source; pore pressure diffuses with a source Λ ∂<sub>t</sub>T. The far boundary stays at ambient temperature and is drained. It is the §4 system with the mechanics eliminated, solved by explicit finite differences on 96 × 60 cells of 0.25 m, in your browser, in real time.</p>
+    <p>Watch the pressure field: it appears with the heat, but it is governed by the hydraulic diffusivity, so in clay it lingers long after the temperature has settled, and in sand it never shows up at all.</p>
+  </div>
+  <figure class="fig">
+    <div class="fighead"><h4>Heater in a saturated ground</h4><span class="eyebrow">Explicit FD · upwind advection</span></div>
+    <div class="simgrid">
+      <div class="simpanel"><div class="ttl"><span class="fT">Temperature rise ΔT</span><span id="simTmax" class="mono">max –</span></div><canvas id="simT" width="96" height="60" role="img" aria-label="Temperature field around the heater."></canvas>
+        <div class="cbar"><canvas id="cbT" width="256" height="10"></canvas><div class="tk"><span>0 K</span><span>45 K</span><span>90 K</span></div></div></div>
+      <div class="simpanel"><div class="ttl"><span class="fH">Excess pore pressure p</span><span id="simPmax" class="mono">max –</span></div><canvas id="simP" width="96" height="60" role="img" aria-label="Pore pressure field around the heater."></canvas>
+        <div class="cbar"><canvas id="cbP" width="256" height="10"></canvas><div class="tk"><span>0 MPa</span><span id="cbPmid">2.5 MPa</span><span id="cbPmax">5 MPa</span></div></div></div>
+    </div>
+    <div class="simhist">
+      <div class="chartwrap"><canvas id="simHistT" role="img" aria-label="Temperature history at the probe point."></canvas></div>
+      <div class="chartwrap"><canvas id="simHistP" role="img" aria-label="Pore pressure history at the probe point."></canvas></div>
+    </div>
+    <div class="simstatus"><span>elapsed <b id="simTime">0 d</b></span><span>Pe (4 m) <b id="simPe">0</b></span><span>probe (1.5 m above heater) <b id="simProbe">–</b></span><span>pointer <b id="simPointer">–</b></span><span>steps/frame <b id="simSteps">–</b></span></div>
+    <div class="controls">
+      <div class="ctl T"><div class="lab"><span>Heater power per metre</span><output id="simPowerOut">400 W/m</output></div><input type="range" id="simPower" min="0" max="1000" value="400" step="25"></div>
+      <div class="ctl H"><div class="lab"><span>Groundwater flux q</span><output id="simFlowOut">0 m/yr</output></div><input type="range" id="simFlow" min="0" max="30" value="0" step="0.5"></div>
+      <div class="ctl H"><div class="lab"><span>Diffusivity ratio c / κ (log)</span><output id="simRatioOut">0.06</output></div><input type="range" id="simRatio" min="-1.5" max="1.5" value="-1.2" step="0.05"></div>
+      <div class="ctl M"><div class="lab"><span>Λ</span><output id="simLamOut">0.10 MPa/K</output></div><input type="range" id="simLam" min="0" max="0.3" value="0.10" step="0.01"></div>
+      <div class="ctl btnrow"><button class="btn primary" id="simRun" type="button">Pause</button><button class="btn" id="simReset" type="button">Reset</button></div>
+    </div>
+  </figure>
+  <figcaption>Colour scales are fixed (0–90 K, 0–5 MPa) so that runs can be compared. The stability limit of the explicit scheme sets the time step from the larger of κ and <i>c</i>, so high c/κ runs advance more slowly per frame. Pointer over either field reads the local values.</figcaption>
+</section>
+
+<!-- ===================== §8 ===================== -->
+<section id="scales">
+  <div class="chap"><span class="n">§8</span><h2>Scales and where it matters</h2></div>
+  <div class="prose">
+    <p>Every diffusive process has one time scale, <i>t</i> ≈ <i>L</i>²/<i>D</i>. Because κ is nearly the same for all geomaterials while <i>c</i> spans twelve orders of magnitude, the thermal line is a fixed reference and the hydraulic lines fan out around it. Where a hydraulic line sits above the thermal one, heat outruns drainage and the ground pressurizes; where it sits far below, the ground stays drained and heat and water decouple.</p>
+  </div>
+  <figure class="fig">
+    <div class="fighead"><h4>Diffusion time against length</h4><span class="eyebrow">t = L² / D</span></div>
+    <div class="body"><div class="chartwrap"><canvas id="scaleChart" height="380" role="img" aria-label="Log-log chart of diffusion time against length for the thermal diffusivity and the hydraulic diffusivities of the reference materials."></canvas></div></div>
+  </figure>
+  <figcaption>Hover to read the times. A 10 m clay-rock buffer needs about 3 years to equilibrate thermally but 70 years to drain, so a heat pulse shorter than that pressurizes it. The same 10 m of sand drains in minutes.</figcaption>
+
+  <div class="apps">
+    <div class="app"><h4>Deep geological disposal of nuclear waste</h4><p>Canisters at 60–100 °C in clay or crystalline host rock at 400–800 m. Thermal pressurization can reach several megapascals in the first decades, reducing effective stress in the very barrier that is meant to stay intact; the bentonite buffer swells, dries and resaturates around it.</p><div class="who"><span class="chip T">T→H</span><span class="chip H">H→M</span><span class="chip M">T→M</span></div></div>
+    <div class="app"><h4>Geothermal reservoirs</h4><p>Cold water injected into hot fractured rock contracts the rock around the fractures, opening apertures and raising permeability, while the cooling front and the pressure front move at very different speeds. The heat is carried out by the flow, so Pe is large.</p><div class="who"><span class="chip T">T→M</span><span class="chip M">M→H</span><span class="chip H">H→T</span></div></div>
+    <div class="app"><h4>Injection-induced seismicity and CO₂ storage</h4><p>Injecting fluid raises pore pressure over kilometres and years. Faults that were stable at the in-situ effective stress can be brought to failure by a pressure rise of a fraction of a megapascal, exactly the Mohr-circle shift of §2, with thermal contraction from cold injectate adding to it.</p><div class="who"><span class="chip H">H→M</span><span class="chip T">T→M</span></div></div>
+    <div class="app"><h4>Freezing ground and permafrost</h4><p>Phase change of pore water adds latent heat, expansion on freezing and a permeability that collapses as ice forms. Thaw releases water faster than it can drain, so the ground loses strength: thaw consolidation is Terzaghi's problem with a moving boundary.</p><div class="who"><span class="chip T">T→H</span><span class="chip H">H→M</span></div></div>
+  </div>
+</section>
+
+<footer>
+  <h4>Assumptions behind the instruments</h4>
+  <p>Fully saturated pores, small strains, linear thermo-poroelasticity, constant properties except where a temperature dependence is stated (water viscosity and expansivity). The hydraulic diffusivity uses the isotropic storage coefficient <i>S</i>; a one-dimensional consolidation analysis would use the oedometric modulus instead, which changes <i>c</i> by a factor of order one. The point-source pressure solution assumes the pore-pressure diffusion equation with a heating source and neglects the additional mean-stress coupling of the full Booker–Savvidou solution, which enters only through a modified coefficient. Material properties are representative values from the literature, rounded, not site data.</p>
+  <h4>Sources</h4>
+  <ol>
+    <li>Terzaghi, K. (1923). Die Berechnung der Durchlässigkeitsziffer des Tones aus dem Verlauf der hydrodynamischen Spannungserscheinungen. <i>Sitzungsberichte der Akademie der Wissenschaften in Wien</i>, 132, 125–138.</li>
+    <li>Biot, M. A. (1941). General theory of three-dimensional consolidation. <i>Journal of Applied Physics</i>, 12, 155–164.</li>
+    <li>Booker, J. R. &amp; Savvidou, C. (1985). Consolidation around a point heat source. <i>International Journal for Numerical and Analytical Methods in Geomechanics</i>, 9, 173–184.</li>
+    <li>McTigue, D. F. (1986). Thermoelastic response of fluid-saturated porous rock. <i>Journal of Geophysical Research</i>, 91(B9), 9533–9542.</li>
+    <li>Coussy, O. (2004). <i>Poromechanics</i>. Wiley.</li>
+    <li>Lewis, R. W. &amp; Schrefler, B. A. (1998). <i>The Finite Element Method in the Static and Dynamic Deformation and Consolidation of Porous Media</i>. Wiley.</li>
+    <li>Ghabezloo, S. &amp; Sulem, J. (2009). Stress dependent thermal pressurization of a fluid-saturated rock. <i>Rock Mechanics and Rock Engineering</i>, 42, 1–24.</li>
+    <li>Rutqvist, J. et al. (2001). Thermohydromechanics of partially saturated geological media: governing equations and formulation of four finite element models. <i>International Journal of Rock Mechanics and Mining Sciences</i>, 38, 105–127.</li>
+  </ol>
+</footer>
+</main>
+</div>
+<script>
+(() => {
+'use strict';
+/* ============================================================
+   Utilities
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const DAY = 86400, YEAR = 365.25 * 86400;
+const FD = '"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif';
+
+function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+let THEME = null;
+function theme() {
+  if (THEME) return THEME;
+  THEME = { bg: css('--bg'), surface: css('--surface'), sunk: css('--sunk'), ink: css('--ink'), ink2: css('--ink-2'), ink3: css('--ink-3'),
+    line: css('--line'), line2: css('--line-2'), grid: css('--grid'), T: css('--T'), H: css('--H'), M: css('--M'),
+    Tink: css('--T-ink'), Hink: css('--H-ink'), Mink: css('--M-ink'), stone: css('--stone'), stone2: css('--stone-2'), warn: css('--warn'),
+    dark: matchMedia('(prefers-color-scheme: dark)').matches ? document.documentElement.getAttribute('data-theme') !== 'light' : document.documentElement.getAttribute('data-theme') === 'dark' };
+  return THEME;
+}
+function fit(canvas) {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  if (!canvas.dataset.h && canvas.hasAttribute('height') && !canvas.classList.contains('raw')) { canvas.dataset.h = canvas.getAttribute('height'); canvas.style.height = canvas.dataset.h + 'px'; }
+  const w = canvas.clientWidth || 300, h = canvas.dataset.h ? +canvas.dataset.h : (canvas.clientHeight || 200);
+  const W = Math.round(w * dpr), Hh = Math.round(h * dpr);
+  if (canvas.width !== W || canvas.height !== Hh) { canvas.width = W; canvas.height = Hh; }
+  const ctx = canvas.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx, w, h };
+}
+const SUP = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+const sup = n => String(n).split('').map(c => SUP[c] || c).join('');
+function fmtNum(v) { const a = Math.abs(v); if (a === 0) return '0'; if (a >= 100) return v.toFixed(0); if (a >= 10) return v.toFixed(1); if (a >= 1) return v.toFixed(2); if (a >= 0.01) return v.toFixed(3); return v.toPrecision(2); }
+function fmtSci(v, d = 2) { if (v === 0) return '0'; const e = Math.floor(Math.log10(Math.abs(v))); if (e >= -2 && e <= 3) return fmtNum(v); const m = v / Math.pow(10, e); return `${m.toFixed(d)}×10${sup(e)}`; }
+function fmtShort(v) { return String(Number(v.toPrecision(3))); }
+function fmtPow(v) { const e = Math.log10(v), ef = Math.floor(e + 1e-9); const m = v / Math.pow(10, ef); if (ef >= -2 && ef <= 3) return fmtShort(v); return Math.abs(m - 1) < 1e-6 ? `10${sup(ef)}` : `${m.toFixed(0)}×10${sup(ef)}`; }
+function fmtTime(s) { if (!isFinite(s)) return '∞'; if (s < 1) return `${(s * 1000).toFixed(0)} ms`; if (s < 90) return `${s.toFixed(1)} s`; if (s < 5400) return `${(s / 60).toFixed(1)} min`; if (s < 2 * DAY) return `${(s / 3600).toFixed(1)} h`; if (s < 0.5 * YEAR) return `${(s / DAY).toFixed(0)} d`; if (s < 1000 * YEAR) return `${fmtNum(s / YEAR)} yr`; if (s < 1e6 * YEAR) return `${fmtNum(s / YEAR / 1e3)} kyr`; return `${fmtNum(s / YEAR / 1e6)} Myr`; }
+function fmtPa(p) { const a = Math.abs(p); if (a < 1e3) return `${p.toFixed(0)} Pa`; if (a < 1e6) return `${(p / 1e3).toFixed(a < 1e4 ? 1 : 0)} kPa`; return `${(p / 1e6).toFixed(2)} MPa`; }
+
+function hexRgb(h) { h = h.replace('#', ''); if (h.length === 3) h = h.split('').map(c => c + c).join(''); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+function rgba(h, a) { if (h.startsWith('rgb')) return h; const [r, g, b] = hexRgb(h); return `rgba(${r},${g},${b},${a})`; }
+function srgbToLin(c) { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+function linToSrgb(c) { c = c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055; return Math.round(clamp(c, 0, 1) * 255); }
+function rgbToOklab([r, g, b]) { r = srgbToLin(r); g = srgbToLin(g); b = srgbToLin(b);
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b), m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b), s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  return [0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s, 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s, 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s]; }
+function oklabToRgb([L, a, b]) { const l_ = L + 0.3963377774 * a + 0.2158037573 * b, m_ = L - 0.1055613458 * a - 0.0638541728 * b, s_ = L - 0.0894841775 * a - 1.2914855480 * b; const l = l_ ** 3, m = m_ ** 3, s = s_ ** 3;
+  return [linToSrgb(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s), linToSrgb(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s), linToSrgb(-0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s)]; }
+function ramp(stops, N = 256) { const labs = stops.map(h => rgbToOklab(hexRgb(h))); const out = new Uint8ClampedArray(N * 3);
+  for (let i = 0; i < N; i++) { const t = i / (N - 1) * (stops.length - 1); const k = Math.min(Math.floor(t), stops.length - 2); const f = t - k; const L = labs[k].map((v, j) => v + (labs[k + 1][j] - v) * f); const [r, g, b] = oklabToRgb(L); out[i * 3] = r; out[i * 3 + 1] = g; out[i * 3 + 2] = b; } return out; }
+function erfc(x) { const z = Math.abs(x); const t = 1 / (1 + 0.5 * z);
+  const r = t * Math.exp(-z * z - 1.26551223 + t * (1.00002368 + t * (0.37409196 + t * (0.09678418 + t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 + t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))));
+  return x >= 0 ? r : 2 - r; }
+function mu(Tc) { return 2.414e-5 * Math.pow(10, 247.8 / (Tc + 273.15 - 140)); } // Vogel fit for water, Pa s
+function niceCeil(v) { if (v <= 0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))); const m = v / p; const c = [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10].find(x => x >= m - 1e-9); return c * p; }
+function interp(pts, x, xlog) { if (!pts.length || x < pts[0][0] || x > pts[pts.length - 1][0]) return null; let lo = 0, hi = pts.length - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (pts[m][0] <= x) lo = m; else hi = m; }
+  const [x0, y0] = pts[lo], [x1, y1] = pts[hi]; if (x1 === x0) return y0; const t = xlog ? (Math.log(x) - Math.log(x0)) / (Math.log(x1) - Math.log(x0)) : (x - x0) / (x1 - x0); return y0 + (y1 - y0) * t; }
+function typeset(el) { if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(() => {}); }
+function onVisible(el, cb) { if (!('IntersectionObserver' in window)) { cb(true); return; } new IntersectionObserver(es => es.forEach(e => cb(e.isIntersecting)), { rootMargin: '80px' }).observe(el); }
+
+/* ============================================================
+   Materials (representative values, saturated, 20 °C)
+   ============================================================ */
+const MATS = [
+  { id: 'opalinus', name: 'Opalinus Clay', kind: 'indurated clay rock', n: 0.12, k: 1e-20, Kd: 5e9, Ks: 30e9, lam: 1.7, rhoc: 2.3e6 },
+  { id: 'boom', name: 'Boom Clay', kind: 'plastic clay', n: 0.39, k: 3e-19, Kd: 1e9, Ks: 20e9, lam: 1.5, rhoc: 2.8e6 },
+  { id: 'sandstone', name: 'Berea sandstone', kind: 'porous sandstone', n: 0.20, k: 1e-13, Kd: 8e9, Ks: 36e9, lam: 2.6, rhoc: 2.2e6 },
+  { id: 'sand', name: 'Dense sand', kind: 'granular soil', n: 0.35, k: 1e-11, Kd: 1e8, Ks: 36e9, lam: 2.5, rhoc: 2.9e6 },
+  { id: 'granite', name: 'Granite', kind: 'intact crystalline rock', n: 0.01, k: 1e-19, Kd: 33e9, Ks: 45e9, lam: 3.0, rhoc: 2.2e6 },
+];
+const matById = id => MATS.find(m => m.id === id) || MATS[0];
+const KW = 2.2e9, BS = 3e-5, MU20 = mu(20), RHOW = 1000, CW = 4180, G = 9.81;
+const BW_T = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], BW = [-0.68e-4, 0.88e-4, 2.07e-4, 3.03e-4, 3.85e-4, 4.57e-4, 5.22e-4, 5.83e-4, 6.40e-4, 6.96e-4, 7.50e-4];
+function betaW(T) { T = clamp(T, 0, 100); const i = Math.min(Math.floor(T / 10), 9); const f = (T - BW_T[i]) / 10; return BW[i] + (BW[i + 1] - BW[i]) * f; }
+function storage(m) { const a = 1 - m.Kd / m.Ks; return { alpha: a, S: a * a / m.Kd + (a - m.n) / m.Ks + m.n / KW }; }
+function lambdaOf(m, T = 20) { return m.n * (betaW(T) - BS) / storage(m).S; }
+function hydDiff(m) { return m.k / (MU20 * storage(m).S); }
+function thermDiff(m) { return m.lam / m.rhoc; }
+const state = { mat: MATS[0] };
+const matSubs = [], renderers = [];
+function onMat(fn) { matSubs.push(fn); }
+
+/* ============================================================
+   Chart: one scale per axis, hairline grid, hover crosshair
+   ============================================================ */
+class Chart {
+  constructor(cv, o) {
+    this.cv = cv;
+    this.o = Object.assign({ ml: 56, mr: 18, mt: 16, mb: 40, xlog: false, ylog: false, yflip: false, xlabel: '', ylabel: '', xfmt: null, yfmt: null, xticks: null, yticks: null, hover: true, legend: true, title: '', tipfmt: null, xtip: null }, o);
+    if (this.o.title) this.o.mt = Math.max(this.o.mt, 30);
+    this.data = { series: [], bands: [], marks: [], vlines: [], hlines: [], labels: [] };
+    this.xd = this.o.xd || [0, 1]; this.yd = this.o.yd || [0, 1]; this.hx = null;
+    const wrap = cv.parentElement; if (getComputedStyle(wrap).position === 'static') wrap.style.position = 'relative';
+    this.tip = document.createElement('div'); this.tip.className = 'tip'; wrap.appendChild(this.tip);
+    if (this.o.hover) {
+      cv.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); const x = this.invx(e.clientX - r.left); this.hx = (x < this.xd[0] || x > this.xd[1]) ? null : x; this.render(); });
+      cv.addEventListener('pointerleave', () => { this.hx = null; this.render(); });
+    }
+  }
+  set(d) { Object.assign(this.data, d); if (d.xd) this.xd = d.xd; if (d.yd) this.yd = d.yd; return this; }
+  tx(x) { const [a, b] = this.xd; const t = this.o.xlog ? (Math.log10(x) - Math.log10(a)) / (Math.log10(b) - Math.log10(a)) : (x - a) / (b - a); return this.pl + t * this.pw; }
+  ty(y) { const [a, b] = this.yd; let t = this.o.ylog ? (Math.log10(y) - Math.log10(a)) / (Math.log10(b) - Math.log10(a)) : (y - a) / (b - a); if (this.o.yflip) t = 1 - t; return this.pt + this.ph - t * this.ph; }
+  invx(px) { const [a, b] = this.xd; const t = (px - this.pl) / this.pw; return this.o.xlog ? Math.pow(10, Math.log10(a) + t * (Math.log10(b) - Math.log10(a))) : a + t * (b - a); }
+  ticks(d, log, explicit, n) {
+    if (explicit) return explicit;
+    if (log) { const out = []; const e0 = Math.ceil(Math.log10(d[0]) - 1e-9), e1 = Math.floor(Math.log10(d[1]) + 1e-9); const span = e1 - e0;
+      for (let e = e0; e <= e1; e++) { out.push({ v: Math.pow(10, e), l: fmtPow(Math.pow(10, e)) }); if (span <= 2) [2, 5].forEach(m => { const v = m * Math.pow(10, e); if (v <= d[1] && v >= d[0]) out.push({ v, l: fmtPow(v), minor: span >= 2 }); }); }
+      return out; }
+    const range = d[1] - d[0]; const raw = range / n; const p = Math.pow(10, Math.floor(Math.log10(raw))); const step = p * ([1, 2, 2.5, 5, 10].find(c => c * p >= raw) || 10);
+    const dec = (step.toFixed(10).replace(/0+$/, '').split('.')[1] || '').length; const out = [];
+    for (let v = Math.ceil(d[0] / step - 1e-9) * step; v <= d[1] + 1e-9; v += step) out.push({ v, l: (Math.abs(v) < 1e-12 ? 0 : v).toFixed(dec) });
+    return out;
+  }
+  render() {
+    const { ctx, w, h } = fit(this.cv); const th = theme(); const o = this.o;
+    this.pl = o.ml; this.pt = o.mt; this.pw = w - o.ml - o.mr; this.ph = h - o.mt - o.mb;
+    ctx.clearRect(0, 0, w, h); ctx.fillStyle = th.surface; ctx.fillRect(0, 0, w, h);
+    const xt = this.ticks(this.xd, o.xlog, o.xticks, Math.max(3, Math.round(this.pw / 90))), yt = this.ticks(this.yd, o.ylog, o.yticks, Math.max(3, Math.round(this.ph / 48)));
+    ctx.lineWidth = 1; ctx.strokeStyle = th.grid;
+    yt.forEach(t => { if (t.minor) return; const y = Math.round(this.ty(t.v)) + .5; ctx.beginPath(); ctx.moveTo(this.pl, y); ctx.lineTo(this.pl + this.pw, y); ctx.stroke(); });
+    xt.forEach(t => { if (t.minor) return; const x = Math.round(this.tx(t.v)) + .5; ctx.beginPath(); ctx.moveTo(x, this.pt); ctx.lineTo(x, this.pt + this.ph); ctx.stroke(); });
+    ctx.strokeStyle = th.line2; ctx.beginPath(); ctx.moveTo(this.pl + .5, this.pt); ctx.lineTo(this.pl + .5, this.pt + this.ph + .5); ctx.lineTo(this.pl + this.pw, this.pt + this.ph + .5); ctx.stroke();
+    ctx.fillStyle = th.ink3; ctx.font = `11px ${FD}`; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    xt.forEach(t => { if (t.minor) return; ctx.fillText(o.xfmt ? o.xfmt(t.v) : t.l, this.tx(t.v), this.pt + this.ph + 6); });
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    yt.forEach(t => { if (t.minor) return; ctx.fillText(o.yfmt ? o.yfmt(t.v) : t.l, this.pl - 7, this.ty(t.v)); });
+    ctx.fillStyle = th.ink2; ctx.font = `600 11px ${FD}`; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    if (o.xlabel) ctx.fillText(o.xlabel, this.pl + this.pw / 2, h - 5);
+    if (o.ylabel) { ctx.save(); ctx.translate(11, this.pt + this.ph / 2); ctx.rotate(-Math.PI / 2); ctx.textBaseline = 'top'; ctx.fillText(o.ylabel, 0, 0); ctx.restore(); }
+    if (o.title) { ctx.fillStyle = th.ink; ctx.font = `600 12.5px ${FD}`; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(o.title, this.pl, 6); }
+    ctx.save(); ctx.beginPath(); ctx.rect(this.pl, this.pt - 1, this.pw + 1, this.ph + 2); ctx.clip();
+    this.data.bands.forEach(b => { ctx.fillStyle = b.color; ctx.beginPath();
+      b.pts.forEach((p, i) => { const x = this.tx(p[0]), y = this.ty(p[1]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+      for (let i = b.pts.length - 1; i >= 0; i--) ctx.lineTo(this.tx(b.pts[i][0]), this.ty(b.pts[i][2]));
+      ctx.closePath(); ctx.fill(); });
+    ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
+    this.data.hlines.forEach(l => { ctx.strokeStyle = l.color || th.ink3; const y = Math.round(this.ty(l.y)) + .5; ctx.beginPath(); ctx.moveTo(this.pl, y); ctx.lineTo(this.pl + this.pw, y); ctx.stroke();
+      if (l.label) { ctx.fillStyle = l.color || th.ink3; ctx.font = `11px ${FD}`; ctx.textAlign = l.align || 'right'; ctx.textBaseline = 'bottom'; ctx.fillText(l.label, l.align === 'left' ? this.pl + 6 : this.pl + this.pw - 4, y - 3); } });
+    this.data.vlines.forEach(l => { ctx.strokeStyle = l.color || th.ink3; const x = Math.round(this.tx(l.x)) + .5; ctx.beginPath(); ctx.moveTo(x, this.pt); ctx.lineTo(x, this.pt + this.ph); ctx.stroke();
+      if (l.label) { ctx.fillStyle = l.color || th.ink3; ctx.font = `11px ${FD}`; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(l.label, x + 4, this.pt + 2); } });
+    ctx.setLineDash([]);
+    this.data.series.forEach(s => {
+      if (!s.pts || !s.pts.length) return;
+      ctx.lineWidth = s.width || 2; ctx.strokeStyle = s.color; ctx.setLineDash(s.dash || []); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      ctx.beginPath(); let started = false;
+      s.pts.forEach(p => { if (!isFinite(p[1]) || (o.ylog && p[1] <= 0)) { started = false; return; } const x = this.tx(p[0]), y = this.ty(p[1]); started ? ctx.lineTo(x, y) : ctx.moveTo(x, y); started = true; });
+      ctx.stroke(); ctx.setLineDash([]);
+      if (s.fill) { const y0 = this.ty(o.ylog ? this.yd[0] : Math.max(0, this.yd[0])); ctx.lineTo(this.tx(s.pts[s.pts.length - 1][0]), y0); ctx.lineTo(this.tx(s.pts[0][0]), y0); ctx.closePath(); ctx.fillStyle = s.fill; ctx.fill(); }
+      if (s.label) { const lx = s.labelAt != null ? s.labelAt : s.pts[s.pts.length - 1][0]; const ly = interp(s.pts, lx, o.xlog); if (ly != null) { ctx.fillStyle = s.labelInk || th.ink2; ctx.font = `${s.labelBold ? '600 ' : ''}11px ${FD}`; ctx.textAlign = s.labelAt != null ? 'center' : 'right'; ctx.textBaseline = s.labelBelow ? 'top' : 'bottom'; ctx.fillText(s.label, this.tx(lx) - (s.labelAt != null ? 0 : 2), this.ty(ly) + (s.labelBelow ? 5 : -5)); } }
+    });
+    this.data.marks.forEach(m => { const x = this.tx(m.x), y = this.ty(m.y); ctx.fillStyle = m.color; ctx.strokeStyle = th.surface; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      if (m.label) { ctx.fillStyle = th.ink; ctx.font = `600 11px ${FD}`; ctx.textAlign = m.align || 'left'; ctx.textBaseline = 'middle'; ctx.fillText(m.label, x + (m.align === 'right' ? -9 : 9), y + (m.dy || 0)); } });
+    this.data.labels.forEach(l => { ctx.fillStyle = l.color || th.ink2; ctx.font = `${l.bold ? '600 ' : ''}11px ${FD}`; ctx.textAlign = l.align || 'left'; ctx.textBaseline = l.base || 'middle'; ctx.fillText(l.text, this.tx(l.x) + (l.dx || 0), this.ty(l.y) + (l.dy || 0)); });
+    ctx.restore();
+    const named = this.data.series.filter(s => s.name && !s.nolegend);
+    if (o.legend && named.length >= 2) { ctx.font = `11px ${FD}`; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; let x = o.mt >= 26 ? this.pl : this.pl + 8; const y = o.mt >= 26 ? this.pt - 11 : this.pt + 9;
+      named.forEach(s => { ctx.fillStyle = s.color; ctx.fillRect(x, y - 1.5, 14, 3); x += 18; ctx.fillStyle = th.ink2; ctx.fillText(s.name, x, y); x += ctx.measureText(s.name).width + 14; }); }
+    if (this.hx != null) {
+      const x = this.tx(this.hx); ctx.strokeStyle = th.ink3; ctx.lineWidth = 1; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.moveTo(Math.round(x) + .5, this.pt); ctx.lineTo(Math.round(x) + .5, this.pt + this.ph); ctx.stroke(); ctx.setLineDash([]);
+      const rows = []; let ty = null;
+      this.data.series.forEach(s => { if (!s.pts || !s.pts.length || s.nohover) return; const v = interp(s.pts, this.hx, o.xlog); if (v == null || !isFinite(v) || (o.ylog && v <= 0)) return; const yy = this.ty(v); if (yy >= this.pt - 2 && yy <= this.pt + this.ph + 2) { if (ty == null) ty = yy; ctx.fillStyle = s.color; ctx.strokeStyle = th.surface; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, yy, 4, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+        rows.push(`<span class="k" style="background:${s.color}"></span>${s.name || ''} ${(s.fmt || o.tipfmt || fmtNum)(v)}`); });
+      const xl = (o.xtip || o.xfmt || fmtNum)(this.hx);
+      this.tip.innerHTML = `<div>${xl}</div>` + rows.map(r => `<div>${r}</div>`).join('');
+      const below = ty != null && ty < this.pt + 70;
+      this.tip.style.transform = below ? 'translate(-50%,12px)' : 'translate(-50%,calc(-100% - 10px))';
+      this.tip.style.left = clamp(x, 70, w - 70) + 'px'; this.tip.style.top = (ty != null ? ty : this.pt + this.ph / 2) + 'px'; this.tip.classList.add('on');
+    } else this.tip.classList.remove('on');
+  }
+}
+
+/* ============================================================
+   Grain packings (random sequential addition, large grains first)
+   ============================================================ */
+function packGrains(W, H, rmin, rmax, gap, attempts) {
+  const g = [];
+  for (let a = 0; a < attempts; a++) {
+    const f = Math.pow(a / attempts, 0.6); const r = (rmax + (rmin - rmax) * f) * (0.82 + 0.36 * Math.random());
+    const x = -r * 0.5 + Math.random() * (W + r), y = -r * 0.5 + Math.random() * (H + r);
+    let ok = true; for (const o of g) { const dx = x - o.x, dy = y - o.y, m = r + o.r + gap; if (dx * dx + dy * dy < m * m) { ok = false; break; } }
+    if (ok) g.push({ x, y, r });
+  }
+  return g;
+}
+function drawGrains(ctx, grains, th) { ctx.lineWidth = 1; grains.forEach(g => { ctx.beginPath(); ctx.arc(g.x, g.y, g.r, 0, Math.PI * 2); ctx.fillStyle = th.stone; ctx.fill(); ctx.strokeStyle = th.stone2; ctx.stroke(); }); }
+
+/* ============================================================
+   Hero: pore-scale flow, pointer heats the water
+   ============================================================ */
+function initHero() {
+  const cv = $('#heroCanvas'), hud = $('#heroHud'); const U0 = 30, SIG = 85;
+  let W = 0, H = 0, ctx, grains = [], parts = [], layer = null, ptr = null, amp = 0, visible = true, last = 0, raf = 0;
+  function inGrain(x, y) { for (const g of grains) { const dx = x - g.x, dy = y - g.y; if (dx * dx + dy * dy < (g.r + 3) * (g.r + 3)) return true; } return false; }
+  function spawn(fresh) { for (let k = 0; k < 40; k++) { const x = fresh ? -4 - Math.random() * 30 : Math.random() * W, y = Math.random() * H; if (!inGrain(x, y)) return { x, y, age: Math.random() * 10 }; } return { x: -10, y: Math.random() * H, age: 0 }; }
+  function build() { const f = fit(cv); ctx = f.ctx; W = f.w; H = f.h; grains = packGrains(W, H, 9, 30, 3, 7000); parts = []; const N = Math.round(W * H / 420); for (let i = 0; i < N; i++) parts.push(spawn(false)); layerDraw(); }
+  function layerDraw() { const th = theme(); const dpr = Math.min(devicePixelRatio || 1, 2); layer = document.createElement('canvas'); layer.width = Math.round(W * dpr); layer.height = Math.round(H * dpr); const c = layer.getContext('2d'); c.scale(dpr, dpr); c.fillStyle = th.surface; c.fillRect(0, 0, W, H); drawGrains(c, grains, th); }
+  function frame(dt) {
+    const th = theme(); ctx.drawImage(layer, 0, 0, W, H);
+    amp = ptr ? Math.min(1, amp + dt * 1.6) : Math.max(0, amp - dt * 0.7);
+    if (amp > 0.01 && ptr) { const g = ctx.createRadialGradient(ptr.x, ptr.y, 0, ptr.x, ptr.y, SIG * 2.3); g.addColorStop(0, rgba(th.T, 0.5 * amp)); g.addColorStop(0.5, rgba(th.T, 0.18 * amp)); g.addColorStop(1, rgba(th.T, 0)); ctx.fillStyle = g; ctx.fillRect(ptr.x - SIG * 2.3, ptr.y - SIG * 2.3, SIG * 4.6, SIG * 4.6); }
+    const [hr, hg, hb] = hexRgb(th.H), [tr, tg, tb] = hexRgb(th.T);
+    for (const p of parts) {
+      let heat = 0; if (ptr && amp > 0) { const dx = p.x - ptr.x, dy = p.y - ptr.y; heat = amp * Math.exp(-(dx * dx + dy * dy) / (2 * SIG * SIG)); }
+      const speed = U0 * MU20 / mu(20 + 65 * heat); let vx = speed, vy = 0;
+      for (const g of grains) { const dx = p.x - g.x, dy = p.y - g.y, d2 = dx * dx + dy * dy, R = g.r + 16; if (d2 < R * R) { const d = Math.sqrt(d2) || 1e-6, nx = dx / d, ny = dy / d, rr = g.r + 3; if (d < rr) { p.x = g.x + nx * rr; p.y = g.y + ny * rr; }
+        const vn = vx * nx + vy * ny; if (vn < 0) { const f = clamp(1 - (d - rr) / (R - rr), 0, 1); vx -= vn * nx * f; vy -= vn * ny * f; } } }
+      const sp = Math.hypot(vx, vy); if (sp < 0.15 * speed) { vy = (Math.sin(p.age * 7) > 0 ? 1 : -1) * speed; vx = 0.2 * speed; } else { vx *= speed / sp; vy *= speed / sp; }
+      p.x += vx * dt; p.y += vy * dt + Math.sin(p.age * 2.5 + p.x * 0.03) * 3 * dt; p.age += dt;
+      if (p.x > W + 6 || p.y < -8 || p.y > H + 8) Object.assign(p, spawn(true));
+      const r = Math.round(hr + (tr - hr) * heat), g = Math.round(hg + (tg - hg) * heat), b = Math.round(hb + (tb - hb) * heat);
+      ctx.fillStyle = `rgba(${r},${g},${b},0.9)`; ctx.beginPath(); ctx.arc(p.x, p.y, 1.7 + 0.7 * heat, 0, Math.PI * 2); ctx.fill();
+    }
+    const Tp = 20 + 65 * amp; hud.textContent = `${Tp.toFixed(1)} °C · μ = ${(mu(Tp) * 1e3).toFixed(2)} mPa·s · flow ×${(MU20 / mu(Tp)).toFixed(2)}`;
+  }
+  function loop(t) { raf = 0; if (!visible) return; const dt = clamp((t - last) / 1000, 0, 0.05); last = t; frame(dt); if (!REDUCED) raf = requestAnimationFrame(loop); }
+  function start() { if (!raf && visible) { last = performance.now(); raf = requestAnimationFrame(loop); } }
+  cv.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); ptr = { x: e.clientX - r.left, y: e.clientY - r.top }; if (REDUCED) start(); });
+  cv.addEventListener('pointerleave', () => { ptr = null; if (REDUCED) { amp = 0; start(); } });
+  build(); frame(0);
+  onVisible(cv, v => { visible = v; if (v) start(); });
+  renderers.push({ render: () => { layerDraw(); frame(0); }, resize: () => { if (Math.abs(cv.clientWidth - W) > 30) { build(); frame(0); } } });
+}
+
+/* ============================================================
+   §1 REV explorer
+   ============================================================ */
+function initRev() {
+  const cv = $('#revCanvas'); cv.style.touchAction = 'none';
+  const chart = new Chart($('#revChart'), { xlog: true, xlabel: 'window size / mean grain diameter', ylabel: 'porosity measured in window', yd: [0, 1], ml: 50, xtip: v => `window = ${fmtNum(v)} grain diameters` });
+  let W, H, grains, integ, dmean, band = [], sizes = []; const win = { cx: 0, cy: 0, s: 80 }; let drag = false;
+  function build() { const f = fit(cv); W = f.w; H = f.h; grains = packGrains(W, H, 5, 15, 1.5, 12000); dmean = 2 * grains.reduce((a, g) => a + g.r, 0) / grains.length;
+    const off = document.createElement('canvas'); off.width = W; off.height = H; const c = off.getContext('2d'); c.fillStyle = '#000'; grains.forEach(g => { c.beginPath(); c.arc(g.x, g.y, g.r, 0, Math.PI * 2); c.fill(); });
+    const d = c.getImageData(0, 0, W, H).data; integ = new Float64Array((W + 1) * (H + 1));
+    for (let y = 1; y <= H; y++) { let row = 0; for (let x = 1; x <= W; x++) { row += d[((y - 1) * W + (x - 1)) * 4 + 3] < 128 ? 1 : 0; integ[y * (W + 1) + x] = integ[(y - 1) * (W + 1) + x] + row; } }
+    win.cx = W / 2; win.cy = H / 2; sample(); }
+  function por(x0, y0, s) { x0 = clamp(Math.round(x0), 0, W); y0 = clamp(Math.round(y0), 0, H); const x1 = Math.min(W, x0 + s), y1 = Math.min(H, y0 + s); const A = (x1 - x0) * (y1 - y0); if (A <= 0) return 0; const I = (x, y) => integ[y * (W + 1) + x]; return (I(x1, y1) - I(x0, y1) - I(x1, y0) + I(x0, y0)) / A; }
+  function sample() { band = []; sizes = []; for (let s = 6; s <= Math.min(W, H) * 0.95; s *= 1.15) sizes.push(Math.round(s));
+    sizes.forEach(s => { let mn = 1, mx = 0, sum = 0; const K = 90; for (let k = 0; k < K; k++) { const v = por(Math.random() * (W - s), Math.random() * (H - s), s); mn = Math.min(mn, v); mx = Math.max(mx, v); sum += v; } band.push({ s, mn, mx, mean: sum / K }); }); }
+  function render() {
+    const th = theme(); const { ctx } = fit(cv); ctx.fillStyle = th.surface; ctx.fillRect(0, 0, W, H); drawGrains(ctx, grains, th);
+    const s = Math.min(win.s, Math.min(W, H)); const x0 = clamp(win.cx - s / 2, 0, W - s), y0 = clamp(win.cy - s / 2, 0, H - s);
+    ctx.fillStyle = rgba(th.H, .16); ctx.fillRect(x0, y0, s, s); ctx.strokeStyle = th.H; ctx.lineWidth = 2; ctx.strokeRect(x0 + 1, y0 + 1, s - 2, s - 2);
+    const n = por(x0, y0, s), nall = por(0, 0, 1e9);
+    $('#revN').textContent = n.toFixed(3); $('#revNall').textContent = nall.toFixed(3); $('#revRatio').textContent = (s / dmean).toFixed(1); $('#revSizeOut').textContent = `${s} px`;
+    chart.set({ xd: [sizes[0] / dmean, sizes[sizes.length - 1] / dmean],
+      bands: [{ color: rgba(th.H, .16), pts: band.map(b => [b.s / dmean, b.mn, b.mx]) }],
+      series: [{ name: 'mean of 90 placements', color: th.H, pts: band.map(b => [b.s / dmean, b.mean]), fmt: v => v.toFixed(3) }, { name: 'min–max', color: rgba(th.H, .5), pts: band.map(b => [b.s / dmean, b.mx]), width: 1, nolegend: true, fmt: v => v.toFixed(3), nohover: true }],
+      hlines: [{ y: nall, label: `sample porosity ${nall.toFixed(3)}`, align: 'left' }],
+      marks: [{ x: s / dmean, y: n, color: th.ink, label: 'your window', align: s / dmean > 8 ? 'right' : 'left' }] }).render();
+  }
+  cv.addEventListener('pointerdown', e => { drag = true; cv.setPointerCapture(e.pointerId); move(e); });
+  cv.addEventListener('pointermove', e => { if (drag) move(e); });
+  cv.addEventListener('pointerup', () => drag = false); cv.addEventListener('pointercancel', () => drag = false);
+  function move(e) { const r = cv.getBoundingClientRect(); win.cx = e.clientX - r.left; win.cy = e.clientY - r.top; render(); }
+  $('#revSize').addEventListener('input', e => { win.s = +e.target.value; render(); });
+  $('#revNew').addEventListener('click', () => { build(); render(); });
+  build(); render();
+  renderers.push({ render, resize: () => { if (Math.abs(cv.clientWidth - W) > 30) build(); render(); } });
+}
+
+/* ============================================================
+   §2 Darcy column
+   ============================================================ */
+function initDarcy() {
+  const cv = $('#darcyCanvas'), sel = $('#darcyMat'), dh = $('#darcyDh'); let parts = [], vdisp = 0, raf = 0, last = 0, visible = true;
+  MATS.forEach(m => { const o = document.createElement('option'); o.value = m.id; o.textContent = m.name; sel.appendChild(o); });
+  for (let i = 0; i < 70; i++) parts.push({ u: Math.random(), v: Math.random() });
+  function calc() { const m = matById(sel.value), Dh = +dh.value; const K = m.k * RHOW * G / MU20, q = K * Dh / 2, v = q / m.n;
+    $('#darcyK').textContent = fmtSci(K) + ' m/s'; $('#darcyQ').textContent = (q ? fmtSci(q) : '0') + ' m/s'; $('#darcyTime').textContent = q > 0 ? fmtTime(1 / v) : '∞'; $('#darcyDhOut').textContent = Dh.toFixed(1) + ' m';
+    vdisp = q > 0 ? clamp(8 + 20 * Math.log10(v / 1e-13), 1.5, 170) : 0; }
+  function draw(dt) {
+    const th = theme(); const { ctx, w, h } = fit(cv); ctx.fillStyle = th.surface; ctx.fillRect(0, 0, w, h);
+    const Dh = +dh.value; const base = h - 26, scale = (h - 70) / 5.5; const rw = Math.min(70, w * 0.16); const cx0 = rw + 4, cx1 = w - rw - 4, cy1 = base - 0.9 * scale, cy0 = cy1 - 40;
+    const hL = base - (1.1 + Dh) * scale, hR = base - 1.1 * scale;
+    ctx.fillStyle = th.sunk; ctx.fillRect(0, base, w, 26);
+    ctx.fillStyle = rgba(th.H, .22); ctx.fillRect(2, hL, rw, base - hL); ctx.fillRect(w - rw - 2, hR, rw, base - hR);
+    ctx.strokeStyle = th.line2; ctx.lineWidth = 1.5; ctx.strokeRect(2, 8, rw, base - 8); ctx.strokeRect(w - rw - 2, 8, rw, base - 8);
+    ctx.fillStyle = th.stone; ctx.fillRect(cx0, cy0, cx1 - cx0, cy1 - cy0);
+    const rnd = (i) => ((Math.sin(i * 12.9898) * 43758.5453) % 1 + 1) % 1; ctx.fillStyle = th.stone2;
+    for (let i = 0; i < 90; i++) { const gx = cx0 + 6 + rnd(i) * (cx1 - cx0 - 12), gy = cy0 + 6 + rnd(i + 300) * (cy1 - cy0 - 12); ctx.beginPath(); ctx.arc(gx, gy, 2 + rnd(i + 700) * 2.5, 0, Math.PI * 2); ctx.fill(); }
+    ctx.strokeStyle = th.ink3; ctx.lineWidth = 1; ctx.strokeRect(cx0 + .5, cy0 + .5, cx1 - cx0 - 1, cy1 - cy0 - 1);
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = th.Hink; ctx.beginPath(); ctx.moveTo(rw + 2, hL + .5); ctx.lineTo(w - rw - 2, hL + .5); ctx.stroke(); ctx.beginPath(); ctx.moveTo(rw + 2, hR + .5); ctx.lineTo(w - rw - 2, hR + .5); ctx.stroke(); ctx.setLineDash([]);
+    if (Dh > 0) { const ax = w / 2; ctx.strokeStyle = th.Hink; ctx.beginPath(); ctx.moveTo(ax + .5, hL); ctx.lineTo(ax + .5, hR); ctx.stroke(); ctx.fillStyle = th.Hink; ctx.font = `600 11px ${FD}`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(`Δh = ${Dh.toFixed(1)} m`, ax + 6, (hL + hR) / 2); }
+    ctx.fillStyle = th.ink3; ctx.font = `11px ${FD}`; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText('L = 2 m', (cx0 + cx1) / 2, cy1 + 4); ctx.textBaseline = 'bottom'; ctx.fillText('flow →', (cx0 + cx1) / 2, cy0 - 4);
+    ctx.fillStyle = th.H;
+    for (const p of parts) { p.u = (p.u + vdisp * dt / (cx1 - cx0)) % 1; const x = cx0 + 6 + p.u * (cx1 - cx0 - 12), y = cy0 + 8 + p.v * (cy1 - cy0 - 16); ctx.beginPath(); ctx.arc(x, y, 1.9, 0, Math.PI * 2); ctx.fill(); }
+  }
+  function loop(t) { raf = 0; if (!visible) return; const dt = clamp((t - last) / 1000, 0, 0.05); last = t; draw(dt); if (!REDUCED && vdisp > 0) raf = requestAnimationFrame(loop); }
+  function start() { if (!raf && visible) { last = performance.now(); raf = requestAnimationFrame(loop); } }
+  sel.addEventListener('change', () => { calc(); start(); draw(0); }); dh.addEventListener('input', () => { calc(); start(); draw(0); });
+  onMat(m => { sel.value = m.id; calc(); start(); draw(0); });
+  onVisible(cv, v => { visible = v; if (v) start(); });
+  calc(); draw(0); start();
+  renderers.push({ render: () => draw(0) });
+}
+
+/* ============================================================
+   §2 Péclet profile
+   ============================================================ */
+function initPeclet() {
+  const sl = $('#pePe'); const chart = new Chart($('#peCanvas'), { xlabel: 'position x* (0 hot → 1 cold)', ylabel: 'T*', yd: [0, 1], xd: [0, 1], ml: 44, mb: 36, mt: 28, xtip: v => `x* = ${v.toFixed(2)}` });
+  const prof = Pe => { const pts = []; for (let i = 0; i <= 100; i++) { const x = i / 100; const T = Math.abs(Pe) < 1e-6 ? 1 - x : (Math.exp(Pe) - Math.exp(Pe * x)) / (Math.exp(Pe) - 1); pts.push([x, T]); } return pts; };
+  function render() { const th = theme(); const Pe = +sl.value; const p = prof(Pe); const mid = interp(p, 0.5);
+    $('#peOut').textContent = Pe.toFixed(2); $('#peOut2').textContent = Pe.toFixed(2); $('#peMid').textContent = mid.toFixed(3);
+    chart.set({ series: [{ name: 'conduction only (Pe = 0)', color: th.ink3, pts: prof(0), width: 1, dash: [3, 3], fmt: v => v.toFixed(3) }, { name: `Pe = ${Pe.toFixed(1)}`, color: th.T, pts: p, width: 2.5, fill: rgba(th.T, .12), fmt: v => v.toFixed(3) }] }).render(); }
+  sl.addEventListener('input', render); render(); renderers.push({ render });
+}
+
+/* ============================================================
+   §2 Mohr circle with pore pressure
+   ============================================================ */
+function initMohr() {
+  const cv = $('#mohrCanvas'), sl = $('#mohrP'); const S1 = 300, S3 = 150, PHI = 30 * Math.PI / 180;
+  function render() {
+    const th = theme(); const { ctx, w, h } = fit(cv); ctx.fillStyle = th.surface; ctx.fillRect(0, 0, w, h);
+    const p = +sl.value; const s1 = S1 - p, s3 = S3 - p; const R = (S1 - S3) / 2, c = (s1 + s3) / 2;
+    const pl = 40, pb = h - 32, pw = w - pl - 12, ph = pb - 14; const smax = 360, tmax = smax * ph / pw; const X = s => pl + s / smax * pw, Y = t => pb - t / tmax * ph;
+    ctx.strokeStyle = th.grid; ctx.lineWidth = 1; for (let s = 0; s <= smax; s += 100) { ctx.beginPath(); ctx.moveTo(X(s) + .5, 14); ctx.lineTo(X(s) + .5, pb); ctx.stroke(); }
+    ctx.strokeStyle = th.line2; ctx.beginPath(); ctx.moveTo(pl + .5, 14); ctx.lineTo(pl + .5, pb + .5); ctx.lineTo(w - 12, pb + .5); ctx.stroke();
+    ctx.fillStyle = th.ink3; ctx.font = `11px ${FD}`; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; for (let s = 0; s <= smax; s += 100) ctx.fillText(s, X(s), pb + 5);
+    ctx.fillStyle = th.ink2; ctx.font = `600 11px ${FD}`; ctx.fillText("effective normal stress σ′ (kPa)", pl + pw / 2, h - 14); ctx.save(); ctx.translate(11, (14 + pb) / 2); ctx.rotate(-Math.PI / 2); ctx.fillText('shear τ (kPa)', 0, 0); ctx.restore();
+    const failing = c * Math.sin(PHI) <= R + 1e-9; const col = failing ? th.warn : th.M;
+    ctx.strokeStyle = th.ink3; ctx.lineWidth = 1.5; ctx.setLineDash([4, 3]); ctx.beginPath(); ctx.arc(X((S1 + S3) / 2), Y(0), R / smax * pw, Math.PI, 0); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = th.ink3; ctx.font = `11px ${FD}`; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillText('total stress', X((S1 + S3) / 2), Y(R) - 4);
+    ctx.save(); ctx.beginPath(); ctx.rect(pl, 14, pw, ph); ctx.clip();
+    ctx.strokeStyle = th.ink; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X(0), Y(0)); ctx.lineTo(X(smax), Y(smax * Math.tan(PHI))); ctx.stroke();
+    ctx.fillStyle = th.ink2; ctx.font = `600 11px ${FD}`; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.save(); ctx.translate(X(smax * .82), Y(smax * .82 * Math.tan(PHI))); ctx.rotate(-Math.atan(Math.tan(PHI) * ph / tmax * smax / pw)); ctx.fillText("τ = σ′ tan 30°", 0, -5); ctx.restore();
+    ctx.fillStyle = rgba(col, .2); ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(X(c), Y(0), R / smax * pw, Math.PI, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
+    if (p > 0) { ctx.strokeStyle = th.Hink; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X((S1 + S3) / 2), Y(R) + 10); ctx.lineTo(X(c) + 6, Y(R) + 10); ctx.stroke(); ctx.beginPath(); ctx.moveTo(X(c), Y(R) + 10); ctx.lineTo(X(c) + 7, Y(R) + 6); ctx.lineTo(X(c) + 7, Y(R) + 14); ctx.closePath(); ctx.fillStyle = th.Hink; ctx.fill(); ctx.font = `600 11px ${FD}`; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillText(`− p = ${p} kPa`, (X((S1 + S3) / 2) + X(c)) / 2, Y(R) + 6); }
+    ctx.restore();
+    ctx.fillStyle = failing ? th.warn : th.Mink; ctx.font = `600 12px ${FD}`; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(failing ? '● Failure: circle touches the envelope' : '● Stable', pl + 8, 18);
+    const phim = c > R ? Math.asin(R / c) * 180 / Math.PI : NaN;
+    $('#mohrS1').textContent = `${s1} kPa`; $('#mohrS3').textContent = `${s3} kPa`; $('#mohrPhi').textContent = isNaN(phim) ? 'failure' : `${phim.toFixed(1)}°`; $('#mohrPOut').textContent = `${p} kPa`;
+  }
+  sl.addEventListener('input', render); render(); renderers.push({ render });
+}
+
+/* ============================================================
+   §3 Coupling triangle
+   ============================================================ */
+const COUP = {
+  TH: { from: 'T', to: 'H', short: 'expansion · viscosity', title: 'Thermal expansion and viscosity', strength: 3,
+    text: 'Water expands roughly ten times more than the minerals around it. In a pore that cannot drain, the surplus volume can only be accommodated by compressing the water and pushing the skeleton apart, and both cost pressure. Independently, the viscosity of water falls from 1.00 mPa·s at 20 °C to 0.55 at 50 °C, so the hydraulic conductivity nearly doubles.',
+    term: '\\(-\\,\\beta_\\zeta\\,\\dfrac{\\partial T}{\\partial t}\\) in the mass balance;  \\(\\mu(T)\\) in Darcy\'s law', size: 'Λ = 0.01–0.3 MPa per kelvin undrained; K × 1.8 for 20 → 50 °C', where: 'clay host rocks around waste canisters; fault gouge during rapid slip' },
+  HT: { from: 'H', to: 'T', short: 'advection', title: 'Advective heat transport', strength: 2,
+    text: 'Moving water carries its enthalpy with it. Whether that matters is the Péclet number, the ratio of advected to conducted heat over a length L. A clay with q ≈ 10⁻¹² m/s has Pe ≈ 10⁻⁵ over 10 m: pure conduction. A gravel aquifer with q ≈ 10⁻⁵ m/s has Pe ≈ 100 and the temperature field is simply carried downstream.',
+    term: '\\(\\rho_w c_w\\,\\mathbf q\\cdot\\nabla T\\) in the energy balance', size: 'Pe = ρ<sub>w</sub>c<sub>w</sub>qL/λ from 10⁻⁵ (clay) to 10² (aquifer)', where: 'geothermal doublets, aquifer thermal storage, seepage below dams' },
+  TM: { from: 'T', to: 'M', short: 'thermal strain', title: 'Thermal strain and thermal stress', strength: 3,
+    text: 'A free element heated by ΔT expands by α<sub>T</sub>ΔT in every direction and feels no stress. A restrained one cannot expand and takes the strain as compressive stress instead; in the ground most heated volumes are restrained by their cooler surroundings. Clays also show a plastic contraction on heating when normally consolidated, which is a genuine thermo-mechanical constitutive effect beyond elasticity.',
+    term: '\\(\\sigma\' = \\mathbb C:(\\varepsilon - \\alpha_T\\,\\Delta T\\,\\mathbf I)\\)', size: 'σ<sub>th</sub> = Eα<sub>T</sub>ΔT/(1 − ν) ≈ 3.6 MPa for E = 5 GPa, α<sub>T</sub> = 10⁻⁵ K⁻¹, ΔT = 50 K', where: 'near-field of heat-emitting waste; cold-water injection cracking rock' },
+  MT: { from: 'M', to: 'T', short: 'dissipation', title: 'Mechanical work turned into heat', strength: 0,
+    text: 'Compressing a skeleton adiabatically warms it (the thermoelastic effect) and plastic or frictional work is dissipated as heat. Both are real but minute at geotechnical strain rates: a stress change of 1 MPa in rock gives a few millikelvin. The one exception is rapid fault slip, where frictional heating in a millimetre-thin gouge can raise temperatures by hundreds of kelvin in seconds and pressurize the pore water.',
+    term: '\\(-\\,T\\,\\beta_s K_d\\,\\dfrac{\\partial\\varepsilon_v}{\\partial t} + \\sigma\':\\dot\\varepsilon^{p}\\) as sources in the energy balance', size: 'millikelvin in slow processes; hundreds of kelvin during seismic slip', where: 'earthquake mechanics; otherwise neglected' },
+  HM: { from: 'H', to: 'M', short: 'effective stress', title: 'Pore pressure and effective stress', strength: 3,
+    text: 'The water in the pores carries part of the total stress, isotropically, and cannot carry shear. The skeleton deforms and fails according to the remainder, the effective stress. Raising the pore pressure without changing the load unloads the skeleton: the ground swells, and if the Mohr circle reaches the envelope, it slips. This is the coupling that turns fluid injection into earthquakes and that makes consolidation slow.',
+    term: '\\(\\sigma = \\sigma\' - \\alpha\\,p\\,\\mathbf I\\)', size: 'a pressure rise of 0.1–1 MPa can bring a critically stressed fault to failure', where: 'everywhere: foundations, slopes, dams, reservoirs, faults' },
+  MH: { from: 'M', to: 'H', short: 'storage · permeability', title: 'Storage and permeability change', strength: 3,
+    text: 'When the skeleton compresses, the pore volume shrinks and water must leave, or the pressure rises if it cannot: the source of consolidation. Deformation also changes the pore geometry. Permeability of soils follows roughly k ∝ e³/(1 + e) (Kozeny–Carman); in fractured rock it follows the cube of the fracture aperture, so a small normal strain can change k by orders of magnitude.',
+    term: '\\(\\alpha\\,\\dfrac{\\partial\\varepsilon_v}{\\partial t}\\) and \\(k(\\varepsilon)\\) in the mass balance', size: 'k × 10 to × 1000 across the stress range of a fractured reservoir', where: 'consolidation, subsidence, hydraulic fracturing, fracture flow' },
+};
+function initCouplings() {
+  const svg = $('#coupleSvg'), arcs = $('#arcs'), detail = $('#coupleDetail');
+  const nodes = { T: [300, 78], H: [96, 392], M: [504, 392] }; const R = 44, OFF = 58; let active = 'HM';
+  const lblPos = {};
+  Object.keys(COUP).forEach(key => {
+    const c = COUP[key]; const A = nodes[c.from], B = nodes[c.to]; const dx = B[0] - A[0], dy = B[1] - A[1], L = Math.hypot(dx, dy); const ux = dx / L, uy = dy / L; const nx = -uy, ny = ux;
+    const mx = (A[0] + B[0]) / 2 + nx * OFF, my = (A[1] + B[1]) / 2 + ny * OFF;
+    const sd = [mx - A[0], my - A[1]], sl = Math.hypot(...sd); const s = [A[0] + sd[0] / sl * (R + 3), A[1] + sd[1] / sl * (R + 3)];
+    const ed = [mx - B[0], my - B[1]], el = Math.hypot(...ed); const e = [B[0] + ed[0] / el * (R + 9), B[1] + ed[1] / el * (R + 9)];
+    const d = `M${s[0].toFixed(1)},${s[1].toFixed(1)} Q${mx.toFixed(1)},${my.toFixed(1)} ${e[0].toFixed(1)},${e[1].toFixed(1)}`;
+    const hit = document.createElementNS('http://www.w3.org/2000/svg', 'path'); hit.setAttribute('d', d); hit.setAttribute('class', 'arc hit'); hit.dataset.key = key;
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path'); path.setAttribute('d', d); path.setAttribute('class', 'arc'); path.dataset.key = key; path.setAttribute('stroke', `var(--${c.from})`); path.setAttribute('marker-end', `url(#mk${c.from})`);
+    arcs.appendChild(path); arcs.appendChild(hit);
+    const px = 0.25 * s[0] + 0.5 * mx + 0.25 * e[0], py = 0.25 * s[1] + 0.5 * my + 0.25 * e[1];
+    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text'); t.setAttribute('class', 'lbl'); t.setAttribute('x', (px + nx * 14).toFixed(1)); t.setAttribute('y', (py + ny * 14 + 4).toFixed(1)); t.setAttribute('text-anchor', 'middle'); t.textContent = c.short; arcs.appendChild(t); lblPos[key] = t;
+    [hit, path].forEach(el => { el.addEventListener('click', () => select(key)); el.addEventListener('pointerenter', () => select(key)); });
+  });
+  function select(key) { active = key; svg.classList.add('dim'); $$('#arcs .arc').forEach(p => p.classList.toggle('on', p.dataset.key === key)); const c = COUP[key];
+    const str = `<span class="strength" title="strength ${c.strength} of 3">${[0, 1, 2].map(i => `<i class="${i < c.strength ? 'f' : ''}"></i>`).join('')}</span>`;
+    detail.innerHTML = `<div class="eyebrow"><span class="f${c.from}">${c.from}</span> → <span class="f${c.to}">${c.to}</span> · ${c.short}</div><h4>${c.title}${str}</h4><p>${c.text}</p><div class="term">${c.term}</div><div class="meta"><span><b>Size</b> ${c.size}</span><span><b>Where it matters</b> ${c.where}</span></div>`;
+    typeset(detail); }
+  select(active);
+}
+
+/* ============================================================
+   §4 Equation terms
+   ============================================================ */
+function initEquations() {
+  const ex = $('#eqExplain'); const terms = $$('.term[data-x]');
+  terms.forEach(t => { const show = () => { terms.forEach(o => o.classList.toggle('on', o === t)); ex.innerHTML = t.dataset.x; }; t.addEventListener('pointerenter', show); t.addEventListener('click', show); t.setAttribute('tabindex', '0'); t.addEventListener('focus', show); });
+}
+
+/* ============================================================
+   §5 Terzaghi consolidation
+   ============================================================ */
+function initTerz() {
+  const cvIso = $('#terzCanvas'), sl = $('#terzTv'), hs = $('#terzH'), play = $('#terzPlay');
+  const chart = new Chart($('#terzChart'), { xlog: true, yflip: true, xlabel: 'time factor Tv', ylabel: 'degree of consolidation U', xd: [1e-3, 5], yd: [0, 1], ml: 50, xtip: v => `Tv = ${fmtNum(v)}` });
+  const Mm = m => Math.PI / 2 * (2 * m + 1);
+  function uZ(Tv, Z) { let s = 0; for (let m = 0; m < 400; m++) { const M = Mm(m), e = Math.exp(-M * M * Tv); if (e < 1e-12) break; s += 2 / M * Math.sin(M * Z) * e; } return clamp(s, 0, 1); }
+  function U(Tv) { let s = 0; for (let m = 0; m < 400; m++) { const M = Mm(m), e = Math.exp(-M * M * Tv); if (e < 1e-12) break; s += 2 / (M * M) * e; } return 1 - s; }
+  const Ucurve = []; for (let l = -3; l <= Math.log10(5) + 1e-9; l += 0.02) { const Tv = Math.pow(10, l); Ucurve.push([Tv, U(Tv)]); }
+  const iso = Tv => { const pts = []; for (let i = 0; i <= 60; i++) { const Z = i / 60; pts.push([uZ(Tv, Z), Z]); } return pts; };
+  let raf = 0, last = 0;
+  function drawIso(Tv) {
+    const th = theme(); const { ctx, w, h } = fit(cvIso); ctx.fillStyle = th.surface; ctx.fillRect(0, 0, w, h);
+    const pl = 46, pt = 34, pw = w - pl - 18, ph = h - pt - 46; const X = u => pl + u * pw, Y = z => pt + z * ph;
+    ctx.strokeStyle = th.grid; ctx.lineWidth = 1; for (let u = 0.25; u < 1; u += 0.25) { ctx.beginPath(); ctx.moveTo(Math.round(X(u)) + .5, pt); ctx.lineTo(Math.round(X(u)) + .5, pt + ph); ctx.stroke(); } for (let z = 0.25; z < 1; z += 0.25) { ctx.beginPath(); ctx.moveTo(pl, Math.round(Y(z)) + .5); ctx.lineTo(pl + pw, Math.round(Y(z)) + .5); ctx.stroke(); }
+    ctx.fillStyle = rgba(th.H, .14); ctx.beginPath(); ctx.moveTo(X(0), Y(0)); iso(Tv).forEach(p => ctx.lineTo(X(p[0]), Y(p[1]))); ctx.lineTo(X(0), Y(1)); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = th.ink3; ctx.lineWidth = 1; ctx.font = `10.5px ${FD}`; ctx.fillStyle = th.ink3; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; [0.02, 0.1, 0.3, 0.7].forEach(t => { const p = iso(t); ctx.beginPath(); p.forEach((q, i) => i ? ctx.lineTo(X(q[0]), Y(q[1])) : ctx.moveTo(X(q[0]), Y(q[1]))); ctx.stroke(); ctx.fillText(`Tv ${t}`, X(uZ(t, 0.22)) + 4, Y(0.22)); });
+    ctx.setLineDash([4, 3]); ctx.strokeStyle = th.line2; ctx.beginPath(); ctx.moveTo(X(1) + .5, pt); ctx.lineTo(X(1) + .5, pt + ph); ctx.stroke(); ctx.setLineDash([]);
+    ctx.strokeStyle = th.H; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.beginPath(); iso(Tv).forEach((p, i) => i ? ctx.lineTo(X(p[0]), Y(p[1])) : ctx.moveTo(X(p[0]), Y(p[1]))); ctx.stroke();
+    ctx.strokeStyle = th.line2; ctx.lineWidth = 1; ctx.strokeRect(pl + .5, pt + .5, pw, ph);
+    ctx.setLineDash([5, 4]); ctx.strokeStyle = th.Hink; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(pl, pt + .5); ctx.lineTo(pl + pw, pt + .5); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = th.Hink; ctx.font = `600 11px ${FD}`; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText('drained surface, u = 0', pl, pt - 4);
+    ctx.fillStyle = th.ink3; ctx.textAlign = 'right'; ctx.fillText('u / u₀ →', pl + pw, pt - 4);
+    ctx.save(); ctx.beginPath(); ctx.rect(pl, pt + ph + 1, pw, 12); ctx.clip(); ctx.strokeStyle = th.line2; ctx.lineWidth = 1; for (let x = pl - 12; x < pl + pw + 12; x += 8) { ctx.beginPath(); ctx.moveTo(x, pt + ph + 13); ctx.lineTo(x + 12, pt + ph + 1); ctx.stroke(); } ctx.restore();
+    ctx.fillStyle = th.ink3; ctx.font = `11px ${FD}`; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText('sealed base', pl + pw / 2, pt + ph + 16);
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; [0, 0.5, 1].forEach(z => ctx.fillText(z === 0 ? 'z/H = 0' : z, pl - 6, Y(z)));
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top'; [0, 0.5, 1].forEach(u => ctx.fillText(u, X(u), pt + ph + 30));
+    ctx.fillStyle = th.ink2; ctx.font = `600 11px ${FD}`; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillText(`Tv = ${fmtNum(Tv)}`, pl + 6, pt + ph - 6);
+  }
+  function render() {
+    const th = theme(); const Tv = Math.pow(10, +sl.value), Hh = +hs.value, m = state.mat, c = hydDiff(m); const u = U(Tv), t = Tv * Hh * Hh / c;
+    $('#terzTvOut').textContent = fmtNum(Tv); $('#terzHOut').textContent = `${Hh} m`; $('#terzU').textContent = `${(u * 100).toFixed(1)} %`; $('#terzMatName').textContent = m.name; $('#terzT').textContent = fmtTime(t);
+    $('#terzCv').textContent = c >= 1e-2 ? `${fmtNum(c)} m²/s` : `${fmtNum(c * YEAR)} m²/yr`; $('#terzT90').textContent = fmtTime(0.848 * Hh * Hh / c);
+    drawIso(Tv);
+    chart.set({ series: [{ name: 'U(Tv)', color: th.M, pts: Ucurve, width: 2.5, fmt: v => `${(v * 100).toFixed(1)} %` }], marks: [{ x: Tv, y: u, color: th.ink, label: `U = ${(u * 100).toFixed(0)} %`, align: Tv > 0.5 ? 'right' : 'left' }],
+      hlines: [{ y: 0.9, label: 'U = 90 %' }] }).render();
+  }
+  function tick(ts) { raf = 0; const dt = clamp((ts - last) / 1000, 0, 0.05); last = ts; let v = +sl.value + dt * 0.45; if (v >= +sl.max) { v = +sl.max; play.textContent = 'Play'; } else raf = requestAnimationFrame(tick); sl.value = v; render(); }
+  play.addEventListener('click', () => { if (raf) { cancelAnimationFrame(raf); raf = 0; play.textContent = 'Play'; return; } if (+sl.value >= +sl.max) sl.value = sl.min; play.textContent = 'Pause'; last = performance.now(); raf = requestAnimationFrame(tick); });
+  $('#terzReset').addEventListener('click', () => { if (raf) { cancelAnimationFrame(raf); raf = 0; play.textContent = 'Play'; } sl.value = sl.min; render(); });
+  sl.addEventListener('input', render); hs.addEventListener('input', render); onMat(render); render(); renderers.push({ render });
+}
+
+/* ============================================================
+   §6 Undrained heating: Λ
+   ============================================================ */
+function initLambda() {
+  const bars = $('#lamBars'), nS = $('#lamN'), kS = $('#lamKd'), tS = $('#lamT');
+  const lamMax = Math.max(...MATS.map(m => lambdaOf(m)));
+  function render() {
+    bars.innerHTML = MATS.map(m => { const L = lambdaOf(m); const on = m.id === state.mat.id ? ' on' : ''; return `<div class="nm${on}">${m.name}</div><div class="bar${on}"><i style="width:${(L / lamMax * 100).toFixed(1)}%"></i></div><div class="val">${fmtPa(L)}/K</div>`; }).join('');
+    const n = +nS.value, Kd = Math.pow(10, +kS.value) * 1e9, T = +tS.value, Ks = 30e9; const a = Math.max(0, 1 - Kd / Ks); const S = a * a / Kd + (a - n) / Ks + n / KW; const L = n * (betaW(T) - BS) / S;
+    $('#lamNOut').textContent = n.toFixed(2); $('#lamKdOut').textContent = `${fmtNum(Kd / 1e9)} GPa`; $('#lamTOut').textContent = `${T} °C`;
+    $('#lamVal').innerHTML = `${fmtPa(L)}<small> /K</small>`; $('#lamAlpha').textContent = a.toFixed(2); $('#lamBw').innerHTML = `${(betaW(T) * 1e4).toFixed(2)}<small> ×10⁻⁴ /K</small>`; $('#lamDp').textContent = fmtPa(L * 40);
+  }
+  [nS, kS, tS].forEach(s => s.addEventListener('input', render));
+  onMat(m => { nS.value = m.n; kS.value = clamp(Math.log10(m.Kd / 1e9), +kS.min, +kS.max); render(); });
+  render(); renderers.push({ render });
+}
+
+/* ============================================================
+   §6 Booker & Savvidou point heat source
+   ============================================================ */
+function initBS() {
+  const qS = $('#bsQ'), rS = $('#bsRatio'), lS = $('#bsLam'), tS = $('#bsT'), radS = $('#bsR');
+  const tticks = [{ v: 1, l: '1 d' }, { v: 7, l: '1 wk' }, { v: 30.4, l: '1 mo' }, { v: 365.25, l: '1 yr' }, { v: 3652.5, l: '10 yr' }, { v: 36525, l: '100 yr' }];
+  const cPT = new Chart($('#bsProfT'), { title: 'Temperature rise ΔT(r) at the chosen time', xlabel: 'distance r from source (m)', ylabel: 'K', xd: [0.25, 8], mt: 30, ml: 48, mb: 34, xtip: v => `r = ${v.toFixed(2)} m` });
+  const cPP = new Chart($('#bsProfP'), { title: 'Pore pressure p(r) at the chosen time', xlabel: 'distance r from source (m)', ylabel: 'MPa', xd: [0.25, 8], mt: 30, ml: 48, mb: 34, xtip: v => `r = ${v.toFixed(2)} m` });
+  const cHT = new Chart($('#bsHistT'), { title: 'Temperature rise at the chosen radius', xlabel: 'time', ylabel: 'K', xlog: true, xd: [1, 36525], xticks: tticks, mt: 30, ml: 48, mb: 34, xtip: v => fmtTime(v * DAY) });
+  const cHP = new Chart($('#bsHistP'), { title: 'Pore pressure at the chosen radius', xlabel: 'time', ylabel: 'MPa', xlog: true, xd: [1, 36525], xticks: tticks, mt: 30, ml: 48, mb: 34, xtip: v => fmtTime(v * DAY) });
+  function sol(r, t, Q, lam, kap, c, Lam) { const eT = erfc(r / (2 * Math.sqrt(kap * t))); const T = Q / (4 * Math.PI * lam * r) * eT; if (Math.abs(c / kap - 1) < 2e-3) c = kap * 1.002; const p = Lam * Q / (4 * Math.PI * lam * r) * kap / (kap - c) * (eT - erfc(r / (2 * Math.sqrt(c * t)))); return [T, p]; }
+  function render() {
+    const th = theme(); const m = state.mat; const lam = m.lam, kap = thermDiff(m); const ratio = Math.pow(10, +rS.value), c = kap * ratio; const Lam = +lS.value * 1e6, Q = +qS.value; const t = Math.pow(10, +tS.value) * DAY, r0 = +radS.value;
+    $('#bsQOut').textContent = `${Q} W`; $('#bsRatioOut').textContent = fmtNum(ratio); $('#bsLamOut').textContent = `${(+lS.value).toFixed(2)} MPa/K`; $('#bsTOut').textContent = fmtTime(t); $('#bsROut').textContent = `${r0.toFixed(1)} m`;
+    $('#bsKap').textContent = `${fmtSci(kap, 1)} m²/s`; $('#bsC').textContent = `${fmtSci(c, 1)} m²/s`;
+    const pT = [], pP = []; for (let i = 0; i <= 120; i++) { const r = 0.25 + (8 - 0.25) * i / 120; const [T, p] = sol(r, t, Q, lam, kap, c, Lam); pT.push([r, T]); pP.push([r, p / 1e6]); }
+    const hT = [], hP = []; let pk = { p: -1, t: 0 }; for (let l = 0; l <= Math.log10(36525) + 1e-9; l += 0.025) { const td = Math.pow(10, l); const [T, p] = sol(r0, td * DAY, Q, lam, kap, c, Lam); hT.push([td, T]); hP.push([td, p / 1e6]); if (p > pk.p) pk = { p, t: td }; }
+    $('#bsPeak').textContent = fmtPa(pk.p); $('#bsPeakT').textContent = fmtTime(pk.t * DAY);
+    const yT = niceCeil(Math.max(pT[0][1], 1)), yP = niceCeil(Math.max(...pP.map(p => p[1]), ...hP.map(p => p[1]), 0.01));
+    cPT.set({ yd: [0, yT], series: [{ name: 'ΔT', color: th.T, pts: pT, width: 2.5, fill: rgba(th.T, .12), fmt: v => `${v.toFixed(1)} K` }], vlines: [{ x: r0, label: `r = ${r0.toFixed(1)} m` }] }).render();
+    cPP.set({ yd: [0, yP], series: [{ name: 'p', color: th.H, pts: pP, width: 2.5, fill: rgba(th.H, .12), fmt: v => `${v.toFixed(2)} MPa` }], vlines: [{ x: r0, label: `r = ${r0.toFixed(1)} m` }] }).render();
+    cHT.set({ yd: [0, niceCeil(Math.max(...hT.map(p => p[1]), 1))], series: [{ name: 'ΔT', color: th.T, pts: hT, width: 2.5, fill: rgba(th.T, .12), fmt: v => `${v.toFixed(1)} K` }], vlines: [{ x: t / DAY, label: fmtTime(t) }] }).render();
+    cHP.set({ yd: [0, yP], series: [{ name: 'p', color: th.H, pts: hP, width: 2.5, fill: rgba(th.H, .12), fmt: v => `${v.toFixed(2)} MPa` }], vlines: [{ x: t / DAY, label: fmtTime(t) }], marks: [{ x: pk.t, y: pk.p / 1e6, color: th.ink, label: 'peak', align: pk.t > 3000 ? 'right' : 'left', dy: -2 }] }).render();
+  }
+  [qS, rS, lS, tS, radS].forEach(s => s.addEventListener('input', render));
+  onMat(m => { rS.value = clamp(Math.log10(hydDiff(m) / thermDiff(m)), +rS.min, +rS.max); lS.value = clamp(lambdaOf(m) / 1e6, +lS.min, +lS.max).toFixed(2); render(); });
+  render(); renderers.push({ render });
+}
+
+/* ============================================================
+   §7 Live 2D simulation: heater in a saturated ground
+   ============================================================ */
+function initSim() {
+  const NX = 96, NY = 60, DX = 0.25, N = NX * NY; let T = new Float32Array(N), P = new Float32Array(N), T2 = new Float32Array(N), P2 = new Float32Array(N);
+  const cvT = $('#simT'), cvP = $('#simP'); const ctxT = cvT.getContext('2d'), ctxP = cvP.getContext('2d'); const imgT = ctxT.createImageData(NX, NY), imgP = ctxP.createImageData(NX, NY);
+  const HX0 = 40, HX1 = 56, HY0 = 28, HY1 = 32, PX = 48, PY = 24, TMAX = 90, PMAX = 5e6;
+  const fig = cvT.closest('.fig'); let time = 0, running = !REDUCED, visible = false, raf = 0, lutT, lutP, hist = [], frames = 0, pointer = null;
+  [cvT, cvP].forEach(cv => { const wrap = document.createElement('div'); wrap.className = 'simcv'; cv.parentNode.insertBefore(wrap, cv); wrap.appendChild(cv); const pr = document.createElement('i'); pr.className = 'probe'; pr.style.left = `${(PX + .5) / NX * 100}%`; pr.style.top = `${(PY + .5) / NY * 100}%`; wrap.appendChild(pr);
+    cv.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); pointer = { i: clamp(Math.floor((e.clientX - r.left) / r.width * NX), 0, NX - 1), j: clamp(Math.floor((e.clientY - r.top) / r.height * NY), 0, NY - 1) }; status(); }); cv.addEventListener('pointerleave', () => { pointer = null; status(); }); });
+  const chT = new Chart($('#simHistT'), { title: 'ΔT at the probe', xlabel: 'time (yr)', ylabel: 'K', mt: 28, ml: 54, mb: 32, xd: [0, 1], yd: [0, 10], xtip: v => fmtTime(v * YEAR) });
+  const chP = new Chart($('#simHistP'), { title: 'Pore pressure at the probe', xlabel: 'time (yr)', ylabel: 'MPa', mt: 28, ml: 54, mb: 32, xd: [0, 1], yd: [0, 1], xtip: v => fmtTime(v * YEAR) });
+  function luts() { const th = theme(); lutT = th.dark ? ramp(['#1e1f1d', '#7a2f10', '#e0622d', '#ffcda8']) : ramp(['#f3ebe5', '#f2a678', '#e0622d', '#8a2c0c']); lutP = th.dark ? ramp(['#1b2026', '#1b4f90', '#3987e5', '#c0d9f7']) : ramp(['#e7edf5', '#8fb8ea', '#2a78d6', '#0d366b']);
+    [['#cbT', lutT], ['#cbP', lutP]].forEach(([id, lut]) => { const c = $(id).getContext('2d'); const im = c.createImageData(256, 10); for (let x = 0; x < 256; x++) for (let y = 0; y < 10; y++) { const k = (y * 256 + x) * 4; im.data[k] = lut[x * 3]; im.data[k + 1] = lut[x * 3 + 1]; im.data[k + 2] = lut[x * 3 + 2]; im.data[k + 3] = 255; } c.putImageData(im, 0, 0); }); }
+  function params() { const m = state.mat; const kap = thermDiff(m), c = kap * Math.pow(10, +$('#simRatio').value), Lam = +$('#simLam').value * 1e6, q = +$('#simFlow').value / YEAR, vT = RHOW * CW / m.rhoc * q, src = +$('#simPower').value / (4 * 1 * m.rhoc);
+    let dt = 0.2 * DX * DX / Math.max(kap, c); if (vT > 0) dt = Math.min(dt, 0.5 * DX / vT); return { kap, c, Lam, vT, src, dt, q, lam: m.lam }; }
+  function step(pr) { const { kap, c, Lam, vT, src, dt } = pr; const kd = kap * dt / (DX * DX), cd = c * dt / (DX * DX), ad = vT * dt / DX;
+    for (let j = 1; j < NY - 1; j++) { const heatRow = j >= HY0 && j < HY1; for (let i = 1; i < NX - 1; i++) { const k = j * NX + i; const t = T[k]; let v = t + kd * (T[k + 1] + T[k - 1] + T[k + NX] + T[k - NX] - 4 * t); if (ad > 0) v -= ad * (t - T[k - 1]); if (heatRow && i >= HX0 && i < HX1) v += src * dt; T2[k] = v; P2[k] = P[k] + cd * (P[k + 1] + P[k - 1] + P[k + NX] + P[k - NX] - 4 * P[k]) + Lam * (v - t); } }
+    let s = T; T = T2; T2 = s; s = P; P = P2; P2 = s; time += dt; }
+  function paint() { const th = theme(); const ink = hexRgb(th.ink); let tmax = 0, pmax = 0;
+    for (let k = 0; k < N; k++) { const j = (k / NX) | 0, i = k - j * NX; const heater = i >= HX0 && i < HX1 && j >= HY0 && j < HY1; if (T[k] > tmax) tmax = T[k]; if (P[k] > pmax) pmax = P[k];
+      const a = Math.round(clamp(T[k] / TMAX, 0, 1) * 255) * 3, b = Math.round(clamp(P[k] / PMAX, 0, 1) * 255) * 3, o = k * 4;
+      imgT.data[o] = heater ? ink[0] : lutT[a]; imgT.data[o + 1] = heater ? ink[1] : lutT[a + 1]; imgT.data[o + 2] = heater ? ink[2] : lutT[a + 2]; imgT.data[o + 3] = 255;
+      imgP.data[o] = heater ? ink[0] : lutP[b]; imgP.data[o + 1] = heater ? ink[1] : lutP[b + 1]; imgP.data[o + 2] = heater ? ink[2] : lutP[b + 2]; imgP.data[o + 3] = 255; }
+    ctxT.putImageData(imgT, 0, 0); ctxP.putImageData(imgP, 0, 0); $('#simTmax').textContent = `max ${tmax.toFixed(1)} K`; $('#simPmax').textContent = `max ${fmtPa(pmax)}`; }
+  function status(pr) { pr = pr || params(); $('#simTime').textContent = fmtTime(time); $('#simPe').textContent = fmtNum(RHOW * CW * pr.q * 4 / pr.lam); const k = PY * NX + PX; $('#simProbe').textContent = `${T[k].toFixed(1)} K · ${fmtPa(P[k])}`;
+    $('#simPointer').textContent = pointer ? `x ${(pointer.i * DX - 12 + .125).toFixed(1)} m, y ${(7.5 - pointer.j * DX - .125).toFixed(1)} m · ${T[pointer.j * NX + pointer.i].toFixed(1)} K · ${fmtPa(P[pointer.j * NX + pointer.i])}` : '–';
+    $('#simPowerOut').textContent = `${$('#simPower').value} W/m`; $('#simFlowOut').textContent = `${$('#simFlow').value} m/yr`; $('#simRatioOut').textContent = fmtNum(Math.pow(10, +$('#simRatio').value)); $('#simLamOut').textContent = `${(+$('#simLam').value).toFixed(2)} MPa/K`; }
+  function charts() { const th = theme(); const tmax = Math.max(hist.length ? hist[hist.length - 1][0] : 0, 0.02); const ymT = niceCeil(Math.max(...hist.map(h => h[1]), 1)), ymP = niceCeil(Math.max(...hist.map(h => h[2]), 0.1));
+    chT.set({ xd: [0, niceCeil(tmax)], yd: [0, ymT], series: [{ name: 'ΔT', color: th.T, pts: hist.map(h => [h[0], h[1]]), width: 2, fill: rgba(th.T, .12), fmt: v => `${v.toFixed(1)} K` }] }).render();
+    chP.set({ xd: [0, niceCeil(tmax)], yd: [0, ymP], series: [{ name: 'p', color: th.H, pts: hist.map(h => [h[0], h[2]]), width: 2, fill: rgba(th.H, .12), fmt: v => `${v.toFixed(2)} MPa` }] }).render(); }
+  function frame() { raf = 0; if (!visible || !running) return; const pr = params(); const n = clamp(Math.round(2.5 * DAY / pr.dt), 1, 90); for (let s = 0; s < n; s++) step(pr);
+    const k = PY * NX + PX; hist.push([time / YEAR, T[k], P[k] / 1e6]); if (hist.length > 600) hist = hist.filter((_, i) => i % 2 === 0);
+    paint(); status(pr); $('#simSteps').textContent = `${n} × ${fmtTime(pr.dt)}`; if (++frames % 5 === 0) charts(); raf = requestAnimationFrame(frame); }
+  function start() { if (!raf && visible && running) raf = requestAnimationFrame(frame); }
+  function reset() { T.fill(0); P.fill(0); T2.fill(0); P2.fill(0); time = 0; hist = []; frames = 0; paint(); status(); charts(); }
+  $('#simRun').addEventListener('click', e => { running = !running; e.target.textContent = running ? 'Pause' : 'Run'; start(); });
+  $('#simReset').addEventListener('click', reset);
+  ['#simPower', '#simFlow', '#simRatio', '#simLam'].forEach(id => $(id).addEventListener('input', () => status()));
+  onMat(m => { $('#simRatio').value = clamp(Math.log10(hydDiff(m) / thermDiff(m)), -1.5, 1.5); $('#simLam').value = clamp(lambdaOf(m) / 1e6, 0, 0.3).toFixed(2); reset(); });
+  onVisible(fig, v => { visible = v; if (v) start(); });
+  if (REDUCED) $('#simRun').textContent = 'Run';
+  luts(); reset();
+  renderers.push({ render: () => { luts(); paint(); charts(); } });
+}
+
+/* ============================================================
+   §8 Diffusion time against length
+   ============================================================ */
+function initScale() {
+  const chart = new Chart($('#scaleChart'), { xlog: true, ylog: true, xlabel: 'length L (m)', ylabel: 'diffusion time L² / D', xd: [0.1, 1000], yd: [1, 1e14], ml: 62, mb: 40,
+    yticks: [{ v: 1, l: '1 s' }, { v: 60, l: '1 min' }, { v: 3600, l: '1 h' }, { v: DAY, l: '1 day' }, { v: YEAR, l: '1 yr' }, { v: 1e3 * YEAR, l: '1 kyr' }, { v: 1e6 * YEAR, l: '1 Myr' }], xfmt: fmtPow, tipfmt: fmtTime, xtip: v => `L = ${fmtNum(v)} m` });
+  const pts = D => { const a = []; for (let l = -1; l <= 3 + 1e-9; l += 0.1) { const L = Math.pow(10, l); a.push([L, L * L / D]); } return a; };
+  const at = { opalinus: 400, boom: 120, granite: 40, sandstone: 12, sand: 3.5 };
+  function render() { const th = theme(); const series = [{ name: 'thermal, κ = 10⁻⁶ m²/s', color: th.T, pts: pts(1e-6), width: 3, label: 'thermal, any material', labelAt: 20, labelBelow: true, labelInk: th.Tink, labelBold: true }];
+    MATS.forEach(m => { const cur = m.id === state.mat.id; series.push({ name: `hydraulic, ${m.name}`, color: cur ? th.H : rgba(th.H, .38), width: cur ? 2.5 : 1.25, pts: pts(hydDiff(m)), label: m.name, labelAt: at[m.id], labelInk: cur ? th.ink : th.ink3, labelBold: cur }); });
+    chart.set({ series, legend: false }).render(); }
+  chart.o.legend = false; onMat(render); render(); renderers.push({ render });
+}
+
+/* ============================================================
+   Wiring: materials, navigation, theme, resize
+   ============================================================ */
+function note() { const m = state.mat, kap = thermDiff(m), c = hydDiff(m); $('#matNote').innerHTML = `<b>${m.kind}</b><br>k = ${fmtSci(m.k, 0)} m² · n = ${m.n}<br>κ = ${fmtSci(kap, 1)} m²/s<br>c/κ = ${fmtSci(c / kap, 1)} · Λ = ${fmtPa(lambdaOf(m))}/K`; }
+function setMat(id) { state.mat = matById(id); $('#matSel').value = id; note(); matSubs.forEach(f => f(state.mat)); }
+function initMaterials() { const sel = $('#matSel'); MATS.forEach(m => { const o = document.createElement('option'); o.value = m.id; o.textContent = m.name; sel.appendChild(o); }); sel.value = state.mat.id; sel.addEventListener('change', () => setMat(sel.value)); note(); }
+function initNav() { const links = $$('.rail nav a'); const secs = links.map(a => $(a.getAttribute('href'))).filter(Boolean); if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)); }); }, { rootMargin: '-30% 0px -60% 0px' }); secs.forEach(s => io.observe(s)); }
+function rerender() { THEME = null; renderers.forEach(r => r.render && r.render()); }
+
+initMaterials(); initHero(); initRev(); initDarcy(); initPeclet(); initMohr(); initCouplings(); initEquations(); initTerz(); initLambda(); initBS(); initSim(); initScale(); initNav();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rerender);
+new MutationObserver(rerender).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { THEME = null; renderers.forEach(r => r.resize ? r.resize() : r.render && r.render()); }, 150); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(rerender);
+})();
+</script>
+</body>
+</html>

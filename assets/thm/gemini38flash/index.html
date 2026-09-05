@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thermo-Hydro-Mechanical (THM) Processes in Porous Media | Interactive Scientific Platform</title>
+  <meta name="description" content="An interactive, mathematically rigorous exploration of coupled Thermo-Hydro-Mechanical (THM) processes in porous rock and soil, featuring real-time numerical solvers, KaTeX formula inspector, and engineering simulations.">
+  <meta name="keywords" content="Thermo-Hydro-Mechanical, THM, Porous Media, Poroelasticity, Biot, Terzaghi, Darcy Flow, Thermal Pressurization, Geomechanics, Induced Seismicity, Nuclear Waste Disposal">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for high-performance LaTeX rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- Sticky Header & Navigation -->
+  <header class="app-header">
+    <div class="brand-container">
+      <div class="brand-logo-icon">⬡</div>
+      <div class="brand-title-group">
+        <h1>THM Porous Media</h1>
+        <span class="brand-subtitle">Thermo-Hydro-Mechanical Scientific Lab</span>
+      </div>
+    </div>
+
+    <nav aria-label="Main Navigation">
+      <ul class="nav-links">
+        <li><a href="#coupling-matrix" class="nav-tab active" data-target="coupling-matrix">THM Triangle</a></li>
+        <li><a href="#math-principles" class="nav-tab" data-target="math-principles">Mathematics</a></li>
+        <li><a href="#sim-1d-lab" class="nav-tab" data-target="sim-1d-lab">1D Consolidation</a></li>
+        <li><a href="#sim-2d-lab" class="nav-tab" data-target="sim-2d-lab">2D Micro-Meso</a></li>
+        <li><a href="#sim-mohr-lab" class="nav-tab" data-target="sim-mohr-lab">Mohr & Seismicity</a></li>
+        <li><a href="#sim-nuclear-lab" class="nav-tab" data-target="sim-nuclear-lab">Nuclear Barrier</a></li>
+        <li><a href="#case-studies" class="nav-tab" data-target="case-studies">Case Studies</a></li>
+        <li><a href="#dimensionless-sandbox" class="nav-tab" data-target="dimensionless-sandbox">Sandbox</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button id="audio-toggle-btn" class="sound-toggle-btn" title="Toggle audio feedback">🔇 Sound: OFF</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="hero-badge-strip">
+      <span class="dot"></span>
+      <span>Coupled Continuum Mechanics & Pore-Scale Physics</span>
+    </div>
+    <h1 class="hero-title">Thermo-Hydro-Mechanical <br><span class="gradient-text">Processes in Porous Media</span></h1>
+    <p class="hero-lead">
+      Porous geomaterials—from deep clay formations and granitic fracture networks to water-bearing aquifers—exhibit 
+      complex, non-linear feedback loops between <strong>heat conduction and advection</strong>, 
+      <strong>Darcy fluid seepage</strong>, and <strong>poroelastic matrix deformation</strong>.
+    </p>
+  </header>
+
+  <main class="main-container">
+
+    <!-- ==========================================
+         SECTION 1: The THM Triangle & Coupling Matrix
+         ========================================== -->
+    <section id="coupling-matrix" class="app-section active">
+      <div class="section-header">
+        <span class="section-tag">Fundamental Coupling Architecture</span>
+        <h2 class="section-title">The Coupled THM Triangle</h2>
+        <p class="section-desc">
+          Click any vertex or directional coupling pathway in the interactive network below to discover how 
+          microscopic pore mechanisms translate into macroscopic continuum field equations and geological phenomena.
+        </p>
+      </div>
+
+      <div class="thm-triangle-grid">
+        <div id="thm-triangle-container">
+          <!-- Populated by CouplingMatrixUI -->
+        </div>
+
+        <div id="coupling-detail-container">
+          <!-- Populated by CouplingMatrixUI with selected pathway card -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 2: Mathematical Principles & Inspector
+         ========================================== -->
+    <section id="math-principles" class="app-section">
+      <div class="section-header">
+        <span class="section-tag">Continuum Formulations</span>
+        <h2 class="section-title">Mathematical Principles & Governing Equations</h2>
+        <p class="section-desc">
+          The coupled THM behavior is formulated by combining linear momentum balance for the solid skeleton, 
+          mass conservation for the compressible pore fluid, and energy conservation for the multi-phase mixture.
+        </p>
+      </div>
+
+      <div id="formula-inspector-container">
+        <!-- Populated by FormulaInspectorUI -->
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 3A: 1D Coupled THM Consolidation Column
+         ========================================== -->
+    <section id="sim-1d-lab" class="app-section">
+      <div class="section-header">
+        <span class="section-tag">Real-Time Numerical PDE Solver</span>
+        <h2 class="section-title">1D Coupled THM Consolidation & Heating Column</h2>
+        <p class="section-desc">
+          Solves the coupled 1D Biot-Terzaghi-Thermal system in real time. Observe how thermal expansion initially triggers 
+          <strong>rapid surface heave and severe pore overpressure</strong>, followed by hydraulic drainage and 
+          <strong>consolidation settlement</strong>.
+        </p>
+      </div>
+
+      <div class="simulator-layout">
+        <!-- Control Dock -->
+        <aside class="sim-control-panel glass-panel">
+          <h3 class="panel-title">Column Parameters</h3>
+
+          <div class="form-group">
+            <label class="form-label" for="preset-select-1d">Geological Scenario Preset:</label>
+            <select id="preset-select-1d" class="custom-select">
+              <option value="nuclear_clay" selected>Deep Nuclear Buffer (Claystone)</option>
+              <option value="geothermal_cooling">Geothermal Cold Injection (Granite)</option>
+              <option value="terzaghi_consolidation">Terzaghi Pure Mechanical Consolidation</option>
+              <option value="thermal_pressurization_fault">Fault Zone Frictional Heating</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label class="form-label" for="slider-1d-temp">Base Heat Source Temperature:</label>
+              <span class="slider-val" id="val-1d-temp">90°C</span>
+            </div>
+            <input type="range" id="slider-1d-temp" class="custom-slider" min="20" max="150" value="90">
+          </div>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label class="form-label" for="slider-1d-perm">Matrix Permeability log10(k):</label>
+              <span class="slider-val" id="val-1d-perm">10^-20 m²</span>
+            </div>
+            <input type="range" id="slider-1d-perm" class="custom-slider" min="-21" max="-13" value="-20">
+          </div>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label class="form-label" for="slider-1d-surcharge">Surface Mechanical Surcharge:</label>
+              <span class="slider-val" id="val-1d-surcharge">0.0 MPa</span>
+            </div>
+            <input type="range" id="slider-1d-surcharge" class="custom-slider" min="0" max="10" step="0.5" value="0">
+          </div>
+
+          <div class="btn-row">
+            <button id="btn-play-1d" class="action-btn primary">⏸ Pause</button>
+            <button id="btn-reset-1d" class="action-btn">↺ Reset</button>
+          </div>
+        </aside>
+
+        <!-- Canvas & Profiles View -->
+        <div class="sim-canvas-panel">
+          <div id="metrics-1d-summary" class="metrics-bar">
+            <!-- Dynamic readouts -->
+          </div>
+
+          <div class="canvas-wrapper">
+            <canvas id="canvas-thm-1d" width="860" height="380"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 3B: 2D Porous Media Micro-Meso Playground
+         ========================================== -->
+    <section id="sim-2d-lab" class="app-section">
+      <div class="section-header">
+        <span class="section-tag">Micro-to-Meso Interactive Canvas</span>
+        <h2 class="section-title">2D Porous Media Playground</h2>
+        <p class="section-desc">
+          Interact directly with the porous continuum! Click or drag across the grid to inject heat, pump fluid, 
+          apply compressive mechanical loads, or draw impermeable barriers. Watch pore tracer particles respond 
+          to non-isothermal Darcy velocity fields.
+        </p>
+      </div>
+
+      <div class="simulator-layout">
+        <!-- Interactive Tool Palette -->
+        <aside class="sim-control-panel glass-panel">
+          <h3 class="panel-title">Interactive Tools</h3>
+
+          <div class="toolbar-strip">
+            <button class="tool-btn active" data-tool="heat_source">🔥 Heat Source</button>
+            <button class="tool-btn" data-tool="cold_sink">❄️ Cooling Sink</button>
+            <button class="tool-btn" data-tool="fluid_inject">💧 Inject Fluid</button>
+            <button class="tool-btn" data-tool="fluid_pump">⚡ Pump / Extract</button>
+            <button class="tool-btn" data-tool="mech_press">🔨 Compress Load</button>
+            <button class="tool-btn" data-tool="barrier">🧱 Low-Perm Barrier</button>
+          </div>
+
+          <h3 class="panel-title" style="margin-top: 0.5rem;">Visualization Field</h3>
+          <div class="toolbar-strip">
+            <button class="view-btn active" data-view="temperature">Temperature Heatmap</button>
+            <button class="view-btn" data-view="pressure">Pore Pressure Field</button>
+            <button class="view-btn" data-view="strain">Volumetric Strain</button>
+            <button class="view-btn" data-view="micro_grains">Micro Solid Grains</button>
+          </div>
+
+          <div class="form-group" style="margin-top: 0.5rem;">
+            <label class="chk-label">
+              <input type="checkbox" id="chk-particles-2d" checked>
+              <span>Show Pore Fluid Stream Particles</span>
+            </label>
+            <label class="chk-label">
+              <input type="checkbox" id="chk-vectors-2d" checked>
+              <span>Show Darcy Velocity Vector Arrows</span>
+            </label>
+          </div>
+
+          <div class="btn-row" style="margin-top: 0.5rem;">
+            <button id="btn-clear-2d" class="action-btn">↺ Reset Field</button>
+          </div>
+        </aside>
+
+        <!-- 2D Canvas -->
+        <div class="sim-canvas-panel">
+          <div class="canvas-wrapper">
+            <canvas id="canvas-thm-2d" width="860" height="440"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 3C: Mohr-Coulomb & Induced Seismicity
+         ========================================== -->
+    <section id="sim-mohr-lab" class="app-section">
+      <div class="section-header">
+        <span class="section-tag">Geothermal Stimulation & Fault Reactivation</span>
+        <h2 class="section-title">Mohr-Coulomb & Induced Seismicity Simulator</h2>
+        <p class="section-desc">
+          Fluid injection increases pore pressure ($p$), shifting effective stresses left. Simultaneously, cold water injection 
+          induces thermal contraction ($\Delta \sigma_{\text{th}} < 0$), reducing confining stress. When the Mohr circle touches 
+          the failure envelope, catastrophic shear rupture occurs!
+        </p>
+      </div>
+
+      <div class="simulator-layout">
+        <!-- Mohr Sliders -->
+        <aside class="sim-control-panel glass-panel">
+          <h3 class="panel-title">Stress & Thermal Controls</h3>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label class="form-label" for="slider-mohr-p">Pore Pressure (p):</label>
+              <span class="slider-val" id="val-mohr-p">8.0 MPa</span>
+            </div>
+            <input type="range" id="slider-mohr-p" class="custom-slider" min="0" max="25" step="0.5" value="8">
+          </div>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label class="form-label" for="slider-mohr-deltaT">Thermal Perturbation (ΔT):</label>
+              <span class="slider-val" id="val-mohr-deltaT">0 °C</span>
+            </div>
+            <input type="range" id="slider-mohr-deltaT" class="custom-slider" min="-60" max="20" step="1" value="0">
+          </div>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label class="form-label" for="slider-mohr-sigma3">Total Confining Stress (σ₃):</label>
+              <span class="slider-val" id="val-mohr-sigma3">25 MPa</span>
+            </div>
+            <input type="range" id="slider-mohr-sigma3" class="custom-slider" min="15" max="40" step="1" value="25">
+          </div>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label class="form-label" for="slider-mohr-cohesion">Cohesion (c):</label>
+              <span class="slider-val" id="val-mohr-cohesion">3 MPa</span>
+            </div>
+            <input type="range" id="slider-mohr-cohesion" class="custom-slider" min="0" max="8" step="0.5" value="3">
+          </div>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label class="form-label" for="slider-mohr-friction">Friction Angle (φ):</label>
+              <span class="slider-val" id="val-mohr-friction">31 °</span>
+            </div>
+            <input type="range" id="slider-mohr-friction" class="custom-slider" min="20" max="45" step="1" value="31">
+          </div>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label class="form-label" for="slider-mohr-angle">Fault Dip / Strike Angle (θ):</label>
+              <span class="slider-val" id="val-mohr-angle">60 °</span>
+            </div>
+            <input type="range" id="slider-mohr-angle" class="custom-slider" min="30" max="80" step="1" value="60">
+          </div>
+        </aside>
+
+        <!-- Mohr Canvas & Waveform -->
+        <div class="sim-canvas-panel">
+          <div id="seismic-event-status" class="seismic-alert-box">
+            Status: Confined within elastic envelope. Adjust pore pressure or cooling to test stability.
+          </div>
+
+          <div class="canvas-wrapper">
+            <canvas id="canvas-mohr-coulomb" width="600" height="340"></canvas>
+          </div>
+
+          <div class="canvas-wrapper" style="height: 90px;">
+            <canvas id="canvas-waveform" width="600" height="90"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 3D: Deep Geological Nuclear Waste Barrier
+         ========================================== -->
+    <section id="sim-nuclear-lab" class="app-section">
+      <div class="section-header">
+        <span class="section-tag">Multi-Barrier Disposal Concept</span>
+        <h2 class="section-title">Deep Geological Nuclear Waste Repository (KBS-3 Benchmark)</h2>
+        <p class="section-desc">
+          Tracks the multi-decade coupled evolution of a high-level nuclear waste deposition hole. Canister radioactive heat 
+          decays according to isotope half-lives, while water from the host rock infiltrates the compacted bentonite buffer, 
+          generating high swelling pressure ($\sim 7\,\text{MPa}$) to seal technological voids.
+        </p>
+      </div>
+
+      <div class="simulator-layout">
+        <!-- Controls -->
+        <aside class="sim-control-panel glass-panel">
+          <h3 class="panel-title">Timeline & Controls</h3>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label class="form-label" for="slider-nuclear-years">Deposition Elapsed Time:</label>
+              <span class="slider-val" id="val-nuclear-years">5.0 Yrs</span>
+            </div>
+            <input type="range" id="slider-nuclear-years" class="custom-slider" min="0" max="4" step="0.05" value="0.7">
+            <small style="color: #64748b; font-size: 0.75rem;">Log scale: 1 Year to 10,000 Years</small>
+          </div>
+
+          <div class="btn-row">
+            <button id="btn-play-nuclear" class="action-btn primary">▶ Animate Timeline</button>
+          </div>
+
+          <div class="coupling-subpanel" style="margin-top: 1rem;">
+            <h4><span class="icon">🛡️</span> Engineered Multi-Barrier System</h4>
+            <p>
+              <strong>1. Copper Canister:</strong> Corrosion-resistant outer shell.<br>
+              <strong>2. MX-80 Bentonite Buffer:</strong> Low hydraulic conductivity ($10^{-21}\,\text{m}^2$) and self-healing swelling.<br>
+              <strong>3. Host Rock:</strong> Granite or Opalinus claystone geosphere.
+            </p>
+          </div>
+        </aside>
+
+        <!-- Canvas -->
+        <div class="sim-canvas-panel">
+          <div class="canvas-wrapper">
+            <canvas id="canvas-nuclear-barrier" width="860" height="340"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 4: Engineering Case Studies
+         ========================================== -->
+    <section id="case-studies" class="app-section">
+      <div class="section-header">
+        <span class="section-tag">Real-World Engineering Challenges</span>
+        <h2 class="section-title">Case Studies & Field Applications</h2>
+        <p class="section-desc">
+          How THM processes govern modern energy, geo-environmental, and climate resilience projects across the globe.
+        </p>
+      </div>
+
+      <div class="case-studies-grid">
+        <article class="case-card">
+          <div class="case-icon-box">☢️</div>
+          <h3>Deep Geological Waste Repositories</h3>
+          <p>
+            Repositories in Switzerland (Opalinus Clay), France (Callovo-Oxfordian), and Sweden/Finland (KBS-3 Granite) 
+            must verify that canister decay heat does not exceed the illitization threshold ($100^\circ\text{C}$) or 
+            induce fracturing by thermal pressurization before bentonite swelling fully seals the excavation damage zone (EDZ).
+          </p>
+          <div class="case-tags">
+            <span class="case-tag">Thermal Pressurization</span>
+            <span class="case-tag">Bentonite Swelling</span>
+            <span class="case-tag">EDZ Healing</span>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-icon-box">♨️</div>
+          <h3>Enhanced Geothermal Systems (EGS)</h3>
+          <p>
+            High-pressure cold water injection into deep crystalline basements (e.g. Utah FORGE, Basel, Soultz-sous-Forêts) 
+            causes coupled hydraulic shear stimulation and thermoelastic contraction of fracture walls, enhancing 
+            permeability by orders of magnitude while managing induced seismicity risk.
+          </p>
+          <div class="case-tags">
+            <span class="case-tag">Thermoelastic Contraction</span>
+            <span class="case-tag">Coulomb Failure</span>
+            <span class="case-tag">Microseismicity</span>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-icon-box">🪨</div>
+          <h3>Geological CO₂ Sequestration (CCUS)</h3>
+          <p>
+            Injecting millions of tons of supercritical $CO_2$ creates localized overpressure plumes and intense thermal cooling 
+            near the wellhead (Joule-Thomson cooling). Geomechanical modeling ensures caprock integrity is preserved against 
+            hydraulic fracturing or fault reactivation.
+          </p>
+          <div class="case-tags">
+            <span class="case-tag">Caprock Integrity</span>
+            <span class="case-tag">Joule-Thomson Cooling</span>
+            <span class="case-tag">Fault Reactivation</span>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-icon-box">🏙️</div>
+          <h3>Aquifer Compaction & Land Subsidence</h3>
+          <p>
+            Excessive groundwater extraction reduces pore water pressure, transferring overburden stress onto the compressible 
+            clayey aquitard matrix ($\Delta \sigma' = -\Delta p$). Inelastic pore collapse has caused over 9 meters of land 
+            subsidence in California's San Joaquin Valley and Mexico City.
+          </p>
+          <div class="case-tags">
+            <span class="case-tag">Terzaghi Consolidation</span>
+            <span class="case-tag">Pore Collapse</span>
+            <span class="case-tag">Inelastic Compaction</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 5: Dimensionless Sandbox & Rock Database
+         ========================================== -->
+    <section id="dimensionless-sandbox" class="app-section">
+      <div class="section-header">
+        <span class="section-tag">Analytical Scaling & Characteristic Times</span>
+        <h2 class="section-title">Dimensionless Numbers & Rock Parameter Sandbox</h2>
+        <p class="section-desc">
+          Compare the characteristic time scales of thermal diffusion ($t_{\text{th}} = L^2 / c_{\text{th}}$) and hydraulic 
+          dissipation ($t_h = L^2 / c_v$), and calculate Thermal Péclet numbers across experimental rock types.
+        </p>
+      </div>
+
+      <div id="sandbox-calculator-container">
+        <!-- Populated by SandboxCalculatorUI -->
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p><strong>Thermo-Hydro-Mechanical Processes in Porous Media</strong> &bull; Interactive Scientific Platform</p>
+    <p>Developed with modern Vanilla HTML5, Vanilla CSS3, Canvas 2D Finite Difference PDE Engine, and KaTeX.</p>
+  </footer>
+
+  <!-- Application Module Script -->
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>

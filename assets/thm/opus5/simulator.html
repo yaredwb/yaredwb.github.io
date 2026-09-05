@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 · Reservoir sandbox — THM</title>
+<meta name="description" content="A live two-dimensional thermo-hydro-mechanical solver: inject cold water into a hot reservoir and watch pressure, temperature and induced stress respond.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10' r='6' fill='%23d95926'/%3E%3Ccircle cx='9.5' cy='21' r='6' fill='%233987e5'/%3E%3Ccircle cx='22.5' cy='21' r='6' fill='%23199e70'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/vendor/katex/katex.inline.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="simulator">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell">
+  <nav class="rail" aria-label="Chapters"></nav>
+
+  <main class="content prose" id="main">
+
+    <header class="page-head">
+      <p class="eyebrow">Chapter 07</p>
+      <h1>Reservoir sandbox</h1>
+      <p class="lede">
+        Everything in the previous six chapters, running at once. A geothermal doublet in plan
+        view: cold water goes down the injector, sweeps the reservoir, and comes back up the
+        producer. Pressure responds in hours, temperature in decades, and the rock answers both
+        with stress changes that reach far beyond the cooled volume.
+      </p>
+    </header>
+
+    <div class="fig full" id="simFig">
+      <div class="fig__head">
+        <span class="fig__tag">Figure 7.1</span>
+        <h4 class="fig__title">Two-dimensional THM solver — drag the wells, change the field</h4>
+      </div>
+      <div class="fig__body"></div>
+    </div>
+
+    <h2 id="what" data-nav="What is solved">What is actually being solved</h2>
+
+    <p>
+      Three coupled fields on a finite-difference grid, marched in time. Nothing is pre-computed and
+      nothing is interpolated from a stored solution — the sliders change the equations, not the
+      picture.
+    </p>
+
+    <div class="grid grid--3 full">
+      <div class="card">
+        <span class="pill pill--h">H</span>
+        <h4>Pressure</h4>
+        <p>$S_\varepsilon\,\partial_t p = \nabla\!\cdot\!\big(\tfrac{k}{\mu}\nabla p\big) + q_w$,
+        backward Euler, solved each step by red–black Gauss–Seidel warm-started from the previous
+        step. Constant-pressure far field.</p>
+      </div>
+      <div class="card">
+        <span class="pill pill--t">T</span>
+        <h4>Temperature</h4>
+        <p>$(\rho c)_m\partial_t T + (\rho c)_f\,\vec q\!\cdot\!\nabla T = \nabla\!\cdot\!(\lambda\nabla T)$,
+        first-order upwind for the advection, explicit diffusion, sub-stepped under a CFL
+        condition. The injector holds its cell at the injection temperature.</p>
+      </div>
+      <div class="card">
+        <span class="pill pill--m">M</span>
+        <h4>Displacement</h4>
+        <p>Plane-strain Navier equations with poroelastic and thermoelastic body forces,
+        $\nabla\!\cdot\!(\ten{C}\!:\!\boldsymbol\varepsilon) = \alpha\nabla p + 3K\alpha_T\nabla T$,
+        solved by SOR. Stresses and the Coulomb failure function are formed from the converged
+        displacement field.</p>
+      </div>
+    </div>
+
+    <h2 id="see" data-nav="What to look for">Things worth trying</h2>
+
+    <div class="grid grid--2 full">
+      <div class="card">
+        <h4>Watch the two front speeds</h4>
+        <p>Switch the field to <em>pressure</em> and note that it reaches steady state within the
+        first frames of the run. Switch to <em>temperature</em> and watch the cold plume creep. The
+        ratio of those two timescales — four or five orders of magnitude — is the single most
+        important fact about coupled reservoir behaviour.</p>
+      </div>
+      <div class="card">
+        <h4>Find the stress halo</h4>
+        <p>Switch to <em>Coulomb stress change</em>. There is a positive lobe around the injector
+        from the pressure itself, and a second, growing one around the cooled volume from thermal
+        contraction. The thermal contribution starts small and eventually dominates — which is why
+        induced seismicity at geothermal sites often arrives years after injection begins.</p>
+      </div>
+      <div class="card">
+        <h4>Move the producer</h4>
+        <p>Drag the wells apart and the breakthrough time grows roughly with the square of the
+        spacing, because the swept volume does. Drag them together and you get more flow for less
+        pressure — and a much shorter life.</p>
+      </div>
+      <div class="card">
+        <h4>Break it deliberately</h4>
+        <p>Push the injection rate up until the pressure at the injector exceeds the minimum
+        principal stress. In a real reservoir that is the hydraulic-fracturing threshold, and the
+        model — which knows nothing about fractures — will keep happily computing. Every simulator
+        has an edge like this; knowing where it is <em>is</em> the expertise.</p>
+      </div>
+    </div>
+
+    <div class="callout callout--care">
+      <div class="callout__title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8.5v5M12 16.6v.1"/><path d="M10.3 4.2 2.6 17.6A2 2 0 0 0 4.3 20.6h15.4a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0z"/></svg>
+        Honest limitations
+      </div>
+      <p style="margin:0">
+        This is a teaching model, and it simplifies in ways a design study could not. It is
+        two-dimensional, so the vertical sweep and any gravity segregation are absent. The
+        reservoir is homogeneous — real ones channel, and channelling shortens thermal
+        breakthrough dramatically. Fluid properties are held constant rather than tracked with
+        temperature. Displacement is fixed on the outer boundary, which stiffens the far field.
+        And the rock stays elastic no matter what the Coulomb function says. Every one of those is
+        a deliberate trade for interactivity; each is also a real modelling decision someone has to
+        defend in practice.
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script src="assets/vendor/katex/katex.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/plot.js" defer></script>
+<script src="assets/js/sim2d.js" defer></script>
+</body>
+</html>

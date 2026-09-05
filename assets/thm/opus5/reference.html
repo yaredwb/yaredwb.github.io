@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 · Reference — THM</title>
+<meta name="description" content="Symbols, units, property ranges, dimensionless groups, applications and further reading for thermo-hydro-mechanical modelling of porous media.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='10' r='6' fill='%23d95926'/%3E%3Ccircle cx='9.5' cy='21' r='6' fill='%233987e5'/%3E%3Ccircle cx='22.5' cy='21' r='6' fill='%23199e70'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/vendor/katex/katex.inline.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="reference">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell">
+  <nav class="rail" aria-label="Chapters"></nav>
+
+  <main class="content prose" id="main">
+
+    <header class="page-head">
+      <p class="eyebrow">Chapter 08</p>
+      <h1>Reference</h1>
+      <p class="lede">
+        Symbols and units, the property ranges you need before a model can be built, the
+        dimensionless groups that tell you which physics to keep, where all of this gets used,
+        and where to read the real thing.
+      </p>
+    </header>
+
+    <h2 id="symbols" data-nav="Nomenclature">Nomenclature</h2>
+
+    <div class="tbl-wrap full">
+      <table>
+        <thead><tr><th>Symbol</th><th>Meaning</th><th>SI unit</th><th>Typical range</th></tr></thead>
+        <tbody>
+          <tr><td><span data-math="\vec u"></span></td><td>Solid displacement</td><td>m</td><td>10⁻⁶–10⁰</td></tr>
+          <tr><td><span data-math="p"></span></td><td>Pore fluid pressure</td><td>Pa</td><td>10⁴–10⁸</td></tr>
+          <tr><td><span data-math="T"></span></td><td>Temperature</td><td>K or °C</td><td>0–350 °C</td></tr>
+          <tr><td><span data-math="\boldsymbol\sigma"></span></td><td>Total stress (tension positive)</td><td>Pa</td><td>—</td></tr>
+          <tr><td><span data-math="\boldsymbol\sigma'"></span></td><td>Effective stress, <span data-math="\boldsymbol\sigma+\alpha p\boldsymbol I"></span></td><td>Pa</td><td>—</td></tr>
+          <tr><td><span data-math="\varepsilon_v"></span></td><td>Volumetric strain, <span data-math="\nabla\!\cdot\!\vec u"></span></td><td>—</td><td>10⁻⁶–10⁻²</td></tr>
+          <tr><td><span data-math="\phi"></span></td><td>Porosity</td><td>—</td><td>0.001–0.6</td></tr>
+          <tr><td><span data-math="k"></span></td><td>Intrinsic permeability</td><td>m²</td><td>10⁻²³–10⁻⁷</td></tr>
+          <tr><td><span data-math="K_h"></span></td><td>Hydraulic conductivity, <span data-math="k\rho_f g/\mu"></span></td><td>m s⁻¹</td><td>10⁻¹³–10⁰</td></tr>
+          <tr><td><span data-math="\mu"></span></td><td>Fluid dynamic viscosity</td><td>Pa s</td><td>1.8×10⁻⁴–1.8×10⁻³</td></tr>
+          <tr><td><span data-math="\alpha"></span></td><td>Biot coefficient, <span data-math="1-K/K_s"></span></td><td>—</td><td>0.2–1.0</td></tr>
+          <tr><td><span data-math="M"></span></td><td>Biot modulus</td><td>Pa</td><td>10⁸–10¹¹</td></tr>
+          <tr><td><span data-math="B"></span></td><td>Skempton coefficient, <span data-math="\alpha M/K_u"></span></td><td>—</td><td>0.3–1.0</td></tr>
+          <tr><td><span data-math="S_\varepsilon"></span></td><td>Storage at constant strain</td><td>Pa⁻¹</td><td>10⁻¹¹–10⁻⁸</td></tr>
+          <tr><td><span data-math="K,\;G"></span></td><td>Drained bulk and shear moduli</td><td>Pa</td><td>10⁷–10¹¹</td></tr>
+          <tr><td><span data-math="K_u"></span></td><td>Undrained bulk modulus, <span data-math="K+\alpha^2 M"></span></td><td>Pa</td><td>—</td></tr>
+          <tr><td><span data-math="\alpha_T"></span></td><td>Linear thermal expansion of the solid</td><td>K⁻¹</td><td>5×10⁻⁶–4×10⁻⁵</td></tr>
+          <tr><td><span data-math="\beta_f"></span></td><td>Volumetric thermal expansion of the fluid</td><td>K⁻¹</td><td>2×10⁻⁴–1.4×10⁻³</td></tr>
+          <tr><td><span data-math="\lambda_m"></span></td><td>Effective thermal conductivity</td><td>W m⁻¹ K⁻¹</td><td>0.3–6</td></tr>
+          <tr><td><span data-math="(\rho c)_m"></span></td><td>Volumetric heat capacity of the mixture</td><td>J m⁻³ K⁻¹</td><td>1.2×10⁶–3.2×10⁶</td></tr>
+          <tr><td><span data-math="c"></span></td><td>Hydraulic diffusivity, <span data-math="k/(\mu S_\varepsilon)"></span></td><td>m² s⁻¹</td><td>10⁻⁹–10²</td></tr>
+          <tr><td><span data-math="\kappa"></span></td><td>Thermal diffusivity, <span data-math="\lambda_m/(\rho c)_m"></span></td><td>m² s⁻¹</td><td>2×10⁻⁷–3×10⁻⁶</td></tr>
+          <tr><td><span data-math="\Gamma"></span></td><td>Thermal pressurisation source, <span data-math="\approx\phi(\beta_f-\beta_s)"></span></td><td>K⁻¹</td><td>10⁻⁵–3×10⁻⁴</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="props" data-nav="Property ranges">Property ranges by material</h2>
+
+    <div class="tbl-wrap full">
+      <table>
+        <caption>Indicative values for intact, saturated material at shallow crustal conditions.
+        Fractured and weathered equivalents can differ by many orders of magnitude in $k$ and by
+        a factor of a few in stiffness.</caption>
+        <thead>
+          <tr><th>Material</th><th class="num">φ</th><th class="num">k (m²)</th><th class="num">E (GPa)</th>
+              <th class="num">ν</th><th class="num">α</th><th class="num">λ (W/mK)</th><th class="num">α<sub>T</sub> (10⁻⁶/K)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Soft clay</td><td class="num">0.45–0.60</td><td class="num">10⁻¹⁸–10⁻¹⁶</td><td class="num">0.002–0.02</td><td class="num">0.35</td><td class="num">1.00</td><td class="num">1.2–1.8</td><td class="num">10</td></tr>
+          <tr><td>Stiff clay / shale</td><td class="num">0.10–0.30</td><td class="num">10⁻²¹–10⁻¹⁸</td><td class="num">0.5–20</td><td class="num">0.25</td><td class="num">0.9–1.0</td><td class="num">1.1–2.1</td><td class="num">10</td></tr>
+          <tr><td>Loose sand</td><td class="num">0.35–0.45</td><td class="num">10⁻¹²–10⁻¹⁰</td><td class="num">0.01–0.08</td><td class="num">0.30</td><td class="num">1.00</td><td class="num">1.5–2.5</td><td class="num">10</td></tr>
+          <tr><td>Sandstone</td><td class="num">0.05–0.30</td><td class="num">10⁻¹⁷–10⁻¹²</td><td class="num">5–40</td><td class="num">0.15–0.25</td><td class="num">0.6–0.9</td><td class="num">2.0–3.5</td><td class="num">10</td></tr>
+          <tr><td>Limestone</td><td class="num">0.02–0.25</td><td class="num">10⁻¹⁸–10⁻⁹</td><td class="num">20–70</td><td class="num">0.20–0.30</td><td class="num">0.5–0.8</td><td class="num">2.2–3.4</td><td class="num">8</td></tr>
+          <tr><td>Granite (intact)</td><td class="num">0.003–0.02</td><td class="num">10⁻²¹–10⁻¹⁸</td><td class="num">40–80</td><td class="num">0.20–0.30</td><td class="num">0.2–0.5</td><td class="num">2.5–3.4</td><td class="num">8</td></tr>
+          <tr><td>Granite (fractured)</td><td class="num">0.005–0.05</td><td class="num">10⁻¹⁶–10⁻¹²</td><td class="num">15–50</td><td class="num">0.25</td><td class="num">0.3–0.7</td><td class="num">2.5–3.2</td><td class="num">8</td></tr>
+          <tr><td>Rock salt</td><td class="num">&lt;0.01</td><td class="num">10⁻²³–10⁻²⁰</td><td class="num">25–35</td><td class="num">0.25</td><td class="num">&lt;0.1</td><td class="num">5.0–6.0</td><td class="num">40</td></tr>
+          <tr><td>Bentonite buffer</td><td class="num">0.35–0.45</td><td class="num">10⁻²¹–10⁻¹⁹</td><td class="num">0.02–0.3</td><td class="num">0.35</td><td class="num">1.00</td><td class="num">0.8–1.5</td><td class="num">10</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="groups" data-nav="Dimensionless groups">Dimensionless groups</h2>
+
+    <div class="tbl-wrap full">
+      <table>
+        <thead><tr><th>Group</th><th>Definition</th><th>Compares</th><th>Decision it drives</th></tr></thead>
+        <tbody>
+          <tr><td>Péclet</td><td><span data-math="\mathrm{Pe} = (\rho c)_f |\vec q| L/\lambda_m"></span></td>
+              <td>advection vs conduction</td><td>Whether the flow field matters for heat; whether the grid must resolve a front</td></tr>
+          <tr><td>Rayleigh (porous)</td><td><span data-math="\mathrm{Ra} = \rho_f g\beta_T\Delta T\,k H (\rho c)_f/(\mu\lambda_m)"></span></td>
+              <td>buoyancy vs diffusion</td><td>Whether free convection occurs at all (<span data-math="\mathrm{Ra}_c = 4\pi^2"></span>)</td></tr>
+          <tr><td>Time factor</td><td><span data-math="T_v = c_v t/H^2"></span></td>
+              <td>elapsed vs consolidation time</td><td>Degree of consolidation; whether the response is drained or undrained</td></tr>
+          <tr><td>Diffusivity ratio</td><td><span data-math="\kappa/c"></span></td>
+              <td>thermal vs hydraulic diffusion</td><td>Whether thermal pressurisation can build up before it drains away</td></tr>
+          <tr><td>Coupling strength</td><td><span data-math="\tau = \alpha^2 M/K_{od}"></span></td>
+              <td>fluid stiffness vs frame stiffness</td><td>Whether a sequential solver converges; how strong Mandel–Cryer will be</td></tr>
+          <tr><td>Thermal retardation</td><td><span data-math="R = (\rho c)_m/(\phi(\rho c)_f)"></span></td>
+              <td>total vs fluid heat storage</td><td>How far the thermal front lags the tracer front</td></tr>
+          <tr><td>Reynolds (pore)</td><td><span data-math="\mathrm{Re} = \rho_f |\vec q| d/\mu"></span></td>
+              <td>inertia vs viscosity</td><td>Whether Darcy’s law still applies (below ≈ 1–10)</td></tr>
+          <tr><td>Cell Péclet</td><td><span data-math="\mathrm{Pe}_h = (\rho c)_f|\vec q|h/\lambda_m"></span></td>
+              <td>advection vs diffusion per cell</td><td>Whether the advection term must be upwinded (above 2)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="apps" data-nav="Where it is used">Where this gets used</h2>
+
+    <div class="grid grid--2 full">
+      <div class="card">
+        <span class="pill pill--t">T</span> <span class="pill pill--h">H</span> <span class="pill pill--m">M</span>
+        <h4>Deep geothermal and EGS</h4>
+        <p>Cold injection into hot rock. Thermal breakthrough sets the resource life; thermal
+        contraction opens fractures and can reactivate faults years after injection starts. All
+        three couplings are first order, which is why geothermal drove much of the modern THM
+        literature.</p>
+      </div>
+      <div class="card">
+        <span class="pill pill--h">H</span> <span class="pill pill--m">M</span>
+        <h4>CO₂ storage</h4>
+        <p>Pressure build-up limits injectivity and is bounded by the fracture pressure of the
+        caprock; effective-stress changes on nearby faults govern the seismic hazard.
+        Two-phase flow and a buoyant, compressible fluid make the H part harder than in
+        water problems.</p>
+      </div>
+      <div class="card">
+        <span class="pill pill--t">T</span> <span class="pill pill--h">H</span> <span class="pill pill--m">M</span>
+        <h4>Nuclear waste disposal</h4>
+        <p>The near-field problem: decay heat, an initially unsaturated bentonite buffer that
+        swells as it wets, and a host rock whose permeability must stay low for a hundred
+        thousand years. Thermal pressurisation of the host rock is an explicit safety-case
+        question.</p>
+      </div>
+      <div class="card">
+        <span class="pill pill--h">H</span> <span class="pill pill--m">M</span>
+        <h4>Land subsidence</h4>
+        <p>Groundwater or hydrocarbon withdrawal raises effective stress and compacts the
+        reservoir; the surface follows. Jakarta, Mexico City, the Groningen field and the San
+        Joaquin Valley are all the same equation with different coefficients.</p>
+      </div>
+      <div class="card">
+        <span class="pill pill--h">H</span> <span class="pill pill--m">M</span>
+        <h4>Slope stability and liquefaction</h4>
+        <p>Rainfall infiltration raises pore pressure and lowers effective stress on a potential
+        slip surface; cyclic loading of loose saturated sand does the same thing much faster.
+        The unsaturated zone above the water table is where the interesting physics is.</p>
+      </div>
+      <div class="card">
+        <span class="pill pill--t">T</span> <span class="pill pill--h">H</span> <span class="pill pill--m">M</span>
+        <h4>Permafrost and ground freezing</h4>
+        <p>Adds a phase change, latent heat, cryosuction that draws water toward the freezing
+        front, and ice segregation that heaves the ground. A fully coupled THM problem with a
+        strongly nonlinear energy equation.</p>
+      </div>
+    </div>
+
+    <h2 id="reading" data-nav="Further reading">Further reading</h2>
+
+    <h3>Foundations</h3>
+    <ul>
+      <li><strong>Terzaghi, K. (1923)</strong> — <em>Die Berechnung der Durchlässigkeitsziffer des
+      Tones aus dem Verlauf der hydrodynamischen Spannungserscheinungen.</em> The effective-stress
+      principle and the consolidation equation, in one paper.</li>
+      <li><strong>Biot, M. A. (1941)</strong> — <em>General theory of three-dimensional
+      consolidation.</em> J. Appl. Phys. 12, 155–164. The generalisation to arbitrary geometry and
+      compressible constituents; everything in chapter 04 is here.</li>
+      <li><strong>Rice, J. R. &amp; Cleary, M. P. (1976)</strong> — <em>Some basic stress-diffusion
+      solutions for fluid-saturated elastic porous media with compressible constituents.</em>
+      Rev. Geophys. 14, 227–241. The paper that made poroelastic constants intelligible.</li>
+      <li><strong>Detournay, E. &amp; Cheng, A. H.-D. (1993)</strong> — <em>Fundamentals of
+      poroelasticity.</em> In Comprehensive Rock Engineering, vol. 2. Still the clearest single
+      overview, with the Mandel solution worked through.</li>
+    </ul>
+
+    <h3>Books</h3>
+    <ul>
+      <li><strong>Coussy, O. (2004)</strong> — <em>Poromechanics.</em> Wiley. The thermodynamically
+      rigorous treatment; heavier going, and worth it if you need to extend the constitutive theory.</li>
+      <li><strong>Lewis, R. W. &amp; Schrefler, B. A. (1998)</strong> — <em>The Finite Element
+      Method in the Static and Dynamic Deformation and Consolidation of Porous Media.</em> The
+      standard reference for the numerics, including the unsaturated case.</li>
+      <li><strong>Cheng, A. H.-D. (2016)</strong> — <em>Poroelasticity.</em> Springer. Encyclopaedic,
+      with an unusually complete collection of analytical solutions.</li>
+      <li><strong>Nield, D. A. &amp; Bejan, A. (2017)</strong> — <em>Convection in Porous Media,</em>
+      5th ed. Springer. Everything about the thermal side, including the Horton–Rogers–Lapwood
+      analysis behind figure 3.2.</li>
+      <li><strong>Zimmerman, R. W. (2000)</strong> — <em>Coupling in poroelasticity and
+      thermoelasticity.</em> Int. J. Rock Mech. Min. Sci. 37, 79–87. A short, careful account of
+      which couplings can be dropped and when.</li>
+    </ul>
+
+    <h3>Benchmarks and numerics</h3>
+    <ul>
+      <li><strong>Mandel, J. (1953)</strong> — <em>Consolidation des sols (étude mathématique).</em>
+      Géotechnique 3, 287–299; and <strong>Abousleiman et al. (1996)</strong>, Int. J. Solids
+      Struct. 33, 4805–4830, for the form used in figure 5.2.</li>
+      <li><strong>Booker, J. R. &amp; Savvidou, C. (1985)</strong> — <em>Consolidation around a
+      point heat source.</em> Int. J. Numer. Anal. Methods Geomech. 9, 173–184. The standard THM
+      benchmark.</li>
+      <li><strong>Vermeer, P. A. &amp; Verruijt, A. (1981)</strong> — <em>An accuracy condition for
+      consolidation by finite elements.</em> Int. J. Numer. Anal. Methods Geomech. 5, 1–14. Where
+      the $\Delta t \ge h^2/(6c)$ limit comes from.</li>
+      <li><strong>Kim, J., Tchelepi, H. A. &amp; Juanes, R. (2011)</strong> — <em>Stability and
+      convergence of sequential methods for coupled flow and geomechanics.</em> Comput. Methods
+      Appl. Mech. Engrg. 200. The definitive analysis of the four splitting schemes in figure 6.2.</li>
+      <li><strong>White, J. A. &amp; Borja, R. I. (2008)</strong> — <em>Stabilized low-order finite
+      elements for coupled solid-deformation/fluid-diffusion.</em> Comput. Methods Appl. Mech.
+      Engrg. 197. The stabilisation used in figure 6.1.</li>
+      <li><strong>Rutqvist, J. (2011)</strong> — <em>Status of the TOUGH-FLAC simulator and recent
+      applications.</em> Comput. Geosci. 37, 739–750. A readable account of how sequential coupling
+      is done in practice, and where it hurts.</li>
+    </ul>
+
+    <h3>Codes worth knowing</h3>
+    <ul>
+      <li><strong>OpenGeoSys</strong> — open-source, THM/THMC, strong in repository applications.</li>
+      <li><strong>PorePy</strong> and <strong>PoroTomo/porepy-style DFM tools</strong> — open-source
+      Python, mixed-dimensional fracture–matrix coupling.</li>
+      <li><strong>TOUGH-FLAC</strong>, <strong>FEHM</strong>, <strong>CODE_BRIGHT</strong> —
+      established research and industry couplers, each with a different splitting strategy.</li>
+      <li><strong>MOOSE / Falcon</strong> — a monolithic multiphysics framework with a mature
+      poromechanics module.</li>
+    </ul>
+
+    <h2 id="colophon" data-nav="Colophon">Colophon</h2>
+
+    <p>
+      Every figure on this site is computed in the browser at the moment you look at it. Where a
+      closed-form solution exists — Terzaghi, Mandel, Ogata–Banks, the <span data-math="\mathrm{erfc}"></span>
+      half-space, Kozeny–Carman, van Genuchten–Mualem, the Hashin–Shtrikman bounds — it is
+      evaluated directly. Where one does not, a small solver runs: a masked Darcy pressure solve on
+      the home page, a summed-area table over a synthetic grain pack in chapter 01, a
+      mass-conservative Richards solver in chapter 02, a Darcy–Boussinesq convection solver in
+      chapter 03, a coupled one-dimensional THM solver in chapter 05, an actual finite-element
+      assembly in chapter 06, and a two-dimensional poro-thermo-elastic solver in chapter 07. The
+      scheme is stated in each caption.
+    </p>
+
+    <p>
+      No frameworks, no build step, no network requests: plain HTML, CSS and JavaScript, with
+      <a href="https://katex.org">KaTeX</a> vendored locally for the mathematics. Colours are drawn
+      from a categorical palette checked for colour-vision deficiency separation and contrast in
+      both light and dark themes; sequential fields use single-hue ramps and semantic heat scales,
+      always with a colour bar. Every chart carries a legend, direct labels where they fit, a
+      hover tooltip, and — where the data is tabular — a table view.
+    </p>
+
+    <p class="muted">
+      Written as an interactive primer, not a textbook. Any errors are mine; the physics is
+      everyone’s.
+    </p>
+
+  </main>
+</div>
+
+<script src="assets/vendor/katex/katex.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/plot.js" defer></script>
+</body>
+</html>
