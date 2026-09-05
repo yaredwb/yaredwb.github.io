@@ -12,7 +12,7 @@ In June I gave five frontier models the same one-sentence brief, to build a webs
 
 The same sentence as in June:
 
-> Build a website that illustrates the physical and mathematical principles behind thermo-hydo-mechanical processes in porous media, including beautiful and interactive illustrations.
+> Build a website that illustrates the physical and mathematical principles behind thermo-hydro-mechanical processes in porous media, including beautiful and interactive illustrations.
 
 The same rules too: one shot, no art direction, no starter code, no follow-up corrections. The results are embedded as produced, bugs included. The one liberty I took is that GPT-5.6 and GPT-6 returned Vite projects rather than static files, so I ran their build step with the base path needed to host them here and changed nothing else. Click **Open interactive view** on any embed for the full page. As before, these are full web applications and are best explored on a PC; the previews give you the idea on a phone, but the interactive views really want a large screen.
 

@@ -14,7 +14,7 @@ The subject I chose is coupled **thermo-hydro-mechanical (THM) processes in poro
 
 Each model got exactly this, verbatim:
 
-> Build a website that illustrates the physical and mathematical principles behind thermo-hydo-mechanical processes in porous media, including beautiful and interactive illustrations.
+> Build a website that illustrates the physical and mathematical principles behind thermo-hydro-mechanical processes in porous media, including beautiful and interactive illustrations.
 
 One sentence. No art direction, no reference design, no starter code, no follow-up corrections. Each result below is embedded exactly as produced, including bugs, where they shipped them. Click **Open interactive view** on any embed for the full-screen, fully interactive page. A practical note: these are full web applications, and they are best explored on a PC; the previews give you the idea on a phone, but the interactive views really want a large screen. What follows is my honest assessment of each, on content and on visuals.
 
