@@ -80,7 +80,7 @@ description: "Research scientist working on computational geomechanics and appli
   </div>
   <ul class="project-grid">
     <li>
-      <a class="project-card" href="https://geosim-ai.yaredwb.com/">
+      <a class="project-card" href="https://geosim-ai.vercel.app/">
         <h3>GeoSim.AI</h3>
         <p>AI assistants for numerical simulations in geomechanics, demonstrating productivity gains in slope stability assessments.</p>
       </a>
