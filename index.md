@@ -121,6 +121,6 @@ description: "Research scientist working on computational geomechanics and appli
 <section class="home-section">
   <div class="contact-panel">
     <h2>Get in touch</h2>
-    <p>For research collaborations, consulting on geotechnical modelling, or questions about my work, write to <a href="mailto:yaredworku@gmail.com">yaredworku@gmail.com</a>.</p>
+    <p>For research collaborations, discussion on advanced geotechnical modelling, or questions about my work, write to <a href="mailto:yaredworku@gmail.com">yaredworku@gmail.com</a>.</p>
   </div>
 </section>
